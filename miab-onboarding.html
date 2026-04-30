@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIAB — Onboarding</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #FFFFFF;
+  --text: #1a1a1a;
+  --muted: #666666;
+  --disabled: #999999;
+  --border: #E0E0E0;
+  --input-bg: #F5F5F5;
+  --input-border: #CCCCCC;
+  --active: #4A90D9;
+  --warning: #F5A623;
+  --error: #D0021B;
+  --success: #417505;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── Top Bar ── */
+#top-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 100;
+}
+#top-bar-logo { font-size: 18px; font-weight: 700; letter-spacing: -0.5px; }
+#top-bar-save { color: var(--disabled); font-size: 14px; text-decoration: none; cursor: default; }
+
+/* ── Bottom Bar ── */
+#bottom-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: #fff;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 100;
+}
+
+/* ── Main content ── */
+#main-content {
+  margin-top: 56px;
+  margin-bottom: 64px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 40px 24px;
+}
+
+/* ── Screens ── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+#screen-welcome,
+#screen-complete {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 200;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+}
+#screen-welcome.active,
+#screen-complete.active { display: flex; }
+
+/* ── Buttons ── */
+.btn-primary {
+  background: var(--text);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity .15s;
+}
+.btn-primary:hover { opacity: .85; }
+.btn-primary:disabled { background: var(--disabled); cursor: not-allowed; opacity: 1; }
+
+.btn-ghost {
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--text);
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-ghost:hover { background: #f8f8f8; }
+
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--text);
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 0;
+}
+.btn-muted {
+  background: none;
+  border: none;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 0;
+}
+.btn-back {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-back:hover { background: #f8f8f8; }
+
+/* ── Forms ── */
+label.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+input[type="text"],
+input[type="email"],
+input[type="url"],
+select,
+textarea {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  appearance: auto;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--active); }
+textarea { resize: vertical; }
+.form-group { margin-bottom: 16px; }
+.helper-text { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.error-msg { font-size: 12px; color: var(--error); margin-top: 4px; display: none; }
+
+/* ── Cards ── */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* ── Banners ── */
+.banner {
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+.banner-green {
+  background: #f0f9f0;
+  border: 1px solid #c3e6cb;
+  border-left: 4px solid var(--success);
+  color: #2d6a2d;
+}
+.banner-amber {
+  background: #fff8f0;
+  border: 1px solid #fde5c0;
+  border-left: 4px solid var(--warning);
+  color: #7a4f00;
+}
+.banner-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+/* ── Progress indicator ── */
+.progress-steps {
+  display: flex;
+  align-items: center;
+}
+.progress-step { display: flex; align-items: center; gap: 6px; }
+.step-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  border: 2px solid var(--border);
+  background: #fff;
+  color: var(--disabled);
+  flex-shrink: 0;
+}
+.step-dot.step-active { border-color: var(--text); color: var(--text); }
+.step-dot.step-done { background: var(--text); border-color: var(--text); color: #fff; }
+.step-dot.step-done-green { background: var(--success); border-color: var(--success); color: #fff; }
+.step-label { font-size: 12px; color: var(--disabled); white-space: nowrap; }
+.step-label.step-active { color: var(--text); font-weight: 600; }
+.step-label.step-done { color: var(--text); }
+.step-connector { width: 28px; height: 1px; background: var(--border); margin: 0 6px; flex-shrink: 0; }
+.step-connector.done { background: var(--text); }
+
+/* ── Sub-tabs ── */
+.sub-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+.sub-tab {
+  padding: 10px 20px;
+  font-size: 14px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: -1px;
+}
+.sub-tab:hover { color: var(--text); }
+.sub-tab.tab-active { color: var(--text); font-weight: 600; border-bottom-color: var(--text); }
+.sub-tab.tab-done { color: var(--text); }
+
+/* ── Spinner ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--text);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto;
+}
+
+/* ── Screen title ── */
+.screen-title { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+.screen-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+
+/* ── File upload ── */
+.file-upload-area {
+  border: 2px dashed var(--input-border);
+  border-radius: 6px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  padding: 16px;
+}
+.file-upload-area:hover { border-color: var(--active); }
+
+/* ── Path buttons ── */
+.path-section-label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--disabled);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.path-btn-stack { display: flex; flex-direction: column; gap: 10px; }
+
+/* ── Template grid ── */
+.template-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.template-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  height: 120px;
+  padding: 12px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color .15s;
+}
+.template-card:hover { border-color: var(--active); }
+.template-card.selected { border: 2px solid var(--active); }
+.template-card.selected .template-check { display: flex; }
+.template-check {
+  display: none;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  background: var(--active);
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+.template-swatches { display: flex; gap: 6px; align-items: center; }
+.template-swatch { width: 20px; height: 20px; border-radius: 50%; }
+.template-name { font-size: 13px; font-weight: 600; }
+.template-tone { font-size: 11px; color: var(--muted); }
+
+/* ── Colour picker ── */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 30px);
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.color-swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,.1);
+}
+.color-swatch.selected {
+  outline: 2px solid var(--active);
+  outline-offset: 2px;
+}
+
+/* ── Chips ── */
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+  min-height: 32px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text);
+}
+.chip-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--muted);
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+.chip-remove:hover { color: var(--error); }
+.chip-input-row { display: flex; gap: 8px; align-items: center; }
+.chip-input-row input { max-width: 260px; }
+
+/* ── Tone chips (multi-select) ── */
+.tone-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  border: 1px solid var(--input-border);
+  cursor: pointer;
+  background: #fff;
+  color: var(--text);
+  font-family: inherit;
+  transition: all .15s;
+}
+.tone-chip.selected { background: var(--active); border-color: var(--active); color: #fff; }
+
+/* ── Toggle switch ── */
+.toggle-row { display: flex; align-items: center; gap: 12px; }
+.toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: var(--input-border);
+  border-radius: 24px;
+  transition: .2s;
+}
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: .2s;
+}
+.toggle-switch input:checked + .toggle-slider { background: var(--active); }
+.toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+/* ── Competitor rows ── */
+.competitor-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.competitor-label { font-size: 13px; font-weight: 600; width: 110px; flex-shrink: 0; }
+.competitor-row input { flex: 1; }
+.status-pill {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  white-space: nowrap;
+  background: var(--input-bg);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.status-pill.analysing {
+  background: #eef4fc;
+  color: var(--active);
+  border-color: #c5daf7;
+}
+
+/* ── Team rows ── */
+.team-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.team-row .email-input { flex: 6; }
+.team-row .role-select { flex: 4; }
+.remove-team-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 18px;
+  padding: 0 4px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.remove-team-btn:hover { color: var(--error); }
+
+/* ── Info box ── */
+.info-box {
+  background: var(--input-bg);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--muted);
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Score card ── */
+.score-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 24px;
+}
+.score-card.green-tint { background: #f8fdf8; }
+.score-card-label { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.score-bar-track { width: 100%; height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 6px; }
+.score-bar-fill { height: 6px; background: var(--text); border-radius: 3px; }
+.score-bar-fill.green-fill { background: var(--success); }
+.score-text { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.score-text.green-text { color: var(--success); }
+.score-list { list-style: none; }
+.score-list li { font-size: 12px; color: var(--muted); padding: 2px 0; }
+.score-list li.done { color: var(--text); }
+
+/* ── Logo placeholder ── */
+.logo-placeholder {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ── Inline confirm ── */
+.inline-confirm {
+  padding: 10px 16px;
+  background: #f0f9f0;
+  border: 1px solid #c3e6cb;
+  border-radius: 6px;
+  color: var(--success);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 16px;
+}
+
+/* ── Complete screen ── */
+.checkmark {
+  width: 64px;
+  height: 64px;
+  border: 3px solid var(--text);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  flex-shrink: 0;
+}
+.checkmark::after {
+  content: '';
+  display: block;
+  width: 22px;
+  height: 13px;
+  border-left: 3px solid var(--text);
+  border-bottom: 3px solid var(--text);
+  transform: rotate(-45deg) translateY(-3px);
+}
+.next-cards {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+.next-card {
+  flex: 1;
+  min-width: 180px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: left;
+}
+.next-card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.next-card-desc { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+.next-card-link { font-size: 13px; color: var(--text); text-decoration: underline; cursor: pointer; }
+
+/* ── Skip link ── */
+.skip-link {
+  display: block;
+  margin-top: 24px;
+  font-size: 15px;
+}
+
+/* ── Layout helpers ── */
+.two-col { display: grid; grid-template-columns: 1fr 280px; gap: 24px; }
+@media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ TOP BAR ═══ -->
+<div id="top-bar">
+  <div id="top-bar-logo">MIAB</div>
+  <div id="top-bar-progress"></div>
+  <span id="top-bar-save">Save &amp; Exit</span>
+</div>
+
+<!-- ═══════════════════════════════════════════ BOTTOM BAR ═══ -->
+<div id="bottom-bar">
+  <button class="btn-back" id="btn-back" onclick="goBack()">← Back</button>
+  <button class="btn-primary" id="btn-cta" onclick="handleCTA()">Continue →</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN: WELCOME ═══ -->
+<div id="screen-welcome" class="screen">
+  <div style="font-size:32px;font-weight:700;letter-spacing:-1px;">MIAB</div>
+  <h1 style="font-size:24px;font-weight:600;margin-top:32px;">Let's build your brand foundation.</h1>
+  <p style="font-size:16px;color:var(--muted);margin-top:8px;">Answer a few questions. We'll do the rest.</p>
+  <button class="btn-primary" style="margin-top:40px;width:240px;" onclick="navigateTo('brand-basics')">Get Started →</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ MAIN CONTENT ═══ -->
+<div id="main-content">
+
+  <!-- ─── SCREEN: BRAND BASICS ─── -->
+  <div id="screen-brand-basics" class="screen">
+    <h2 class="screen-title">Tell us about your brand</h2>
+    <p class="screen-subtitle">We'll scan your website and pre-fill your brand details. Takes about 10 seconds.</p>
+
+    <div class="form-group">
+      <label class="field-label" for="bb-url">Website URL</label>
+      <input type="url" id="bb-url" placeholder="https://yourbrand.com">
+      <p class="helper-text">We'll read your site and extract your brand details automatically.</p>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">Logo</label>
+      <div class="file-upload-area" onclick="document.getElementById('bb-logo').click()">
+        Click to upload or drag your logo here &nbsp;·&nbsp; PNG, SVG, JPG &nbsp;·&nbsp; Max 5MB
+      </div>
+      <input type="file" id="bb-logo" accept=".png,.svg,.jpg,.jpeg" style="display:none">
+    </div>
+
+    <div class="form-group">
+      <label class="field-label" for="bb-brand-name">Brand Name *</label>
+      <input type="text" id="bb-brand-name" placeholder="Your brand name">
+      <p class="error-msg" id="bb-brand-name-error">Brand name is required to continue.</p>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label" for="bb-industry">Industry *</label>
+      <select id="bb-industry">
+        <option value="" disabled selected>Select your industry</option>
+        <option>Real Estate</option>
+        <option>D2C / E-commerce</option>
+        <option>Professional Services</option>
+        <option>Education</option>
+        <option>Healthcare</option>
+        <option>Manufacturing &amp; B2B</option>
+        <option>Retail</option>
+        <option>Food &amp; Beverage</option>
+        <option>Hospitality</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <hr class="divider">
+
+    <div class="form-group">
+      <p class="path-section-label">How do you want to proceed?</p>
+      <div class="path-btn-stack">
+        <button class="btn-primary" onclick="choosePath('A')">Analyse My Website →</button>
+        <button class="btn-ghost" onclick="choosePath('C')">I don't have a website — enter manually</button>
+        <button class="btn-text" style="text-align:left;padding:4px 0;" onclick="choosePath('D')">I have a website but want to enter details myself</button>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:16px;">* Required fields</p>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: LOADING A (Path A — Website scan) ─── -->
+  <div id="screen-loading-a" class="screen" style="text-align:center;padding-top:80px;">
+    <div class="spinner"></div>
+    <p id="loading-a-text" style="margin-top:20px;font-size:15px;color:var(--muted);">Reading your website...</p>
+    <button class="btn-muted" style="margin-top:28px;" onclick="navigateTo('guidelines-visual')">Stop and enter manually</button>
+  </div>
+
+  <!-- ─── SCREEN: LOADING B (Path C — No website, template picker) ─── -->
+  <div id="screen-loading-b" class="screen">
+    <h2 class="screen-title">Pick a starting point for your brand</h2>
+    <p class="screen-subtitle">Choose a template that fits your business. You can edit everything.</p>
+
+    <div class="template-grid">
+      <div class="template-card" onclick="selectTemplate(this)">
+        <div class="template-check">✓</div>
+        <div class="template-swatches">
+          <div class="template-swatch" style="background:#2a2a2a"></div>
+          <div class="template-swatch" style="background:#888888"></div>
+          <div class="template-swatch" style="background:#cccccc"></div>
+        </div>
+        <div class="template-name">Modern Professional</div>
+        <div class="template-tone">Professional · Trustworthy</div>
+      </div>
+      <div class="template-card" onclick="selectTemplate(this)">
+        <div class="template-check">✓</div>
+        <div class="template-swatches">
+          <div class="template-swatch" style="background:#1a1a1a"></div>
+          <div class="template-swatch" style="background:#4a4a4a"></div>
+          <div class="template-swatch" style="background:#9a9a9a"></div>
+        </div>
+        <div class="template-name">Bold &amp; Direct</div>
+        <div class="template-tone">Bold · Direct</div>
+      </div>
+      <div class="template-card" onclick="selectTemplate(this)">
+        <div class="template-check">✓</div>
+        <div class="template-swatches">
+          <div class="template-swatch" style="background:#3a3a3a"></div>
+          <div class="template-swatch" style="background:#7a7a7a"></div>
+          <div class="template-swatch" style="background:#e0e0e0"></div>
+        </div>
+        <div class="template-name">Warm &amp; Approachable</div>
+        <div class="template-tone">Warm · Friendly</div>
+      </div>
+      <div class="template-card" onclick="selectTemplate(this)">
+        <div class="template-check">✓</div>
+        <div class="template-swatches">
+          <div class="template-swatch" style="background:#222222"></div>
+          <div class="template-swatch" style="background:#aaaaaa"></div>
+          <div class="template-swatch" style="background:#f0f0f0"></div>
+        </div>
+        <div class="template-name">Clean Minimal</div>
+        <div class="template-tone">Minimal · Elegant</div>
+      </div>
+      <div class="template-card" onclick="selectTemplate(this)">
+        <div class="template-check">✓</div>
+        <div class="template-swatches">
+          <div class="template-swatch" style="background:#0a0a0a"></div>
+          <div class="template-swatch" style="background:#555555"></div>
+          <div class="template-swatch" style="background:#bbbbbb"></div>
+        </div>
+        <div class="template-name">Authoritative</div>
+        <div class="template-tone">Expert · Credible</div>
+      </div>
+      <div class="template-card" onclick="selectTemplate(this)">
+        <div class="template-check">✓</div>
+        <div class="template-swatches">
+          <div class="template-swatch" style="background:#333333"></div>
+          <div class="template-swatch" style="background:#666666"></div>
+          <div class="template-swatch" style="background:#dddddd"></div>
+        </div>
+        <div class="template-name">Energetic</div>
+        <div class="template-tone">Dynamic · Youthful</div>
+      </div>
+    </div>
+
+    <button class="btn-text" style="font-size:14px;">Browse all templates →</button>
+  </div>
+
+  <!-- ─── SCREEN: LOADING C (Path D — Manual override) ─── -->
+  <div id="screen-loading-c" class="screen">
+    <h2 class="screen-title">Enter your brand details</h2>
+    <p class="screen-subtitle">Fill in what matters to you. You can always update this later.</p>
+
+    <div class="banner banner-amber">
+      You're entering details manually. Your website won't be scanned.
+    </div>
+
+    <div class="form-group">
+      <label class="field-label" for="mc-brand-name">Brand Name *</label>
+      <input type="text" id="mc-brand-name" placeholder="Your brand name">
+    </div>
+    <div class="form-group">
+      <label class="field-label" for="mc-industry">Industry *</label>
+      <select id="mc-industry">
+        <option value="" disabled selected>Select your industry</option>
+        <option>Real Estate</option>
+        <option>D2C / E-commerce</option>
+        <option>Professional Services</option>
+        <option>Education</option>
+        <option>Healthcare</option>
+        <option>Manufacturing &amp; B2B</option>
+        <option>Retail</option>
+        <option>Food &amp; Beverage</option>
+        <option>Hospitality</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="field-label" for="mc-what">What does your brand do?</label>
+      <textarea id="mc-what" rows="3" placeholder="Describe your business in 2–3 sentences"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="field-label" for="mc-who">Who are your customers?</label>
+      <textarea id="mc-who" rows="2" placeholder="Describe who you serve"></textarea>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: GUIDELINES — VISUAL IDENTITY ─── -->
+  <div id="screen-guidelines-visual" class="screen">
+    <div class="sub-tabs">
+      <button class="sub-tab tab-active" onclick="navigateTo('guidelines-visual')">Visual Identity</button>
+      <button class="sub-tab" onclick="navigateTo('guidelines-messaging')">Messaging</button>
+      <button class="sub-tab" onclick="navigateTo('guidelines-tone')">Tone &amp; Voice</button>
+    </div>
+
+    <div id="visual-colour-warning" class="banner banner-amber" style="display:none;">
+      You haven't set brand colours — content may look generic. You can always add this later.
+      <div class="banner-actions">
+        <button class="btn-primary" style="font-size:13px;padding:8px 16px;" onclick="dismissColourWarning()">Add Colours</button>
+        <button class="btn-ghost" style="font-size:13px;padding:8px 16px;" onclick="navigateTo('guidelines-messaging')">Continue Anyway</button>
+      </div>
+    </div>
+
+    <div id="visual-path-banner"></div>
+
+    <div class="two-col">
+      <div>
+        <h2 class="screen-title">Visual Identity</h2>
+        <p class="screen-subtitle">Review and edit what we found. Everything here will be used in your content.</p>
+
+        <div class="form-group">
+          <label class="field-label" for="vi-brand-name">Brand Name *</label>
+          <input type="text" id="vi-brand-name" placeholder="Your brand name">
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">Logo</label>
+          <div id="vi-logo-area"></div>
+        </div>
+
+        <div class="form-group" id="colour-picker-section">
+          <label class="field-label">Primary Colour</label>
+          <div class="color-grid" id="primary-colour-grid"></div>
+          <button class="btn-text" style="font-size:13px;" onclick="toggleCustomColour('primary')">Use a custom colour</button>
+          <div id="primary-custom-colour" style="display:none;margin-top:8px;">
+            <input type="text" placeholder="#000000" style="width:140px;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">Secondary Colour</label>
+          <div class="color-grid" id="secondary-colour-grid"></div>
+          <button class="btn-text" style="font-size:13px;" onclick="toggleCustomColour('secondary')">Use a custom colour</button>
+          <div id="secondary-custom-colour" style="display:none;margin-top:8px;">
+            <input type="text" placeholder="#000000" style="width:140px;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label" for="vi-heading-font">Heading Font</label>
+          <select id="vi-heading-font">
+            <option>Inter</option>
+            <option>Poppins</option>
+            <option>Playfair Display</option>
+            <option>Roboto</option>
+            <option>Montserrat</option>
+            <option>Lato</option>
+            <option>Raleway</option>
+            <option>Merriweather</option>
+            <option>DM Sans</option>
+            <option>Space Grotesk</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label" for="vi-body-font">Body Font</label>
+          <select id="vi-body-font">
+            <option>Inter</option>
+            <option>Poppins</option>
+            <option>Playfair Display</option>
+            <option>Roboto</option>
+            <option>Montserrat</option>
+            <option>Lato</option>
+            <option>Raleway</option>
+            <option>Merriweather</option>
+            <option>DM Sans</option>
+            <option>Space Grotesk</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <div class="score-card" style="position:sticky;top:72px;">
+          <div class="score-card-label">Brand Foundation</div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width:30%"></div></div>
+          <div class="score-text">3 of 10 — Keep going</div>
+          <ul class="score-list">
+            <li class="done">✓ Visual Identity (in progress)</li>
+            <li>○ Messaging</li>
+            <li>○ Tone &amp; Voice</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: GUIDELINES — MESSAGING ─── -->
+  <div id="screen-guidelines-messaging" class="screen">
+    <div class="sub-tabs">
+      <button class="sub-tab tab-done" onclick="navigateTo('guidelines-visual')">Visual Identity ✓</button>
+      <button class="sub-tab tab-active" onclick="navigateTo('guidelines-messaging')">Messaging</button>
+      <button class="sub-tab" onclick="navigateTo('guidelines-tone')">Tone &amp; Voice</button>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h2 class="screen-title">Brand Messaging</h2>
+        <p class="screen-subtitle">This is what your brand says and stands for.</p>
+
+        <div class="form-group">
+          <label class="field-label" for="msg-mission">Brand Mission *</label>
+          <textarea id="msg-mission" rows="3" placeholder="What does your brand exist to do? E.g. 'We help first-time homebuyers in Pune find their perfect home with complete transparency.'">We deliver premium residential projects in Pune with a focus on quality, trust, and long-term value.</textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label" for="msg-tagline">Tagline / Positioning</label>
+          <input type="text" id="msg-tagline" placeholder="One line that captures your brand" value="Built for life. Trusted by thousands.">
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">What makes you different? (add up to 5)</label>
+          <div class="chips-container" id="diff-chips">
+            <span class="chip">On-time delivery <button class="chip-remove" onclick="removeChip(this)">×</button></span>
+            <span class="chip">RERA certified <button class="chip-remove" onclick="removeChip(this)">×</button></span>
+            <span class="chip">Transparent pricing <button class="chip-remove" onclick="removeChip(this)">×</button></span>
+          </div>
+          <div class="chip-input-row">
+            <input type="text" id="diff-input" placeholder="Add a differentiator">
+            <button class="btn-ghost" style="padding:8px 16px;font-size:13px;white-space:nowrap;" onclick="addChip('diff-chips','diff-input')">+ Add another</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label" for="msg-audience">Who are your customers?</label>
+          <textarea id="msg-audience" rows="2" placeholder="Describe your target audience briefly">Mid-income families and working professionals looking for 2–3 BHK homes in Pune.</textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">Key call-to-action phrases (add up to 5)</label>
+          <div class="chips-container" id="cta-chips">
+            <span class="chip">Book a Site Visit <button class="chip-remove" onclick="removeChip(this)">×</button></span>
+            <span class="chip">Get a Quote <button class="chip-remove" onclick="removeChip(this)">×</button></span>
+          </div>
+          <div class="chip-input-row">
+            <input type="text" id="cta-input" placeholder="Add a CTA phrase">
+            <button class="btn-ghost" style="padding:8px 16px;font-size:13px;" onclick="addChip('cta-chips','cta-input')">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="score-card" style="position:sticky;top:72px;">
+          <div class="score-card-label">Brand Foundation</div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width:60%"></div></div>
+          <div class="score-text">6 of 10 — Keep going</div>
+          <ul class="score-list">
+            <li class="done">✓ Visual Identity</li>
+            <li class="done">✓ Messaging (in progress)</li>
+            <li>○ Tone &amp; Voice</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: GUIDELINES — TONE & VOICE ─── -->
+  <div id="screen-guidelines-tone" class="screen">
+    <div class="sub-tabs">
+      <button class="sub-tab tab-done" onclick="navigateTo('guidelines-visual')">Visual Identity ✓</button>
+      <button class="sub-tab tab-done" onclick="navigateTo('guidelines-messaging')">Messaging ✓</button>
+      <button class="sub-tab tab-active" onclick="navigateTo('guidelines-tone')">Tone &amp; Voice</button>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h2 class="screen-title">Tone &amp; Voice</h2>
+        <p class="screen-subtitle">This tells MIAB how you sound. The more you fill in, the better your content will match your voice.</p>
+
+        <div class="form-group">
+          <label class="field-label">Tone of Voice (select all that apply)</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <button class="tone-chip selected" onclick="toggleToneChip(this)">Professional</button>
+            <button class="tone-chip" onclick="toggleToneChip(this)">Warm</button>
+            <button class="tone-chip" onclick="toggleToneChip(this)">Bold</button>
+            <button class="tone-chip" onclick="toggleToneChip(this)">Authoritative</button>
+            <button class="tone-chip" onclick="toggleToneChip(this)">Friendly</button>
+            <button class="tone-chip selected" onclick="toggleToneChip(this)">Aspirational</button>
+            <button class="tone-chip" onclick="toggleToneChip(this)">Educational</button>
+            <button class="tone-chip selected" onclick="toggleToneChip(this)">Direct</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">Words we always use</label>
+          <div class="chips-container" id="always-chips">
+            <span class="chip">trusted <button class="chip-remove" onclick="removeChip(this)">×</button></span>
+            <span class="chip">proven <button class="chip-remove" onclick="removeChip(this)">×</button></span>
+            <span class="chip">premium <button class="chip-remove" onclick="removeChip(this)">×</button></span>
+          </div>
+          <div class="chip-input-row">
+            <input type="text" id="always-input" placeholder="Add a word or phrase">
+            <button class="btn-ghost" style="padding:8px 16px;font-size:13px;" onclick="addChip('always-chips','always-input')">+ Add</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">Words we never use</label>
+          <div class="chips-container" id="never-chips">
+            <span class="chip">cheap <button class="chip-remove" onclick="removeChip(this)">×</button></span>
+            <span class="chip">discount <button class="chip-remove" onclick="removeChip(this)">×</button></span>
+          </div>
+          <div class="chip-input-row">
+            <input type="text" id="never-input" placeholder="Add a word or phrase">
+            <button class="btn-ghost" style="padding:8px 16px;font-size:13px;" onclick="addChip('never-chips','never-input')">+ Add</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label" for="good-copy">A good example of our copy (optional)</label>
+          <textarea id="good-copy" rows="3" placeholder="Paste a caption, tagline, or message that sounds exactly like your brand."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label" for="bad-copy">A bad example (optional)</label>
+          <textarea id="bad-copy" rows="2" placeholder="Paste something that sounds nothing like you — so we know what to avoid."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">Emoji usage in content</label>
+          <div class="toggle-row">
+            <label class="toggle-switch">
+              <input type="checkbox" id="emoji-toggle">
+              <span class="toggle-slider"></span>
+            </label>
+            <span style="font-size:14px;">Allow emojis in generated content</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label" for="primary-lang">Primary language</label>
+          <select id="primary-lang" style="max-width:280px;">
+            <option>English</option>
+            <option>Hindi</option>
+            <option>Hinglish (English + Hindi)</option>
+          </select>
+        </div>
+
+        <div id="tone-save-confirm" class="inline-confirm" style="display:none;">
+          Brand guidelines saved. ✓
+        </div>
+      </div>
+
+      <div>
+        <div class="score-card green-tint" style="position:sticky;top:72px;">
+          <div class="score-card-label">Brand Foundation</div>
+          <div class="score-bar-track"><div class="score-bar-fill green-fill" style="width:90%"></div></div>
+          <div class="score-text green-text">9 of 10 — Almost there!</div>
+          <ul class="score-list">
+            <li class="done">✓ Visual Identity</li>
+            <li class="done">✓ Messaging</li>
+            <li class="done">✓ Tone &amp; Voice (in progress)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: COMPETITOR SETUP ─── -->
+  <div id="screen-competitor-setup" class="screen">
+    <h2 class="screen-title">Who are your main competitors?</h2>
+    <p class="screen-subtitle">Optional — but the more we know, the sharper your content strategy.</p>
+
+    <div id="competitor-rows">
+      <div class="competitor-row">
+        <span class="competitor-label">Competitor 1</span>
+        <input type="url" placeholder="https://competitorwebsite.com" onblur="handleCompetitorBlur(this)">
+        <span class="status-pill">Not added</span>
+      </div>
+      <div class="competitor-row">
+        <span class="competitor-label">Competitor 2</span>
+        <input type="url" placeholder="https://competitorwebsite.com" onblur="handleCompetitorBlur(this)">
+        <span class="status-pill">Not added</span>
+      </div>
+      <div class="competitor-row">
+        <span class="competitor-label">Competitor 3</span>
+        <input type="url" placeholder="https://competitorwebsite.com" onblur="handleCompetitorBlur(this)">
+        <span class="status-pill">Not added</span>
+      </div>
+    </div>
+
+    <button class="btn-text" style="font-size:14px;margin-top:4px;" onclick="addCompetitorRow()" id="add-competitor-btn">+ Add another competitor</button>
+
+    <p style="font-size:13px;color:var(--muted);font-style:italic;margin-top:20px;line-height:1.6;">
+      We'll analyse their content and keywords in the background. Results will appear in your Brand Intelligence section.
+    </p>
+
+    <p class="skip-link">
+      <button class="btn-text" style="font-size:15px;" onclick="navigateTo('team-setup')">Skip for now — I'll add competitors later →</button>
+    </p>
+  </div>
+
+  <!-- ─── SCREEN: TEAM SETUP ─── -->
+  <div id="screen-team-setup" class="screen">
+    <h2 class="screen-title">Who else works on your marketing?</h2>
+    <p class="screen-subtitle">Add your team so content goes through the right people before it goes live.</p>
+
+    <div id="team-rows">
+      <div class="team-row">
+        <input type="email" class="email-input" placeholder="teammate@company.com">
+        <select class="role-select">
+          <option value="" disabled selected>Select role</option>
+          <option>Creator</option>
+          <option>Approver</option>
+          <option>Admin</option>
+        </select>
+        <button class="remove-team-btn" onclick="removeTeamRow(this)" title="Remove">×</button>
+      </div>
+      <div class="team-row">
+        <input type="email" class="email-input" placeholder="teammate@company.com">
+        <select class="role-select">
+          <option value="" disabled selected>Select role</option>
+          <option>Creator</option>
+          <option>Approver</option>
+          <option>Admin</option>
+        </select>
+        <button class="remove-team-btn" onclick="removeTeamRow(this)" title="Remove">×</button>
+      </div>
+    </div>
+
+    <button class="btn-text" style="font-size:14px;margin-top:4px;" onclick="addTeamRow()">+ Add another person</button>
+
+    <div class="info-box">
+      <span class="info-icon">i</span>
+      <span>Creators draft content. Approvers review it before anything goes live. Admins manage the workspace.</span>
+    </div>
+
+    <p class="skip-link">
+      <button class="btn-text" style="font-size:15px;" onclick="navigateTo('complete')">It's just me for now →</button>
+    </p>
+  </div>
+
+</div><!-- end #main-content -->
+
+<!-- ═══════════════════════════════════════════ SCREEN: COMPLETE ═══ -->
+<div id="screen-complete" class="screen">
+  <div class="checkmark"></div>
+  <h1 style="font-size:26px;font-weight:600;">Your brand foundation is ready.</h1>
+  <p style="font-size:16px;color:var(--muted);margin-top:8px;margin-bottom:40px;max-width:480px;">
+    MIAB is set up with your brand guidelines and ready to create content.
+  </p>
+  <div class="next-cards">
+    <div class="next-card">
+      <div class="next-card-title">View your brand guidelines</div>
+      <div class="next-card-desc">See everything we set up for your brand.</div>
+      <span class="next-card-link">Open Brand Guidelines →</span>
+    </div>
+    <div class="next-card">
+      <div class="next-card-title">Create your first post</div>
+      <div class="next-card-desc">Start generating content with your brand voice.</div>
+      <span class="next-card-link">Create Content →</span>
+    </div>
+    <div class="next-card">
+      <div class="next-card-title">Connect your social accounts</div>
+      <div class="next-card-desc">Link Instagram, LinkedIn, Facebook, or X.</div>
+      <span class="next-card-link">Go to Integrations →</span>
+    </div>
+  </div>
+  <button class="btn-primary" style="width:240px;">Go to Dashboard →</button>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════════════════════════════
+const STEP_LABELS = ['Brand Basics', 'Brand Guidelines', 'Competitors', 'Team'];
+
+const SCREEN_META = {
+  'welcome':              { step: 0,  showTopBar: false, showBottomBar: false },
+  'brand-basics':         { step: 1,  activeStep: 1, showTopBar: true, showBottomBar: false, showBack: false },
+  'loading-a':            { step: 1,  activeStep: 1, showTopBar: true, showBottomBar: false, showBack: false },
+  'loading-b':            { step: 1,  activeStep: 1, showTopBar: true, showBottomBar: true,  showBack: true, cta: 'Use This Template →',          ctaAction: 'template' },
+  'loading-c':            { step: 1,  activeStep: 1, showTopBar: true, showBottomBar: true,  showBack: true, cta: 'Continue →',                    ctaAction: 'continue' },
+  'guidelines-visual':    { step: 2,  activeStep: 2, showTopBar: true, showBottomBar: true,  showBack: true, cta: 'Save & Continue →',             ctaAction: 'saveVisual' },
+  'guidelines-messaging': { step: 2,  activeStep: 2, showTopBar: true, showBottomBar: true,  showBack: true, cta: 'Save & Continue →',             ctaAction: 'continue' },
+  'guidelines-tone':      { step: 2,  activeStep: 2, showTopBar: true, showBottomBar: true,  showBack: true, cta: 'Approve & Save Guidelines →',   ctaAction: 'saveTone' },
+  'competitor-setup':     { step: 3,  activeStep: 3, showTopBar: true, showBottomBar: true,  showBack: true, cta: 'Continue →',                    ctaAction: 'continue' },
+  'team-setup':           { step: 4,  activeStep: 4, showTopBar: true, showBottomBar: true,  showBack: true, cta: 'Send Invites & Continue →',     ctaAction: 'continue' },
+  'complete':             { step: 5,  showTopBar: true, showBottomBar: false },
+};
+
+const SCREEN_NEXT = {
+  'loading-b':            'guidelines-visual',
+  'loading-c':            'guidelines-visual',
+  'guidelines-visual':    'guidelines-messaging',
+  'guidelines-messaging': 'guidelines-tone',
+  'competitor-setup':     'team-setup',
+  'team-setup':           'complete',
+};
+
+const COLOUR_SWATCHES = [
+  '#1a1a1a','#2d2d2d','#404040','#595959','#737373','#8c8c8c',
+  '#a6a6a6','#bfbfbf','#d9d9d9','#f0f0f0','#1a3a5c','#1a5276',
+  '#2471a3','#5dade2','#aed6f1','#1b4f72','#7d6608','#d4ac0d',
+  '#f4d03f','#f9e79f','#1e8449','#27ae60','#52be80','#abebc6',
+  '#d5f5e3','#7b241c','#c0392b','#e74c3c','#f1948a','#fadbd8',
+];
+
+// ══════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════
+let currentScreen = null;
+let currentPath = null;
+let screenHistory = [];
+let loadingTimer = null;
+let loadingTextInterval = null;
+let competitorCount = 3;
+
+// ══════════════════════════════════════════════════════════════
+// CORE: show screen without touching history
+// ══════════════════════════════════════════════════════════════
+function showScreen(screenId) {
+  // Clear any active loading timers
+  if (loadingTimer)        { clearTimeout(loadingTimer); loadingTimer = null; }
+  if (loadingTextInterval) { clearInterval(loadingTextInterval); loadingTextInterval = null; }
+
+  // Hide all screens
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+  // Show target
+  const el = document.getElementById('screen-' + screenId);
+  if (el) el.classList.add('active');
+
+  currentScreen = screenId;
+  const meta = SCREEN_META[screenId] || {};
+
+  // Top bar
+  const topBar = document.getElementById('top-bar');
+  topBar.style.display = meta.showTopBar === false ? 'none' : 'flex';
+
+  // Bottom bar
+  const bottomBar = document.getElementById('bottom-bar');
+  bottomBar.style.display = meta.showBottomBar === false ? 'none' : 'flex';
+
+  // Back button
+  const backBtn = document.getElementById('btn-back');
+  if (meta.showBack && screenHistory.length > 0) {
+    backBtn.style.visibility = 'visible';
+  } else {
+    backBtn.style.visibility = 'hidden';
+  }
+
+  // CTA button
+  const ctaBtn = document.getElementById('btn-cta');
+  ctaBtn.textContent = meta.cta || 'Continue →';
+  ctaBtn.disabled = false;
+
+  // Template screen: CTA disabled until selection
+  if (screenId === 'loading-b') {
+    const hasSel = document.querySelector('#screen-loading-b .template-card.selected');
+    ctaBtn.disabled = !hasSel;
+  }
+
+  // Progress
+  renderProgress(meta);
+
+  // Screen-specific setup
+  if (screenId === 'loading-a') startLoadingAnimation();
+  if (screenId === 'guidelines-visual') setupVisualScreen();
+
+  window.scrollTo(0, 0);
+}
+
+// ══════════════════════════════════════════════════════════════
+// NAVIGATE (pushes to history)
+// ══════════════════════════════════════════════════════════════
+function navigateTo(screenId) {
+  if (currentScreen && currentScreen !== screenId) {
+    screenHistory.push(currentScreen);
+  }
+  showScreen(screenId);
+}
+
+// ══════════════════════════════════════════════════════════════
+// BACK (pops history)
+// ══════════════════════════════════════════════════════════════
+function goBack() {
+  if (screenHistory.length === 0) return;
+  const prev = screenHistory.pop();
+  showScreen(prev);
+}
+
+// ══════════════════════════════════════════════════════════════
+// PROGRESS INDICATOR
+// ══════════════════════════════════════════════════════════════
+function renderProgress(meta) {
+  const container = document.getElementById('top-bar-progress');
+  if (!meta.activeStep) { container.innerHTML = ''; return; }
+
+  const activeStep = meta.activeStep;
+  const allDone = meta.step > 4;
+
+  let html = '<div class="progress-steps">';
+  for (let i = 1; i <= 4; i++) {
+    const isDone   = allDone || i < activeStep;
+    const isActive = !allDone && i === activeStep;
+
+    const dotClass   = 'step-dot' + (allDone ? ' step-done-green' : isDone ? ' step-done' : isActive ? ' step-active' : '');
+    const labelClass = 'step-label' + (allDone ? ' step-done' : isDone ? ' step-done' : isActive ? ' step-active' : '');
+    const dotContent = (allDone || isDone) ? '✓' : i;
+    const connClass  = 'step-connector' + ((allDone || isDone) ? ' done' : '');
+
+    html += `<div class="progress-step">
+      <div class="${dotClass}">${dotContent}</div>
+      <span class="${labelClass}">${STEP_LABELS[i-1]}</span>
+    </div>`;
+
+    if (i < 4) html += `<div class="${connClass}"></div>`;
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════════════
+// CTA HANDLER
+// ══════════════════════════════════════════════════════════════
+function handleCTA() {
+  const meta = SCREEN_META[currentScreen] || {};
+  const action = meta.ctaAction;
+
+  if (action === 'template') {
+    navigateTo('guidelines-visual');
+  } else if (action === 'saveVisual') {
+    const primarySelected = document.querySelector('#primary-colour-grid .color-swatch.selected');
+    if (!primarySelected) {
+      const warning = document.getElementById('visual-colour-warning');
+      warning.style.display = 'block';
+      warning.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+    navigateTo('guidelines-messaging');
+  } else if (action === 'saveTone') {
+    const confirm = document.getElementById('tone-save-confirm');
+    confirm.style.display = 'block';
+    confirm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    setTimeout(() => {
+      confirm.style.display = 'none';
+      navigateTo('competitor-setup');
+    }, 1000);
+  } else {
+    const next = SCREEN_NEXT[currentScreen];
+    if (next) navigateTo(next);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// PATH SELECTION (Screen 2)
+// ══════════════════════════════════════════════════════════════
+function choosePath(path) {
+  const brandName = document.getElementById('bb-brand-name').value.trim();
+  const errorEl   = document.getElementById('bb-brand-name-error');
+
+  if (!brandName) {
+    errorEl.style.display = 'block';
+    document.getElementById('bb-brand-name').focus();
+    return;
+  }
+  errorEl.style.display = 'none';
+
+  currentPath = path;
+  if (path === 'A') navigateTo('loading-a');
+  else if (path === 'C') navigateTo('loading-b');
+  else if (path === 'D') navigateTo('loading-c');
+}
+
+// ══════════════════════════════════════════════════════════════
+// LOADING ANIMATION (Screen 3A)
+// ══════════════════════════════════════════════════════════════
+function startLoadingAnimation() {
+  const messages = [
+    'Reading your website...',
+    'Pulling your brand colours...',
+    'Building your guidelines...',
+  ];
+  let idx = 0;
+  const el = document.getElementById('loading-a-text');
+
+  loadingTextInterval = setInterval(() => {
+    idx = (idx + 1) % messages.length;
+    if (el) el.textContent = messages[idx];
+  }, 800);
+
+  loadingTimer = setTimeout(() => {
+    clearInterval(loadingTextInterval);
+    loadingTextInterval = null;
+    navigateTo('guidelines-visual');
+  }, 2500);
+}
+
+// ══════════════════════════════════════════════════════════════
+// TEMPLATE SELECTION (Screen 3B)
+// ══════════════════════════════════════════════════════════════
+function selectTemplate(card) {
+  document.querySelectorAll('#screen-loading-b .template-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.getElementById('btn-cta').disabled = false;
+}
+
+// ══════════════════════════════════════════════════════════════
+// VISUAL IDENTITY SETUP
+// ══════════════════════════════════════════════════════════════
+function setupVisualScreen() {
+  const bannerEl = document.getElementById('visual-path-banner');
+
+  if (currentPath === 'A') {
+    bannerEl.innerHTML = '<div class="banner banner-green">We found your brand details. Review and edit anything below.</div>';
+    document.getElementById('vi-brand-name').value = 'Mehta Realty';
+    document.getElementById('vi-logo-area').innerHTML =
+      '<div class="logo-placeholder"><span>Logo extracted from website</span><button class="btn-text" style="font-size:13px;">Replace</button></div>';
+  } else {
+    bannerEl.innerHTML = '<div class="banner banner-amber">These are suggested defaults based on your industry. Edit them to match your brand.</div>';
+    document.getElementById('vi-brand-name').value = '';
+    document.getElementById('vi-logo-area').innerHTML =
+      '<div class="file-upload-area">Click to upload or drag your logo here &nbsp;·&nbsp; PNG, SVG, JPG &nbsp;·&nbsp; Max 5MB</div>';
+  }
+
+  buildColourGrid('primary-colour-grid',   currentPath === 'A' ? 12 : -1);
+  buildColourGrid('secondary-colour-grid', currentPath === 'A' ? 17 : -1);
+  document.getElementById('visual-colour-warning').style.display = 'none';
+}
+
+function buildColourGrid(gridId, selectedIndex) {
+  const grid = document.getElementById(gridId);
+  if (!grid) return;
+  grid.innerHTML = '';
+  COLOUR_SWATCHES.forEach((colour, i) => {
+    const div = document.createElement('div');
+    div.className = 'color-swatch' + (i === selectedIndex ? ' selected' : '');
+    div.style.background = colour;
+    div.title = colour;
+    div.onclick = () => {
+      grid.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+      div.classList.add('selected');
+      document.getElementById('visual-colour-warning').style.display = 'none';
+    };
+    grid.appendChild(div);
+  });
+}
+
+function toggleCustomColour(which) {
+  const el = document.getElementById(which + '-custom-colour');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function dismissColourWarning() {
+  document.getElementById('visual-colour-warning').style.display = 'none';
+  document.getElementById('colour-picker-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════════════════════════
+// CHIP INPUT
+// ══════════════════════════════════════════════════════════════
+function addChip(containerId, inputId) {
+  const input = document.getElementById(inputId);
+  const val = input.value.trim();
+  if (!val) return;
+
+  const container = document.getElementById(containerId);
+  const chip = document.createElement('span');
+  chip.className = 'chip';
+  chip.innerHTML = val + ' <button class="chip-remove" onclick="removeChip(this)">×</button>';
+  container.appendChild(chip);
+  input.value = '';
+  input.focus();
+}
+
+function removeChip(btn) {
+  btn.closest('.chip').remove();
+}
+
+// Enter key adds chip for all chip inputs
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const t = e.target;
+  if (!t.matches('.chip-input-row input')) return;
+  e.preventDefault();
+  const row = t.closest('.chip-input-row');
+  const addBtn = row ? row.querySelector('button') : null;
+  if (addBtn) addBtn.click();
+});
+
+// ══════════════════════════════════════════════════════════════
+// TONE CHIPS
+// ══════════════════════════════════════════════════════════════
+function toggleToneChip(chip) {
+  chip.classList.toggle('selected');
+}
+
+// ══════════════════════════════════════════════════════════════
+// COMPETITOR ROWS
+// ══════════════════════════════════════════════════════════════
+function handleCompetitorBlur(input) {
+  const pill = input.nextElementSibling;
+  if (input.value.trim()) {
+    pill.textContent = 'Analysing...';
+    pill.classList.add('analysing');
+  } else {
+    pill.textContent = 'Not added';
+    pill.classList.remove('analysing');
+  }
+}
+
+function addCompetitorRow() {
+  if (competitorCount >= 5) {
+    document.getElementById('add-competitor-btn').style.display = 'none';
+    return;
+  }
+  competitorCount++;
+  const container = document.getElementById('competitor-rows');
+  const row = document.createElement('div');
+  row.className = 'competitor-row';
+  row.innerHTML = `
+    <span class="competitor-label">Competitor ${competitorCount}</span>
+    <input type="url" placeholder="https://competitorwebsite.com" onblur="handleCompetitorBlur(this)">
+    <span class="status-pill">Not added</span>
+  `;
+  container.appendChild(row);
+  if (competitorCount >= 5) {
+    document.getElementById('add-competitor-btn').style.display = 'none';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// TEAM ROWS
+// ══════════════════════════════════════════════════════════════
+function addTeamRow() {
+  const container = document.getElementById('team-rows');
+  const row = document.createElement('div');
+  row.className = 'team-row';
+  row.innerHTML = `
+    <input type="email" class="email-input" placeholder="teammate@company.com">
+    <select class="role-select">
+      <option value="" disabled selected>Select role</option>
+      <option>Creator</option>
+      <option>Approver</option>
+      <option>Admin</option>
+    </select>
+    <button class="remove-team-btn" onclick="removeTeamRow(this)" title="Remove">×</button>
+  `;
+  container.appendChild(row);
+}
+
+function removeTeamRow(btn) {
+  btn.closest('.team-row').remove();
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+navigateTo('welcome');
+</script>
+</body>
+</html>
