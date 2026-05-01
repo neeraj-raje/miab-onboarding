@@ -80,7 +80,9 @@ body {
 #screen-content-generation,
 #screen-publish-confirm,
 #screen-auth,
-#screen-campaign-submit {
+#screen-campaign-submit,
+#screen-uc2-submit,
+#screen-ce-loading {
   position: fixed;
   inset: 0;
   background: #fff;
@@ -97,7 +99,9 @@ body {
 #screen-content-generation.active,
 #screen-publish-confirm.active,
 #screen-auth.active,
-#screen-campaign-submit.active { display: flex; }
+#screen-campaign-submit.active,
+#screen-uc2-submit.active,
+#screen-ce-loading.active { display: flex; }
 
 /* ── Buttons ── */
 .btn-primary {
@@ -916,6 +920,230 @@ textarea { resize: vertical; }
   display: flex; gap: 16px; font-size: 12px;
   color: var(--muted); margin-bottom: 12px; flex-wrap: wrap;
 }
+
+/* ══ UC2 + Creative Engine ══════════════════════════════════════ */
+
+/* shared form aliases */
+.form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+.form-input  { background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 6px; padding: 10px 12px; width: 100%; font-family: inherit; font-size: 14px; color: var(--text); outline: none; }
+.form-input:focus { border-color: var(--active); }
+
+/* ── UC2 Dashboard ── */
+.week-banner {
+  background: var(--input-bg); border-radius: 8px;
+  padding: 20px 24px; display: flex;
+  justify-content: space-between; align-items: center;
+  margin-bottom: 24px; gap: 16px; flex-wrap: wrap;
+}
+.week-banner-stats { display: flex; gap: 32px; }
+.stat-block { text-align: left; }
+.stat-block .stat-num  { font-size: 24px; font-weight: 700; color: var(--text); line-height: 1.1; }
+.stat-block .stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.stat-block .stat-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--warning); display: inline-block; margin-right: 4px; vertical-align: middle; }
+
+.dash-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+.dash-card { border: 1px solid var(--border); border-radius: 8px; padding: 20px; background: #fff; }
+.dash-card-label { font-size: 11px; font-weight: 600; letter-spacing: .5px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
+.dash-card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.dash-card-body  { font-size: 14px; color: var(--muted); margin-bottom: 12px; line-height: 1.5; }
+.dash-card-link  { font-size: 13px; color: var(--active); cursor: pointer; text-decoration: underline; }
+.dash-card-link.disabled { color: var(--muted); text-decoration: none; cursor: default; }
+
+.quick-create-row { margin-bottom: 4px; }
+.quick-create-label { font-size: 11px; font-weight: 600; letter-spacing: .5px; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; }
+.platform-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.platform-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border: 1px solid var(--border);
+  border-radius: 6px; font-size: 14px; cursor: pointer;
+  background: #fff; font-family: inherit; color: var(--text);
+  transition: border-color .15s, background .15s;
+}
+.platform-btn:hover { border-color: var(--active); background: #f5f9ff; }
+
+/* ── UC2 Planner ── */
+.week-selector {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; margin-bottom: 24px; font-size: 14px; font-weight: 600;
+}
+.week-arrow {
+  background: none; border: 1px solid var(--border);
+  border-radius: 4px; width: 28px; height: 28px;
+  cursor: pointer; font-size: 14px; display: flex;
+  align-items: center; justify-content: center;
+}
+
+.suggestion-card {
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px; margin-bottom: 12px; background: #fff;
+  display: flex; align-items: flex-start; gap: 16px;
+}
+.suggestion-card-left { flex: 1; min-width: 0; }
+.suggestion-card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; }
+.suggestion-why { font-size: 12px; color: var(--muted); font-style: italic; max-width: 200px; text-align: right; line-height: 1.4; }
+.suggestion-remove { font-size: 12px; color: var(--muted); cursor: pointer; text-decoration: underline; background: none; border: none; font-family: inherit; }
+.suggestion-remove:hover { color: var(--error); }
+.planner-summary { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 20px; }
+
+/* ── UC2 Post Creation ── */
+.post-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+.post-tab {
+  padding: 10px 20px; font-size: 14px; color: var(--muted);
+  background: none; border: none; border-bottom: 2px solid transparent;
+  cursor: pointer; font-family: inherit; margin-bottom: -1px;
+}
+.post-tab:hover { color: var(--text); }
+.post-tab.active { color: var(--text); font-weight: 600; border-bottom-color: var(--text); }
+.post-tab.done { color: var(--text); }
+
+.visual-subtabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; flex-wrap: wrap; }
+.visual-subtab {
+  padding: 8px 14px; font-size: 13px; color: var(--muted);
+  background: none; border: none; border-bottom: 2px solid transparent;
+  cursor: pointer; font-family: inherit; margin-bottom: -1px;
+  white-space: nowrap;
+}
+.visual-subtab:hover { color: var(--text); }
+.visual-subtab.active { color: var(--text); font-weight: 600; border-bottom-color: var(--text); }
+
+.caption-variants { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+.caption-variant-card {
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px; cursor: pointer; transition: border-color .15s;
+}
+.caption-variant-card.selected { border-color: var(--active); background: #f5f9ff; }
+.caption-variant-card:hover { border-color: #b0b0b0; }
+.caption-variant-text { font-size: 13px; line-height: 1.6; color: var(--text); margin-bottom: 10px; white-space: pre-wrap; }
+.caption-variant-select { font-size: 12px; color: var(--active); font-weight: 600; }
+
+.hashtag-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.hashtag-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--input-bg); border: 1px solid var(--border);
+  border-radius: 20px; padding: 4px 10px; font-size: 12px; color: var(--text);
+}
+.hashtag-chip-remove { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 14px; line-height: 1; padding: 0; font-family: inherit; }
+.hashtag-chip-remove:hover { color: var(--error); }
+
+.moderation-ok {
+  margin-top: 14px; padding: 10px 14px;
+  border-radius: 6px; background: #f0f9f0;
+  border: 1px solid #c3e6cb; display: flex; align-items: center; gap: 10px;
+}
+.moderation-ok-bar { width: 4px; height: 32px; background: var(--success); border-radius: 2px; flex-shrink: 0; }
+
+.gen-image-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+.gen-image-card {
+  border: 2px solid var(--border); border-radius: 8px;
+  padding: 0; overflow: hidden; cursor: pointer; transition: border-color .15s;
+}
+.gen-image-card.selected { border-color: var(--active); }
+.gen-image-card:hover { border-color: #b0b0b0; }
+.gen-image-placeholder {
+  height: 180px; background: var(--input-bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-size: 11px; color: var(--muted); font-style: italic; gap: 4px;
+}
+.gen-image-label { font-size: 12px; padding: 8px; text-align: center; color: var(--muted); }
+
+/* ── Preview phone mockup ── */
+.phone-mockup-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
+.phone-mockup {
+  width: 340px; border: 2px solid var(--border);
+  border-radius: 28px; overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,.08);
+}
+.phone-status-bar { background: #fff; padding: 8px 16px; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); }
+.phone-post-header { padding: 10px 14px; display: flex; align-items: center; gap: 8px; }
+.phone-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--input-bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); }
+.phone-post-user { font-size: 12px; font-weight: 600; }
+.phone-post-meta { font-size: 11px; color: var(--muted); }
+.phone-post-image { height: 300px; background: var(--input-bg); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--muted); font-style: italic; }
+.phone-post-caption { padding: 12px 14px; font-size: 12px; line-height: 1.5; color: var(--text); max-height: 80px; overflow: hidden; }
+.phone-post-hashtags { padding: 0 14px 10px; font-size: 11px; color: var(--active); }
+.phone-actions { padding: 8px 14px; display: flex; gap: 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
+
+.platform-toggle { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+.platform-toggle-btn {
+  padding: 6px 16px; border: 1px solid var(--border); border-radius: 20px;
+  background: #fff; font-size: 13px; cursor: pointer; font-family: inherit;
+}
+.platform-toggle-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
+
+.schedule-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; border: 1px solid var(--border);
+  border-radius: 8px; margin-bottom: 16px; font-size: 13px;
+}
+
+.preview-checklist { margin-bottom: 20px; }
+.preview-checklist label { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 8px; cursor: pointer; }
+.preview-checklist input[type="checkbox"] { width: 15px; height: 15px; }
+
+/* ── Ad template cards ── */
+.ad-template-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.ad-template-card {
+  border: 2px solid var(--border); border-radius: 8px;
+  overflow: hidden; cursor: pointer; transition: border-color .15s;
+}
+.ad-template-card.selected { border-color: var(--active); }
+.ad-template-card:hover:not(.coming-soon) { border-color: #b0b0b0; }
+.ad-template-card.coming-soon { opacity: .5; cursor: default; }
+.ad-template-preview {
+  height: 180px; background: var(--input-bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--muted); letter-spacing: .5px; text-transform: uppercase;
+}
+.ad-template-body { padding: 14px; }
+.ad-template-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.ad-template-desc  { font-size: 13px; color: var(--muted); margin-bottom: 10px; line-height: 1.4; }
+.ad-template-tags  { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.ad-tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; background: var(--input-bg); border: 1px solid var(--border); color: var(--muted); }
+.coming-soon-badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; background: #fff8f0; border: 1px solid #fde5c0; color: #7a4f00; font-weight: 600; }
+
+/* ── CE Confirm Inputs ── */
+.ce-section { margin-bottom: 24px; }
+.ce-section-label { font-size: 11px; font-weight: 600; letter-spacing: .5px; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; }
+.ce-product-row { display: flex; align-items: flex-start; gap: 16px; }
+.ce-product-img { width: 100px; height: 100px; border-radius: 8px; background: var(--input-bg); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); flex-shrink: 0; border: 1px solid var(--border); }
+.ce-asset-row { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; flex-wrap: wrap; }
+.ce-swatch { width: 28px; height: 28px; border-radius: 4px; border: 1px solid var(--border); display: inline-block; }
+.ce-change-link { font-size: 12px; color: var(--active); cursor: pointer; text-decoration: underline; background: none; border: none; font-family: inherit; }
+.ce-info { background: var(--input-bg); border-radius: 6px; padding: 10px 14px; font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+/* ── CE Loading ── */
+#screen-ce-loading .ce-loading-text { font-size: 16px; color: var(--muted); margin-top: 20px; min-height: 24px; }
+.spinner-lg {
+  width: 48px; height: 48px;
+  border: 3px solid var(--border);
+  border-top-color: var(--text);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto;
+}
+
+/* ── CE Output ── */
+.ce-output-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.ce-output-card {
+  border: 2px solid var(--border); border-radius: 8px;
+  overflow: hidden; cursor: pointer; transition: border-color .15s;
+}
+.ce-output-card.selected { border-color: var(--active); }
+.ce-output-card:hover { border-color: #b0b0b0; }
+.ce-output-preview { height: 220px; background: var(--input-bg); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--muted); font-style: italic; }
+.ce-output-label { padding: 8px 12px; font-size: 12px; text-align: center; color: var(--muted); }
+.ce-selected-label { font-size: 12px; font-weight: 600; color: var(--active); padding: 8px 12px; text-align: center; }
+.ce-edit-panel { border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-top: 4px; }
+
+/* ── Success flash ── */
+.success-flash {
+  position: fixed; top: 64px; left: 0; right: 0;
+  background: #f0f9f0; border-bottom: 1px solid #c3e6cb;
+  padding: 12px 24px; font-size: 14px; color: #2d6a2d;
+  display: none; z-index: 300; text-align: center; font-weight: 500;
+}
+.success-flash.visible { display: block; }
 </style>
 </head>
 <body>
@@ -923,7 +1151,7 @@ textarea { resize: vertical; }
 <!-- ═══════════════════════════════════════════ SIDEBAR NAV ═══ -->
 <div id="side-nav">
   <div class="nav-item" id="nav-home" onclick="navigateTo('dashboard')">Home</div>
-  <div class="nav-item nav-stub" onclick="showNavStub(this)">Content</div>
+  <div class="nav-item" id="nav-content" onclick="navigateTo('uc2-dashboard')">Content</div>
   <div class="nav-item nav-stub" onclick="showNavStub(this)">Calendar</div>
   <div class="nav-item" id="nav-campaigns" onclick="navigateTo('campaigns')">Campaigns</div>
   <div class="nav-item nav-stub" onclick="showNavStub(this)">Brand</div>
@@ -2371,6 +2599,637 @@ Full analysis in the comments. Site visits open this weekend.</textarea>
     <p style="font-size:12px;color:var(--muted);margin-top:16px;">Posts in review will appear here once approved. Performance data populates after publish.</p>
   </div>
 
+
+  <!-- ═══ UC2 SCREENS ══════════════════════════════════════════ -->
+
+  <!-- ─── S_UC2_01 — Dashboard ─── -->
+  <div id="screen-uc2-dashboard" class="screen">
+    <h1 class="screen-title" style="margin-bottom:4px;">Good morning, Priya.</h1>
+    <p class="screen-subtitle">Here's where things stand this week.</p>
+
+    <!-- This Week Banner -->
+    <div class="week-banner">
+      <div class="week-banner-stats">
+        <div class="stat-block">
+          <div class="stat-num">3</div>
+          <div class="stat-label">posts scheduled</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">2</div>
+          <div class="stat-label">drafts waiting</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num"><span class="stat-dot"></span>1</div>
+          <div class="stat-label">pending approval</div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="navigateTo('uc2-planner')">Plan This Week →</button>
+    </div>
+
+    <!-- 3 info cards -->
+    <div class="dash-cards">
+      <div class="dash-card">
+        <div class="dash-card-label">Suggested Action</div>
+        <div class="dash-card-title">You haven't planned next week yet.</div>
+        <div class="dash-card-body">MIAB has 5 content suggestions ready based on your brand and what's worked recently.</div>
+        <button class="btn-primary" style="font-size:13px;padding:8px 16px;" onclick="navigateTo('uc2-planner')">See Suggestions →</button>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-label">Last 7 Days</div>
+        <div class="dash-card-title">Your top post this week</div>
+        <div class="dash-card-body" style="margin-bottom:6px;">"5 signs your skin barrier is…"</div>
+        <div style="font-size:13px;color:var(--success);font-weight:500;margin-bottom:10px;">4.2% engagement rate — Instagram</div>
+        <span class="dash-card-link disabled">See all analytics →</span>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-label">Brand Foundation</div>
+        <div class="dash-card-title">9 of 10 complete</div>
+        <div style="height:6px;border-radius:3px;background:var(--input-bg);overflow:hidden;margin-bottom:12px;">
+          <div style="width:90%;height:100%;background:var(--text);border-radius:3px;"></div>
+        </div>
+        <span class="dash-card-link disabled">Update brand guidelines →</span>
+      </div>
+    </div>
+
+    <!-- Quick Create -->
+    <div class="quick-create-row">
+      <div class="quick-create-label">Quick Create</div>
+      <div class="platform-btns">
+        <button class="platform-btn" onclick="navigateTo('uc2-post')">📸 Instagram</button>
+        <button class="platform-btn" onclick="navigateTo('uc2-post')">👥 Facebook</button>
+        <button class="platform-btn" onclick="navigateTo('uc2-post')">💼 LinkedIn</button>
+        <button class="platform-btn" onclick="navigateTo('uc2-post')">𝕏 X</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── S_UC2_02 — Weekly Planner ─── -->
+  <div id="screen-uc2-planner" class="screen">
+    <h1 class="screen-title" style="margin-bottom:4px;">Here's what we suggest for this week.</h1>
+    <p class="screen-subtitle">Based on your brand strategy and what's been working. Edit anything.</p>
+
+    <div class="week-selector">
+      <button class="week-arrow">‹</button>
+      <span>13 May – 19 May 2025</span>
+      <button class="week-arrow">›</button>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-card-left">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+          <span class="status-pill" style="font-size:11px;">Instagram</span>
+          <span class="status-pill" style="font-size:11px;">Image Post</span>
+        </div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:4px;">Skin Barrier Education</div>
+        <div style="font-size:13px;color:var(--muted);">Tuesday 14 May</div>
+      </div>
+      <div class="suggestion-card-right">
+        <div class="suggestion-why">"Educational posts get 2.3x more saves on your account"</div>
+        <button class="btn-primary" style="font-size:12px;padding:7px 14px;" onclick="navigateTo('uc2-post')">Create This Post →</button>
+        <button class="suggestion-remove">Remove</button>
+      </div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-card-left">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+          <span class="status-pill" style="font-size:11px;">Instagram</span>
+          <span class="status-pill" style="font-size:11px;">Image Post</span>
+        </div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:4px;">New Product Spotlight — Vitamin C Serum</div>
+        <div style="font-size:13px;color:var(--muted);">Wednesday 15 May</div>
+      </div>
+      <div class="suggestion-card-right">
+        <div class="suggestion-why">"Product posts on Wednesday drive highest clicks for skincare brands"</div>
+        <button class="btn-primary" style="font-size:12px;padding:7px 14px;" onclick="navigateTo('uc2-post')">Create This Post →</button>
+        <button class="suggestion-remove">Remove</button>
+      </div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-card-left">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+          <span class="status-pill" style="font-size:11px;">Instagram</span>
+          <span class="status-pill" style="font-size:11px;">Carousel</span>
+        </div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:4px;">Skincare Routine — Morning Steps</div>
+        <div style="font-size:13px;color:var(--muted);">Thursday 16 May</div>
+      </div>
+      <div class="suggestion-card-right">
+        <div class="suggestion-why">"Carousels average 3.1% engagement vs 1.8% for single images"</div>
+        <button class="btn-primary" style="font-size:12px;padding:7px 14px;" onclick="navigateTo('uc2-post')">Create This Post →</button>
+        <button class="suggestion-remove">Remove</button>
+      </div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-card-left">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+          <span class="status-pill" style="font-size:11px;">LinkedIn</span>
+          <span class="status-pill" style="font-size:11px;">Text Update</span>
+        </div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:4px;">Founder's Note — Why We Started Glow &amp; Co</div>
+        <div style="font-size:13px;color:var(--muted);">Friday 17 May</div>
+      </div>
+      <div class="suggestion-card-right">
+        <div class="suggestion-why">"Thought leadership posts build credibility for D2C founder profiles"</div>
+        <button class="btn-primary" style="font-size:12px;padding:7px 14px;" onclick="navigateTo('uc2-post')">Create This Post →</button>
+        <button class="suggestion-remove">Remove</button>
+      </div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-card-left">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+          <span class="status-pill" style="font-size:11px;">Instagram</span>
+          <span class="status-pill" style="font-size:11px;">Image Post</span>
+        </div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:4px;">Weekend Skincare Tip</div>
+        <div style="font-size:13px;color:var(--muted);">Saturday 18 May</div>
+      </div>
+      <div class="suggestion-card-right">
+        <div class="suggestion-why">"Saturday 10AM is your best-performing time slot"</div>
+        <button class="btn-primary" style="font-size:12px;padding:7px 14px;" onclick="navigateTo('uc2-post')">Create This Post →</button>
+        <button class="suggestion-remove">Remove</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-bottom:20px;">
+      <button class="btn-text" style="font-size:13px;">+ Add Another Post</button>
+    </div>
+    <p class="planner-summary">5 posts across Instagram and LinkedIn · 13–18 May</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <button class="btn-text" onclick="navigateTo('uc2-dashboard')">← Back to Dashboard</button>
+      <button class="btn-primary" onclick="navigateTo('uc2-post')">Create All Posts →</button>
+    </div>
+  </div>
+
+  <!-- ─── S_UC2_03/04/05 — Post Creation (tabbed) ─── -->
+  <div id="screen-uc2-post" class="screen">
+
+    <!-- Context bar -->
+    <div class="post-context-bar" style="margin-bottom:0;">
+      <span class="status-pill" style="font-size:11px;">📸 Instagram</span>
+      <span style="font-size:12px;font-weight:500;">Skin Barrier Education</span>
+      <span style="color:var(--muted);font-size:12px;">·</span>
+      <span style="color:var(--muted);font-size:12px;">Tuesday 14 May</span>
+      <button class="btn-muted" style="font-size:11px;margin-left:4px;">Change</button>
+    </div>
+
+    <!-- 3 main tabs -->
+    <div class="post-tabs" style="margin-top:16px;">
+      <button class="post-tab active" id="ptab-copy"    onclick="showPostTab('copy')">Copy</button>
+      <button class="post-tab"        id="ptab-visual"  onclick="showPostTab('visual')">Visual</button>
+      <button class="post-tab"        id="ptab-preview" onclick="showPostTab('preview')">Preview</button>
+    </div>
+
+    <!-- ── COPY TAB ── -->
+    <div id="post-copy-content">
+      <div class="form-group">
+        <label class="form-label">Post Brief</label>
+        <textarea class="form-input" rows="3">Educate Glow &amp; Co's audience about skin barrier damage — signs, causes, and how to repair it. Warm, expert tone. End with a soft CTA.</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Target Audience</label>
+        <select class="form-input">
+          <option>All Audiences</option>
+          <option selected>Urban Women 24–38</option>
+          <option>Skincare Enthusiasts</option>
+          <option>First-time Buyers</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Post Format</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+          <button class="type-chip" onclick="toggleTypeChip(this)">Tip</button>
+          <button class="type-chip" onclick="toggleTypeChip(this)">Story</button>
+          <button class="type-chip selected" onclick="toggleTypeChip(this)">Educational</button>
+          <button class="type-chip" onclick="toggleTypeChip(this)">Announcement</button>
+          <button class="type-chip" onclick="toggleTypeChip(this)">Testimonial</button>
+          <button class="type-chip" onclick="toggleTypeChip(this)">Promotional</button>
+        </div>
+      </div>
+
+      <button class="btn-primary" style="width:100%;margin-bottom:4px;" id="gen-caption-btn" onclick="generateCaption()">Generate Caption</button>
+
+      <!-- Generated caption variants (hidden until generated) -->
+      <div id="caption-variants-wrap" style="display:none;" class="caption-variants">
+        <div class="caption-variant-card selected" onclick="selectCaption(this)">
+          <div class="caption-variant-text">Your skin barrier is your body's first defence — and most of us are unknowingly damaging it every day. Signs it's compromised: redness, tightness, unexpected breakouts.
+The good news? It can be repaired.
+Our Barrier Repair Serum was formulated specifically for this. 3 ingredients. Clinically tested. Results in 14 days.
+Link in bio to learn more. 🌿</div>
+          <div class="caption-variant-select">✓ Selected</div>
+        </div>
+        <div class="caption-variant-card" onclick="selectCaption(this)">
+          <div class="caption-variant-text">Is your skin always feeling tight, red, or irritated? That's not your skin type. That's a damaged barrier.
+Here's what causes it — and exactly how to fix it. Swipe to learn more. →</div>
+          <div class="caption-variant-select" style="color:var(--muted);">Select this variant</div>
+        </div>
+      </div>
+
+      <!-- Hashtags (hidden until generated) -->
+      <div id="hashtags-wrap" style="display:none;margin-top:16px;">
+        <label class="form-label">Suggested hashtags</label>
+        <div class="hashtag-chips" id="hashtag-chips">
+          <span class="hashtag-chip">#skinbarrier <button class="hashtag-chip-remove" onclick="removeHashtag(this)">×</button></span>
+          <span class="hashtag-chip">#skincare <button class="hashtag-chip-remove" onclick="removeHashtag(this)">×</button></span>
+          <span class="hashtag-chip">#glowandco <button class="hashtag-chip-remove" onclick="removeHashtag(this)">×</button></span>
+          <span class="hashtag-chip">#skincareRoutine <button class="hashtag-chip-remove" onclick="removeHashtag(this)">×</button></span>
+          <span class="hashtag-chip">#healthyskin <button class="hashtag-chip-remove" onclick="removeHashtag(this)">×</button></span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <input type="text" class="form-input" style="width:auto;flex:1;" placeholder="+ Add hashtag" id="hashtag-add-input">
+          <button class="btn-ghost" style="padding:8px 14px;font-size:13px;" onclick="addHashtagChip()">Add</button>
+        </div>
+      </div>
+
+      <!-- Moderation bar (hidden until generated) -->
+      <div id="moderation-wrap" style="display:none;" class="moderation-ok">
+        <div class="moderation-ok-bar"></div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--success);">✓ On brand — tone and messaging match your guidelines</div>
+          <button class="btn-muted" style="font-size:11px;margin-top:2px;">What was checked?</button>
+        </div>
+      </div>
+
+      <!-- Char count (hidden until generated) -->
+      <div id="char-count-wrap" style="display:none;text-align:right;font-size:12px;color:var(--muted);margin-top:10px;">287 / 2,200 — Instagram</div>
+    </div>
+
+    <!-- ── VISUAL TAB ── -->
+    <div id="post-visual-content" style="display:none;">
+      <div class="visual-subtabs" id="visual-subtab-bar">
+        <button class="visual-subtab active" id="vstab-generate"  onclick="showVisualSubtab('generate')">Generate</button>
+        <button class="visual-subtab"        id="vstab-upload"    onclick="showVisualSubtab('upload')">Upload</button>
+        <button class="visual-subtab"        id="vstab-library"   onclick="showVisualSubtab('library')">From Library</button>
+        <button class="visual-subtab"        id="vstab-edit"      onclick="showVisualSubtab('edit')">Image Edit</button>
+        <button class="visual-subtab"        id="vstab-variation" onclick="showVisualSubtab('variation')">Image Variation</button>
+        <button class="visual-subtab"        id="vstab-adtpl"     onclick="showVisualSubtab('adtpl')">Ad Templates ★</button>
+      </div>
+
+      <!-- Generate sub-tab -->
+      <div id="vsub-generate">
+        <div class="form-group">
+          <label class="form-label">Visual Direction</label>
+          <textarea class="form-input" rows="2">Close-up of healthy, glowing skin. Minimalist aesthetic. Soft natural light. Clean background. Premium skincare feel.</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Format</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+            <button class="type-chip selected" onclick="toggleTypeChip(this)">Square (1:1)</button>
+            <button class="type-chip" onclick="toggleTypeChip(this)">Portrait (4:5)</button>
+            <button class="type-chip" onclick="toggleTypeChip(this)">Story (9:16)</button>
+            <button class="type-chip" onclick="toggleTypeChip(this)">Landscape (16:9)</button>
+          </div>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-bottom:4px;" onclick="generateVisuals()">Generate Visuals</button>
+        <div id="gen-images-wrap" style="display:none;">
+          <div class="gen-image-grid">
+            <div class="gen-image-card selected" onclick="selectGenImage(this)">
+              <div class="gen-image-placeholder">
+                <span style="font-size:28px;opacity:.3;">🌿</span>
+                <span>AI-generated image</span><span>will appear here</span>
+              </div>
+              <div class="gen-image-label">Variation 1</div>
+            </div>
+            <div class="gen-image-card" onclick="selectGenImage(this)">
+              <div class="gen-image-placeholder">
+                <span style="font-size:28px;opacity:.3;">✨</span>
+                <span>AI-generated image</span><span>will appear here</span>
+              </div>
+              <div class="gen-image-label">Variation 2</div>
+            </div>
+            <div class="gen-image-card" onclick="selectGenImage(this)">
+              <div class="gen-image-placeholder">
+                <span style="font-size:28px;opacity:.3;">💧</span>
+                <span>AI-generated image</span><span>will appear here</span>
+              </div>
+              <div class="gen-image-label">Variation 3</div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:8px;display:flex;gap:16px;justify-content:center;">
+            <button class="btn-muted" onclick="generateVisuals()">Regenerate</button>
+            <button class="btn-muted">Try a different direction</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload sub-tab -->
+      <div id="vsub-upload" style="display:none;">
+        <div class="file-upload-area" style="height:140px;flex-direction:column;gap:8px;">
+          <div style="font-size:13px;font-weight:500;">Drag and drop your image or video here</div>
+          <div style="font-size:12px;color:var(--muted);">JPG, PNG — max 10MB · MP4, MOV — max 50MB</div>
+          <button class="btn-ghost" style="padding:7px 16px;font-size:13px;margin-top:6px;">Browse files</button>
+        </div>
+      </div>
+
+      <!-- Library sub-tab -->
+      <div id="vsub-library" style="display:none;">
+        <div style="font-size:14px;font-weight:600;margin-bottom:14px;">Your asset library</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+          <div style="height:110px;background:var(--input-bg);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);border:1px solid var(--border);cursor:pointer;">Asset 1</div>
+          <div style="height:110px;background:var(--input-bg);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);border:1px solid var(--border);cursor:pointer;">Asset 2</div>
+          <div style="height:110px;background:var(--input-bg);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);border:1px solid var(--border);cursor:pointer;">Asset 3</div>
+          <div style="height:110px;background:var(--input-bg);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);border:1px solid var(--border);cursor:pointer;">Asset 4</div>
+          <div style="height:110px;background:var(--input-bg);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);border:1px solid var(--border);cursor:pointer;">Asset 5</div>
+          <div style="height:110px;background:var(--input-bg);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);border:1px solid var(--border);cursor:pointer;">Asset 6</div>
+        </div>
+        <div style="text-align:center;margin-top:12px;"><button class="btn-muted">Load more</button></div>
+      </div>
+
+      <!-- Image Edit sub-tab -->
+      <div id="vsub-edit" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Upload an image to edit</label>
+          <div class="file-upload-area" style="height:100px;flex-direction:column;gap:6px;">
+            <div style="font-size:13px;">Drag and drop or browse</div>
+            <button class="btn-ghost" style="padding:6px 14px;font-size:12px;">Browse files</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">What do you want to change?</label>
+          <textarea class="form-input" rows="2" placeholder="E.g. 'Make the background white and add soft bokeh'"></textarea>
+        </div>
+        <button class="btn-primary" style="width:100%;">Apply Edit</button>
+      </div>
+
+      <!-- Image Variation sub-tab -->
+      <div id="vsub-variation" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Upload an image or pick from library</label>
+          <div class="file-upload-area" style="height:100px;flex-direction:column;gap:6px;">
+            <div style="font-size:13px;">Drag and drop or browse</div>
+            <button class="btn-ghost" style="padding:6px 14px;font-size:12px;">Browse files</button>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">MIAB will generate 4 on-brand variations automatically.</p>
+        <button class="btn-primary" style="width:100%;">Generate Variations</button>
+      </div>
+
+      <!-- Ad Templates sub-tab -->
+      <div id="vsub-adtpl" style="display:none;">
+        <div style="margin-bottom:16px;">
+          <div style="font-size:16px;font-weight:600;margin-bottom:4px;">Choose a template</div>
+          <div style="font-size:14px;color:var(--muted);">Pick a template. We'll use your brand guidelines and product to compose the ad.</div>
+        </div>
+        <div class="ad-template-grid">
+          <div class="ad-template-card" onclick="selectAdTemplate(this, 'product')">
+            <div class="ad-template-preview">TEMPLATE PREVIEW</div>
+            <div class="ad-template-body">
+              <div class="ad-template-title">Product Showcase</div>
+              <div class="ad-template-desc">Your product, centred. Clean background generated from your brand palette.</div>
+              <div class="ad-template-tags">
+                <span class="ad-tag">Image</span><span class="ad-tag">Video</span><span class="ad-tag">Best for: D2C</span>
+              </div>
+              <button class="btn-primary" style="font-size:13px;padding:8px 16px;" onclick="event.stopPropagation();useAdTemplate('product')">Use This Template →</button>
+            </div>
+          </div>
+          <div class="ad-template-card" onclick="selectAdTemplate(this, 'diwali')">
+            <div class="ad-template-preview">TEMPLATE PREVIEW</div>
+            <div class="ad-template-body">
+              <div class="ad-template-title">Seasonal: Diwali</div>
+              <div class="ad-template-desc">Festive atmosphere generated around your product. Works for any category.</div>
+              <div class="ad-template-tags">
+                <span class="ad-tag">Image</span><span class="ad-tag">Video</span><span class="ad-tag">Seasonal</span>
+              </div>
+              <button class="btn-primary" style="font-size:13px;padding:8px 16px;" onclick="event.stopPropagation();useAdTemplate('diwali')">Use This Template →</button>
+            </div>
+          </div>
+          <div class="ad-template-card coming-soon">
+            <div class="ad-template-preview">TEMPLATE PREVIEW</div>
+            <div class="ad-template-body">
+              <div class="ad-template-title" style="color:var(--muted);">AI Model</div>
+              <div class="ad-template-desc">A generated model using or wearing your product.</div>
+              <div class="ad-template-tags"><span class="coming-soon-badge">Coming Soon</span></div>
+              <button class="btn-ghost" style="font-size:13px;padding:8px 16px;opacity:.5;" disabled>Coming Soon</button>
+            </div>
+          </div>
+          <div class="ad-template-card coming-soon">
+            <div class="ad-template-preview">TEMPLATE PREVIEW</div>
+            <div class="ad-template-body">
+              <div class="ad-template-title" style="color:var(--muted);">Abstract Background</div>
+              <div class="ad-template-desc">Bold graphic background generated from your brand colours.</div>
+              <div class="ad-template-tags"><span class="coming-soon-badge">Coming Soon</span></div>
+              <button class="btn-ghost" style="font-size:13px;padding:8px 16px;opacity:.5;" disabled>Coming Soon</button>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);font-style:italic;margin-top:12px;">More templates added every month.</p>
+      </div>
+    </div><!-- end post-visual-content -->
+
+    <!-- ── PREVIEW TAB ── -->
+    <div id="post-preview-content" style="display:none;">
+      <div class="platform-toggle">
+        <button class="platform-toggle-btn active" onclick="switchPreviewPlatform(this)">Instagram</button>
+        <button class="platform-toggle-btn" onclick="switchPreviewPlatform(this)">Facebook</button>
+        <button class="platform-toggle-btn" onclick="switchPreviewPlatform(this)">LinkedIn</button>
+      </div>
+
+      <div class="phone-mockup-wrap">
+        <div class="phone-mockup">
+          <div class="phone-status-bar">
+            <span>glow.and.co · <span id="preview-platform-label">Sponsored</span></span>
+            <span style="font-size:10px;">···</span>
+          </div>
+          <div class="phone-post-header">
+            <div class="phone-avatar">G&amp;C</div>
+            <div>
+              <div class="phone-post-user">glow.and.co</div>
+              <div class="phone-post-meta">Sponsored</div>
+            </div>
+          </div>
+          <div class="phone-post-image">Selected visual will appear here</div>
+          <div class="phone-post-caption">Your skin barrier is your body's first defence — and most of us are unknowingly damaging it every day. Signs it's compromised: redness, tightness, unexpected breakouts...</div>
+          <div class="phone-post-hashtags">#skinbarrier #skincare #glowandco #skincareRoutine #healthyskin</div>
+          <div class="phone-actions">
+            <span>♡ Like</span><span>✧ Comment</span><span>↗ Share</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="schedule-row">
+        <span style="font-weight:500;font-size:13px;">Publish on</span>
+        <span style="flex:1;">Tuesday, 14 May 2025 · 10:00 AM</span>
+        <span style="font-size:12px;color:var(--success);">Recommended time for your audience</span>
+      </div>
+
+      <div class="preview-checklist">
+        <label><input type="checkbox" checked> Caption sounds like Glow &amp; Co</label>
+        <label><input type="checkbox" checked> Visual is on brand</label>
+        <label><input type="checkbox"> Assigned to right campaign</label>
+        <label><input type="checkbox" checked> Correct date and time</label>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:4px;">
+        <button class="btn-ghost" onclick="navigateTo('uc2-submit')">Submit for Review →</button>
+        <button class="btn-ghost" style="border-color:var(--border);color:var(--muted);">Save as Draft</button>
+        <button class="btn-text" onclick="showPostTab('visual')" style="font-size:13px;">← Edit Visual</button>
+      </div>
+    </div><!-- end post-preview-content -->
+
+  </div><!-- end screen-uc2-post -->
+
+  <!-- ═══ CREATIVE ENGINE SCREENS ═══════════════════════════════ -->
+
+  <!-- ─── S_CE_02 — Confirm Inputs ─── -->
+  <div id="screen-ce-inputs" class="screen">
+    <button class="btn-text" style="font-size:13px;margin-bottom:20px;" onclick="navigateTo('uc2-post')">← Back to Visual options</button>
+
+    <h2 style="font-size:20px;font-weight:600;margin-bottom:4px;">We'll use these to build your ad.</h2>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:24px;">This is what the system has from your brand and product setup. Swap anything before generating.</p>
+
+    <!-- Template badge -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+      <span id="ce-template-badge" style="background:var(--text);color:#fff;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:500;">Product Showcase</span>
+      <button class="btn-muted">Change template</button>
+    </div>
+
+    <!-- Section 1: Product -->
+    <div class="ce-section">
+      <div class="ce-section-label">Product</div>
+      <div class="ce-product-row">
+        <div class="ce-product-img">Product image</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px;">Vitamin C Brightening Serum — 30ml</div>
+          <div style="display:flex;gap:12px;font-size:12px;">
+            <button class="ce-change-link">Swap product image</button>
+            <button class="ce-change-link">Remove background</button>
+          </div>
+          <div class="ce-info">ⓘ We'll remove the background from this image automatically and place it in the template.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Brand Assets -->
+    <div class="ce-section">
+      <div class="ce-section-label">Brand Assets</div>
+      <div class="ce-asset-row">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:40px;height:40px;border-radius:4px;background:var(--input-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);">Logo</div>
+          <button class="ce-change-link">Swap</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="ce-swatch" style="background:#1a2e44;"></div>
+          <span style="font-size:12px;">Primary</span>
+          <button class="ce-change-link">Change</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="ce-swatch" style="background:#f5e6d3;"></div>
+          <span style="font-size:12px;">Secondary</span>
+          <button class="ce-change-link">Change</button>
+        </div>
+      </div>
+      <div class="ce-asset-row" style="margin-top:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:12px;color:var(--muted);">Headline font</span>
+          <span style="font-size:12px;font-weight:600;">DM Sans</span>
+          <button class="ce-change-link">Change</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:12px;color:var(--muted);">Body font</span>
+          <span style="font-size:12px;font-weight:600;">Inter</span>
+          <button class="ce-change-link">Change</button>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:8px;">Pulled from your brand guidelines. Update them in Brand Settings.</p>
+    </div>
+
+    <!-- Section 3: Product Context -->
+    <div class="ce-section" id="ce-product-context">
+      <div class="ce-section-label">Product Context</div>
+      <div class="form-group">
+        <label class="form-label">What should the ad communicate?</label>
+        <textarea class="form-input" rows="2">Highlight the brightening and barrier-repair benefits of the Vitamin C Serum. Clean, premium, aspirational.</textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Call to action</label>
+        <input class="form-input" type="text" value="Shop now — link in bio">
+      </div>
+    </div>
+
+    <!-- Section 3b: Diwali Context (hidden by default) -->
+    <div class="ce-section" id="ce-diwali-context" style="display:none;">
+      <div class="ce-section-label">Seasonal Context</div>
+      <div class="form-group">
+        <label class="form-label">What's the Diwali message?</label>
+        <input class="form-input" type="text" value="Celebrate the festival of light with your best skin yet.">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Offer or CTA (optional)</label>
+        <input class="form-input" type="text" placeholder="E.g. 20% off this Diwali · Free gift with orders above ₹999">
+      </div>
+    </div>
+
+    <!-- Output format -->
+    <div class="ce-section">
+      <div class="ce-section-label">Output Format</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Square Image 1:1</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Portrait Image 4:5</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Story 9:16</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Square Video 1:1</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Portrait Video 4:5</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── S_CE_04 — Output ─── -->
+  <div id="screen-ce-output" class="screen">
+    <button class="btn-text" style="font-size:13px;margin-bottom:20px;" onclick="navigateTo('uc2-post')">← Back to Visual options</button>
+
+    <h2 style="font-size:20px;font-weight:600;margin-bottom:4px;">Your ad is ready.</h2>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:24px;">Pick a variation and edit the text before using it.</p>
+
+    <div class="ce-output-grid">
+      <div class="ce-output-card selected" onclick="selectCEOutput(this)">
+        <div class="ce-output-preview">Ad Variation 1</div>
+        <div class="ce-selected-label">Selected ✓</div>
+        <div style="padding:0 12px 12px;"><button class="btn-primary" style="width:100%;font-size:13px;padding:8px;" onclick="event.stopPropagation();selectCEOutput(this.closest('.ce-output-card'))">Selected ✓</button></div>
+      </div>
+      <div class="ce-output-card" onclick="selectCEOutput(this)">
+        <div class="ce-output-preview">Ad Variation 2</div>
+        <div class="ce-output-label">Variation 2</div>
+        <div style="padding:0 12px 12px;"><button class="btn-ghost" style="width:100%;font-size:13px;padding:8px;" onclick="event.stopPropagation();selectCEOutput(this.closest('.ce-output-card'))">Select</button></div>
+      </div>
+    </div>
+
+    <!-- Edit text panel -->
+    <div class="ce-edit-panel">
+      <div class="ce-section-label" style="margin-bottom:14px;">Edit Text Layers</div>
+      <div class="form-group">
+        <label class="form-label">Headline</label>
+        <input class="form-input" id="ce-headline" type="text" value="Vitamin C that actually works.">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subheadline</label>
+        <input class="form-input" id="ce-subheadline" type="text" value="Clinically tested. Results in 14 days.">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Call to Action</label>
+        <input class="form-input" type="text" value="Shop now — link in bio">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Logo Placement</label>
+        <select class="form-input">
+          <option>Top Left</option>
+          <option>Top Right</option>
+          <option>Bottom Left</option>
+          <option selected>Bottom Right</option>
+          <option>Hidden</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap;">
+      <button class="btn-muted" onclick="navigateTo('ce-loading')">Regenerate both variations</button>
+      <button class="btn-muted" onclick="navigateTo('uc2-post')">Try a different template</button>
+    </div>
+  </div>
+
 </div><!-- end #main-content -->
 
 <!-- ═══════════════════════════════════════════ SCREEN: COMPLETE ═══ -->
@@ -2462,6 +3321,51 @@ Full analysis in the comments. Site visits open this weekend.</textarea>
   <button class="btn-primary" style="width:240px;" onclick="navigateTo('campaign-live')">View Campaign →</button>
 </div>
 
+<!-- ═══════════════════════════════════════════ SCREEN: UC2 SUBMIT ═══ -->
+<div id="screen-uc2-submit" class="screen">
+  <div class="checkmark"></div>
+  <h1 style="font-size:24px;font-weight:600;">Sent for review.</h1>
+  <p style="font-size:16px;color:var(--muted);margin-top:8px;margin-bottom:32px;max-width:440px;">Anita Desai (Approver) will be notified. You'll hear back before the post goes live.</p>
+
+  <div class="summary-list" style="margin-bottom:32px;max-width:440px;width:100%;">
+    <div style="padding:14px 0;border-bottom:1px solid var(--border);font-size:14px;display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;">
+      <span class="status-pill in-review" style="font-size:11px;">In Review</span>
+      <span style="color:var(--muted);">Instagram · Skin Barrier Education</span>
+      <span style="color:var(--muted);">·</span>
+      <span style="color:var(--muted);">Tuesday 14 May · 10:00 AM</span>
+    </div>
+  </div>
+
+  <div class="next-cards" style="max-width:600px;width:100%;">
+    <div class="next-card" onclick="navigateTo('uc2-planner')" style="cursor:pointer;">
+      <div class="next-card-title">Create the next post</div>
+      <div class="next-card-desc">4 more posts to create this week.</div>
+      <span class="next-card-link">Continue in Weekly Planner →</span>
+    </div>
+    <div class="next-card">
+      <div class="next-card-title">View content calendar</div>
+      <div class="next-card-desc">See everything scheduled for this week.</div>
+      <span class="next-card-link disabled" style="color:var(--muted);">Open Calendar →</span>
+    </div>
+    <div class="next-card">
+      <div class="next-card-title">Check analytics</div>
+      <div class="next-card-desc">See how last week's content performed.</div>
+      <span class="next-card-link disabled" style="color:var(--muted);">View Analytics →</span>
+    </div>
+  </div>
+  <button class="btn-primary" style="width:240px;margin-top:8px;" onclick="navigateTo('uc2-dashboard')">Back to Dashboard →</button>
+</div>
+
+<!-- ════════════════════════════════════════════ SCREEN: CE LOADING ═══ -->
+<div id="screen-ce-loading" class="screen">
+  <div class="spinner-lg"></div>
+  <div class="ce-loading-text" id="ce-loading-text">Removing product background...</div>
+  <button class="btn-muted" style="margin-top:24px;" onclick="navigateTo('ce-inputs')">Cancel and go back</button>
+</div>
+
+<!-- Success flash (used by CE output "Use This Ad") -->
+<div id="success-flash" class="success-flash">Ad added to your post. ✓</div>
+
 <script>
 // ══════════════════════════════════════════════════════════════
 // CONSTANTS
@@ -2498,6 +3402,15 @@ const SCREEN_META = {
   'campaign-review':      { step: null, section: 'Campaign Review', showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Submit for Approval →',   ctaAction: 'goToCampaignSubmit' },
   'campaign-submit':      { step: null, section: '',                showTopBar: false, showBottomBar: false, showBack: false },
   'campaign-live':        { step: null, section: 'Campaign Live',   showTopBar: true, showBottomBar: false, showBack: false },
+  // ── UC2 ──
+  'uc2-dashboard':  { step: null, section: 'Content',          showTopBar: true, showBottomBar: false, showBack: false },
+  'uc2-planner':    { step: null, section: 'Weekly Planner',   showTopBar: true, showBottomBar: false, showBack: true },
+  'uc2-post':       { step: null, section: 'Create Post',      showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Next: Visual →', ctaAction: 'uc2PostNext' },
+  'uc2-submit':     { step: null, section: '',                 showTopBar: false, showBottomBar: false },
+  // ── Creative Engine ──
+  'ce-inputs':  { step: null, section: 'Ad Templates',  showTopBar: true, showBottomBar: true, showBack: true, cta: 'Generate Ad →', ctaAction: 'startCELoading' },
+  'ce-loading': { step: null, section: '',               showTopBar: false, showBottomBar: false },
+  'ce-output':  { step: null, section: 'Ad Output',      showTopBar: true, showBottomBar: true, showBack: true, cta: 'Use This Ad →', ctaAction: 'useAdOutput' },
 };
 
 const SCREEN_NEXT = {
@@ -2597,13 +3510,17 @@ function showScreen(screenId) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const campaignScreens = ['campaigns','campaign-setup','campaign-brief-a','campaign-brief-b','campaign-brief-c','campaign-plan','post-create','campaign-review','campaign-submit','campaign-live'];
   const homeScreens = ['dashboard','content-plan','topic-selection','review-posts','schedule','publish-confirm'];
+  const contentScreens = ['uc2-dashboard','uc2-planner','uc2-post','uc2-submit','ce-inputs','ce-loading','ce-output'];
   if (homeScreens.includes(screenId)) { const el = document.getElementById('nav-home'); if (el) el.classList.add('active'); }
   else if (campaignScreens.includes(screenId)) { const el = document.getElementById('nav-campaigns'); if (el) el.classList.add('active'); }
+  else if (contentScreens.includes(screenId)) { const el = document.getElementById('nav-content'); if (el) el.classList.add('active'); }
 
   // Screen-specific setup
   if (screenId === 'loading-a') startLoadingAnimation();
   if (screenId === 'guidelines-visual') setupVisualScreen();
   if (screenId === 'campaign-review') updateCampaignSubmitCTA();
+  if (screenId === 'uc2-post') resetUC2PostTabs();
+  if (screenId === 'ce-loading') startCELoadingAnim();
 
   window.scrollTo(0, 0);
 }
@@ -2693,6 +3610,9 @@ function handleCTA() {
   } else if (action === 'goToPublishConfirm') {
     buildPublishConfirm();
     navigateTo('publish-confirm');
+  } else if (action === 'uc2PostNext')         { uc2PostNextTab();
+  } else if (action === 'startCELoading')      { navigateTo('ce-loading');
+  } else if (action === 'useAdOutput')         { useAdOutput();
   } else if (action === 'goToBriefA')         { navigateTo('campaign-brief-a');
   } else if (action === 'goToBriefB')         { navigateTo('campaign-brief-b');
   } else if (action === 'goToBriefC')         { navigateTo('campaign-brief-c');
@@ -3179,6 +4099,232 @@ function updateCampaignSubmitCTA() {
       ? 'Submit for Approval →'
       : 'Submit ' + n + (n === 1 ? ' Post' : ' Posts') + ' for Approval →';
   }
+}
+
+// ══════════════════════════════════════════════════════════════
+// UC2 — POST CREATION TABS
+// ══════════════════════════════════════════════════════════════
+let uc2ActiveTab = 'copy';
+let uc2VisualSubtab = 'generate';
+let ceActiveTemplate = 'product';
+
+const UC2_TAB_IDS = ['copy', 'visual', 'preview'];
+const UC2_TAB_CTAS = { copy: 'Next: Visual →', visual: 'Next: Preview →', preview: 'Submit for Review →' };
+const UC2_TAB_ACTIONS = { copy: 'uc2PostNext', visual: 'uc2PostNext', preview: 'goToUC2Submit' };
+
+function resetUC2PostTabs() {
+  uc2ActiveTab = 'copy';
+  uc2VisualSubtab = 'generate';
+  _applyPostTab('copy');
+}
+
+function showPostTab(tab) {
+  uc2ActiveTab = tab;
+  _applyPostTab(tab);
+}
+
+function _applyPostTab(tab) {
+  UC2_TAB_IDS.forEach(t => {
+    const btn = document.getElementById('ptab-' + t);
+    const content = document.getElementById('post-' + t + '-content');
+    if (btn) {
+      btn.classList.toggle('active', t === tab);
+      btn.classList.toggle('done', UC2_TAB_IDS.indexOf(t) < UC2_TAB_IDS.indexOf(tab));
+    }
+    if (content) content.style.display = t === tab ? 'block' : 'none';
+  });
+  // Update bottom bar CTA
+  const meta = SCREEN_META['uc2-post'];
+  if (meta) {
+    meta.cta       = UC2_TAB_CTAS[tab]   || 'Continue →';
+    meta.ctaAction = UC2_TAB_ACTIONS[tab] || 'continue';
+  }
+  const ctaBtn = document.getElementById('btn-cta');
+  if (ctaBtn) ctaBtn.textContent = UC2_TAB_CTAS[tab] || 'Continue →';
+  // Bottom bar visibility: hide on preview (actions are inline)
+  const bottomBar = document.getElementById('bottom-bar');
+  if (bottomBar) bottomBar.style.display = tab === 'preview' ? 'none' : 'flex';
+}
+
+function uc2PostNextTab() {
+  const order = ['copy', 'visual', 'preview'];
+  const idx = order.indexOf(uc2ActiveTab);
+  if (idx < order.length - 1) {
+    showPostTab(order[idx + 1]);
+  } else {
+    navigateTo('uc2-submit');
+  }
+}
+
+// ── Visual sub-tabs ──
+const VISUAL_SUBTAB_IDS = ['generate', 'upload', 'library', 'edit', 'variation', 'adtpl'];
+
+function showVisualSubtab(tab) {
+  uc2VisualSubtab = tab;
+  VISUAL_SUBTAB_IDS.forEach(t => {
+    const btn = document.getElementById('vstab-' + t);
+    const content = document.getElementById('vsub-' + t);
+    if (btn) btn.classList.toggle('active', t === tab);
+    if (content) content.style.display = t === tab ? 'block' : 'none';
+  });
+}
+
+// ── Caption generation ──
+function generateCaption() {
+  const btn = document.getElementById('gen-caption-btn');
+  if (!btn) return;
+  btn.textContent = 'Generating…';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'Regenerate Caption';
+    btn.disabled = false;
+    const variants = document.getElementById('caption-variants-wrap');
+    const hashtags = document.getElementById('hashtags-wrap');
+    const mod      = document.getElementById('moderation-wrap');
+    const chars    = document.getElementById('char-count-wrap');
+    if (variants) variants.style.display = 'flex';
+    if (hashtags) hashtags.style.display = 'block';
+    if (mod)      mod.style.display = 'flex';
+    if (chars)    chars.style.display = 'block';
+  }, 1400);
+}
+
+function selectCaption(card) {
+  document.querySelectorAll('.caption-variant-card').forEach(c => {
+    c.classList.remove('selected');
+    c.querySelector('.caption-variant-select').style.color = 'var(--muted)';
+    c.querySelector('.caption-variant-select').textContent = 'Select this variant';
+  });
+  card.classList.add('selected');
+  const sel = card.querySelector('.caption-variant-select');
+  sel.style.color = 'var(--active)';
+  sel.textContent = '✓ Selected';
+}
+
+function removeHashtag(btn) {
+  btn.closest('.hashtag-chip').remove();
+}
+
+function addHashtagChip() {
+  const input = document.getElementById('hashtag-add-input');
+  if (!input || !input.value.trim()) return;
+  const val = input.value.trim().startsWith('#') ? input.value.trim() : '#' + input.value.trim();
+  const container = document.getElementById('hashtag-chips');
+  const chip = document.createElement('span');
+  chip.className = 'hashtag-chip';
+  chip.innerHTML = val + ' <button class="hashtag-chip-remove" onclick="removeHashtag(this)">×</button>';
+  container.appendChild(chip);
+  input.value = '';
+  input.focus();
+}
+
+// ── Generate Visuals ──
+function generateVisuals() {
+  const wrap = document.getElementById('gen-images-wrap');
+  if (!wrap || wrap.style.display === 'block') return;
+  wrap.style.display = 'none';
+  const btn = event.target;
+  const origText = btn.textContent;
+  btn.textContent = 'Generating…';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = origText;
+    btn.disabled = false;
+    if (wrap) wrap.style.display = 'block';
+  }, 1600);
+}
+
+function selectGenImage(card) {
+  document.querySelectorAll('.gen-image-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+}
+
+// ── Platform toggle (preview) ──
+function switchPreviewPlatform(btn) {
+  document.querySelectorAll('.platform-toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const lbl = document.getElementById('preview-platform-label');
+  if (lbl) lbl.textContent = btn.textContent + ' · Sponsored';
+}
+
+// ── Ad Templates ──
+function selectAdTemplate(card, tpl) {
+  document.querySelectorAll('.ad-template-card:not(.coming-soon)').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  ceActiveTemplate = tpl;
+}
+
+function useAdTemplate(tpl) {
+  ceActiveTemplate = tpl;
+  // Set badge and context in ce-inputs
+  const badge = document.getElementById('ce-template-badge');
+  const productCtx = document.getElementById('ce-product-context');
+  const diwaliCtx  = document.getElementById('ce-diwali-context');
+  if (badge) badge.textContent = tpl === 'diwali' ? 'Seasonal: Diwali' : 'Product Showcase';
+  if (productCtx) productCtx.style.display = tpl === 'diwali' ? 'none' : 'block';
+  if (diwaliCtx)  diwaliCtx.style.display  = tpl === 'diwali' ? 'block' : 'none';
+  navigateTo('ce-inputs');
+}
+
+// ── CE Loading ──
+function startCELoadingAnim() {
+  const msgs = [
+    'Removing product background...',
+    'Generating scene from your brand palette...',
+    'Compositing your product into the template...',
+    'Applying brand fonts and colours...',
+    'Rendering final output...',
+  ];
+  let idx = 0;
+  const el = document.getElementById('ce-loading-text');
+  if (el) el.textContent = msgs[0];
+
+  loadingTextInterval = setInterval(() => {
+    idx = Math.min(idx + 1, msgs.length - 1);
+    if (el) el.textContent = msgs[idx];
+  }, 800);
+
+  loadingTimer = setTimeout(() => {
+    clearInterval(loadingTextInterval);
+    loadingTextInterval = null;
+    // Set output headlines based on template
+    const hl  = document.getElementById('ce-headline');
+    const sub = document.getElementById('ce-subheadline');
+    if (ceActiveTemplate === 'diwali') {
+      if (hl)  hl.value  = 'Glow this Diwali. 🪔';
+      if (sub) sub.value = 'Celebrate with 20% off your entire order.';
+    } else {
+      if (hl)  hl.value  = 'Vitamin C that actually works.';
+      if (sub) sub.value = 'Clinically tested. Results in 14 days.';
+    }
+    navigateTo('ce-output');
+  }, 4000);
+}
+
+// ── CE Output selection ──
+function selectCEOutput(card) {
+  document.querySelectorAll('.ce-output-card').forEach(c => {
+    c.classList.remove('selected');
+    const lbl = c.querySelector('.ce-selected-label,.ce-output-label');
+    const btn = c.querySelector('button');
+    if (lbl) { lbl.className = 'ce-output-label'; lbl.textContent = 'Variation ' + (c === document.querySelectorAll('.ce-output-card')[0] ? '1' : '2'); }
+    if (btn) { btn.className = 'btn-ghost'; btn.style.width = '100%'; btn.style.fontSize = '13px'; btn.style.padding = '8px'; btn.textContent = 'Select'; }
+  });
+  card.classList.add('selected');
+  const lbl = card.querySelector('.ce-output-label,.ce-selected-label');
+  const btn = card.querySelector('button');
+  if (lbl) { lbl.className = 'ce-selected-label'; lbl.textContent = 'Selected ✓'; }
+  if (btn) { btn.className = 'btn-primary'; btn.style.width = '100%'; btn.style.fontSize = '13px'; btn.style.padding = '8px'; btn.textContent = 'Selected ✓'; }
+}
+
+// ── Use Ad Output ──
+function useAdOutput() {
+  const flash = document.getElementById('success-flash');
+  if (flash) { flash.classList.add('visible'); setTimeout(() => flash.classList.remove('visible'), 1800); }
+  setTimeout(() => {
+    navigateTo('uc2-post');
+    showPostTab('preview');
+  }, 1500);
 }
 
 // ══════════════════════════════════════════════════════════════
