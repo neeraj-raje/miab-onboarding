@@ -76,7 +76,9 @@ body {
 .screen.active { display: block; }
 
 #screen-welcome,
-#screen-complete {
+#screen-complete,
+#screen-content-generation,
+#screen-publish-confirm {
   position: fixed;
   inset: 0;
   background: #fff;
@@ -89,7 +91,9 @@ body {
   padding: 40px;
 }
 #screen-welcome.active,
-#screen-complete.active { display: flex; }
+#screen-complete.active,
+#screen-content-generation.active,
+#screen-publish-confirm.active { display: flex; }
 
 /* ── Buttons ── */
 .btn-primary {
@@ -607,6 +611,169 @@ textarea { resize: vertical; }
 /* ── Layout helpers ── */
 .two-col { display: grid; grid-template-columns: 1fr 280px; gap: 24px; }
 @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ── Post-onboarding: Topic/Plan cards ── */
+.plan-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.topic-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+  position: relative;
+}
+.topic-card.selectable { cursor: pointer; }
+.topic-card.selectable:hover { border-color: var(--active); }
+.topic-card.selected { border: 2px solid var(--active); }
+.topic-card.selected .topic-check { display: flex; }
+.topic-check {
+  display: none;
+  position: absolute;
+  top: -8px; right: -8px;
+  width: 20px; height: 20px;
+  background: var(--active);
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+.format-chip {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 8px;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Post cards (review screen) ── */
+.post-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  background: #fff;
+  transition: opacity .2s;
+}
+.post-card.approved { border-left: 3px solid var(--success); }
+.post-card.rejected { opacity: 0.35; pointer-events: none; }
+.post-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.post-actions { display: flex; gap: 10px; margin-top: 4px; }
+.btn-approve, .btn-reject {
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all .15s;
+}
+.btn-approve { background: #fff; border: 1px solid var(--border); color: var(--muted); }
+.btn-approve.active { background: #f0f9f0; border-color: var(--success); color: var(--success); }
+.btn-reject { background: #fff; border: 1px solid var(--border); color: var(--muted); }
+.btn-reject.active { background: #fff0f0; border-color: var(--error); color: var(--error); }
+
+/* ── Calendar grid (schedule screen) ── */
+.cal-week-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin: 20px 0 8px;
+}
+.cal-week {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.cal-day {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+  min-height: 80px;
+  background: #fff;
+}
+.cal-day-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.cal-post-chip {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 6px 7px;
+  margin-bottom: 5px;
+}
+.cal-chip-platform {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--text);
+  color: #fff;
+  margin-right: 4px;
+}
+.cal-chip-platform.li { background: #0a66c2; }
+.cal-chip-title {
+  display: block;
+  font-size: 11px;
+  color: var(--text);
+  margin: 4px 0 3px;
+  line-height: 1.3;
+}
+.cal-chip-move {
+  width: 100%;
+  font-size: 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 2px 3px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ── Summary list (publish confirm) ── */
+.summary-list {
+  width: 100%;
+  max-width: 480px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px 0 24px;
+  text-align: left;
+  max-height: 260px;
+  overflow-y: auto;
+}
+.summary-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-date { color: var(--muted); width: 72px; flex-shrink: 0; font-size: 12px; }
+.summary-platform { width: 90px; flex-shrink: 0; font-size: 12px; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -1151,6 +1318,396 @@ textarea { resize: vertical; }
     </p>
   </div>
 
+  <!-- ─── SCREEN: DASHBOARD ─── -->
+  <div id="screen-dashboard" class="screen">
+    <div class="banner banner-green" style="margin-bottom:24px;">
+      Brand foundation complete. Mehta Realty is ready to create content.
+    </div>
+
+    <h2 class="screen-title">Welcome to MIAB, Mehta Realty.</h2>
+    <p class="screen-subtitle">Your brand guidelines are set up. Here's a summary of what we know.</p>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px;">Brand</div>
+          <div style="font-size:15px;font-weight:600;">Mehta Realty</div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px;">Industry</div>
+          <div style="font-size:15px;">Real Estate, Pune</div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px;">Tagline</div>
+          <div style="font-size:13px;color:var(--muted);">Built for life. Trusted by thousands.</div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px;">Primary Colour</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:18px;height:18px;border-radius:3px;background:#2471a3;border:1px solid rgba(0,0,0,.1);flex-shrink:0;"></div>
+            <span style="font-size:13px;color:var(--muted);">#2471a3</span>
+          </div>
+        </div>
+      </div>
+      <hr class="divider" style="margin:16px 0;">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;">Tone of voice</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="chip">Professional</span>
+        <span class="chip">Aspirational</span>
+        <span class="chip">Direct</span>
+      </div>
+    </div>
+
+    <div style="background:#fff8f0;border:1px solid #fde5c0;border-left:4px solid var(--warning);border-radius:6px;padding:20px;">
+      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Next step: Create your first content plan</div>
+      <div style="font-size:14px;color:var(--muted);">MIAB has analysed your brand and is ready to suggest a 2-week content plan based on your brand guidelines and real estate industry patterns.</div>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: CONTENT PLAN ─── -->
+  <div id="screen-content-plan" class="screen">
+    <h2 class="screen-title">Your 2-week content plan</h2>
+    <p class="screen-subtitle">Based on your brand guidelines and real estate industry patterns. 8 posts suggested for 13–22 May 2025.</p>
+
+    <div class="plan-grid">
+      <div class="topic-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">Why Pune's real estate market is growing in 2025</div>
+          <span class="format-chip">Instagram Post</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">13 May</div>
+        <div style="font-size:12px;color:var(--muted);">Timely market insight builds credibility with buyers</div>
+      </div>
+      <div class="topic-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">5 things to check before buying your first flat</div>
+          <span class="format-chip">Instagram Carousel</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">15 May</div>
+        <div style="font-size:12px;color:var(--muted);">Educational content drives saves and shares</div>
+      </div>
+      <div class="topic-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">Client spotlight: The Sharmas found their forever home</div>
+          <span class="format-chip">Instagram Story</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">19 May</div>
+        <div style="font-size:12px;color:var(--muted);">Social proof from real buyers builds trust</div>
+      </div>
+      <div class="topic-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">Mehta Heights Phase 2 — 60% sold</div>
+          <span class="format-chip">Instagram Post</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">19 May</div>
+        <div style="font-size:12px;color:var(--muted);">Project progress signals momentum and urgency</div>
+      </div>
+      <div class="topic-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">Is now a good time to invest in Pune property?</div>
+          <span class="format-chip">LinkedIn Article</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">20 May</div>
+        <div style="font-size:12px;color:var(--muted);">Thought leadership for investor-segment audience</div>
+      </div>
+      <div class="topic-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">How we ensure construction quality at every stage</div>
+          <span class="format-chip">Instagram Post</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">21 May</div>
+        <div style="font-size:12px;color:var(--muted);">Process transparency differentiates from competitors</div>
+      </div>
+      <div class="topic-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">RERA compliance: what every Pune home buyer should know</div>
+          <span class="format-chip">LinkedIn Post</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">22 May</div>
+        <div style="font-size:12px;color:var(--muted);">Regulatory expertise positions you as trustworthy</div>
+      </div>
+      <div class="topic-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">What our clients say: Testimonial Tuesday</div>
+          <span class="format-chip">Instagram Post</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">22 May</div>
+        <div style="font-size:12px;color:var(--muted);">Recurring social proof format, easy to produce</div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--muted);margin-top:4px;">You'll choose which topics to move forward with on the next screen.</p>
+  </div>
+
+  <!-- ─── SCREEN: TOPIC SELECTION ─── -->
+  <div id="screen-topic-selection" class="screen">
+    <h2 class="screen-title">Choose the topics you want to publish</h2>
+    <p class="screen-subtitle">Select at least one. You can always generate more later.</p>
+
+    <div style="font-size:14px;font-weight:600;margin-bottom:16px;" id="topic-counter">8 of 8 topics selected</div>
+
+    <div class="plan-grid" id="topic-selection-grid">
+      <div class="topic-card selectable selected" onclick="selectTopic(this, 0)">
+        <div class="topic-check">✓</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">Why Pune's real estate market is growing in 2025</div>
+          <span class="format-chip">Instagram Post</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);">13 May</div>
+      </div>
+      <div class="topic-card selectable selected" onclick="selectTopic(this, 1)">
+        <div class="topic-check">✓</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">5 things to check before buying your first flat</div>
+          <span class="format-chip">Instagram Carousel</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);">15 May</div>
+      </div>
+      <div class="topic-card selectable selected" onclick="selectTopic(this, 2)">
+        <div class="topic-check">✓</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">Client spotlight: The Sharmas found their forever home</div>
+          <span class="format-chip">Instagram Story</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);">19 May</div>
+      </div>
+      <div class="topic-card selectable selected" onclick="selectTopic(this, 3)">
+        <div class="topic-check">✓</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">Mehta Heights Phase 2 — 60% sold</div>
+          <span class="format-chip">Instagram Post</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);">19 May</div>
+      </div>
+      <div class="topic-card selectable selected" onclick="selectTopic(this, 4)">
+        <div class="topic-check">✓</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">Is now a good time to invest in Pune property?</div>
+          <span class="format-chip">LinkedIn Article</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);">20 May</div>
+      </div>
+      <div class="topic-card selectable selected" onclick="selectTopic(this, 5)">
+        <div class="topic-check">✓</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">How we ensure construction quality at every stage</div>
+          <span class="format-chip">Instagram Post</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);">21 May</div>
+      </div>
+      <div class="topic-card selectable selected" onclick="selectTopic(this, 6)">
+        <div class="topic-check">✓</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">RERA compliance: what every Pune home buyer should know</div>
+          <span class="format-chip">LinkedIn Post</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);">22 May</div>
+      </div>
+      <div class="topic-card selectable selected" onclick="selectTopic(this, 7)">
+        <div class="topic-check">✓</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;line-height:1.4;">What our clients say: Testimonial Tuesday</div>
+          <span class="format-chip">Instagram Post</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);">22 May</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: REVIEW POSTS ─── -->
+  <div id="screen-review-posts" class="screen">
+    <h2 class="screen-title">Review your generated posts</h2>
+    <p class="screen-subtitle">Edit any post inline. Approve what you want to schedule, reject what you don't.</p>
+
+    <div style="font-size:14px;font-weight:600;margin-bottom:20px;" id="approve-counter">3 of 8 approved</div>
+
+    <div class="post-card approved" id="post-card-0">
+      <div class="post-card-header">
+        <span style="font-size:12px;color:var(--muted);">13 May 2025</span>
+        <span class="format-chip">Instagram Post</span>
+      </div>
+      <div class="form-group">
+        <label class="field-label" style="font-size:12px;">Caption</label>
+        <textarea rows="5">Pune's real estate market is at a 5-year high — and for good reason. Infrastructure growth in Hinjewadi, Baner, and Wakad is driving residential demand unlike anything we've seen before. At Mehta Realty, we've been building homes in Pune for over a decade. If you've been thinking about buying, this is the moment.
+
+Explore our projects → link in bio</textarea>
+      </div>
+      <div class="form-group">
+        <label class="field-label" style="font-size:12px;">Hashtags</label>
+        <input type="text" value="#MehtaRealty #PuneRealEstate #BuyInPune #PuneHomes #RealEstateIndia #HomeBuying">
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-style:italic;">Image direction: Aerial view of Pune skyline at golden hour. Premium, aspirational tone.</div>
+      <hr class="divider" style="margin:0 0 12px;">
+      <div class="post-actions">
+        <button class="btn-approve active" onclick="approvePost(0)">✓ Approved</button>
+        <button class="btn-reject" onclick="rejectPost(0)">✗ Reject</button>
+      </div>
+    </div>
+
+    <div class="post-card approved" id="post-card-1">
+      <div class="post-card-header">
+        <span style="font-size:12px;color:var(--muted);">15 May 2025</span>
+        <span class="format-chip">Instagram Carousel</span>
+      </div>
+      <div class="form-group">
+        <label class="field-label" style="font-size:12px;">Caption</label>
+        <textarea rows="4">Before you sign on the dotted line — read this. 5 things every first-time buyer must check before purchasing a flat in Pune. Save this post.</textarea>
+      </div>
+      <div class="form-group">
+        <label class="field-label" style="font-size:12px;">Hashtags</label>
+        <input type="text" value="#FirstTimeBuyer #PuneProperty #HomeBuyingTips #MehtaRealty #FlatInPune #RealEstateTips">
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-style:italic;">Image direction: Clean carousel. Slide 1: bold headline. Slides 2–6: one tip each. Final slide: Mehta Realty CTA.</div>
+      <hr class="divider" style="margin:0 0 12px;">
+      <div class="post-actions">
+        <button class="btn-approve active" onclick="approvePost(1)">✓ Approved</button>
+        <button class="btn-reject" onclick="rejectPost(1)">✗ Reject</button>
+      </div>
+    </div>
+
+    <div class="post-card approved" id="post-card-2">
+      <div class="post-card-header">
+        <span style="font-size:12px;color:var(--muted);">19 May 2025</span>
+        <span class="format-chip">Instagram Story</span>
+      </div>
+      <div class="form-group">
+        <label class="field-label" style="font-size:12px;">Caption</label>
+        <textarea rows="3">The Sharma family moved into their Mehta Heights flat last month. Their reaction? 'We finally feel home.' We love hearing this.</textarea>
+      </div>
+      <div class="form-group">
+        <label class="field-label" style="font-size:12px;">Hashtags</label>
+        <input type="text" value="#ClientStory #MehtaRealty #PuneHomes #CustomerLove #HomeSweetHome">
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-style:italic;">Image direction: Warm photo of family at entrance of new flat. Candid, real, not staged.</div>
+      <hr class="divider" style="margin:0 0 12px;">
+      <div class="post-actions">
+        <button class="btn-approve active" onclick="approvePost(2)">✓ Approved</button>
+        <button class="btn-reject" onclick="rejectPost(2)">✗ Reject</button>
+      </div>
+    </div>
+
+    <div id="more-posts-toggle" style="margin-bottom:12px;">
+      <button class="btn-ghost" style="width:100%;text-align:center;" onclick="toggleMorePosts()">Show 5 more posts ▼</button>
+    </div>
+
+    <div id="more-posts" style="display:none;">
+      <div class="post-card" id="post-card-3">
+        <div class="post-card-header">
+          <span style="font-size:12px;color:var(--muted);">19 May 2025</span>
+          <span class="format-chip">Instagram Post</span>
+        </div>
+        <div class="form-group">
+          <label class="field-label" style="font-size:12px;">Caption</label>
+          <textarea rows="4">Mehta Heights Phase 2 is 60% sold — and we're just getting started. If you've been waiting for the right time to book your flat, this is your sign. Phase 2 closes in 6 weeks. First-come, first-served. Book a site visit this weekend.</textarea>
+        </div>
+        <div class="form-group">
+          <label class="field-label" style="font-size:12px;">Hashtags</label>
+          <input type="text" value="#MehtaHeights #PuneFlats #NewLaunch #MehtaRealty #BookNow #PuneRealEstate">
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-style:italic;">Image direction: Project rendering or photo of Mehta Heights. Progress overlay showing 60% sold.</div>
+        <hr class="divider" style="margin:0 0 12px;">
+        <div class="post-actions">
+          <button class="btn-approve" onclick="approvePost(3)">✓ Approve</button>
+          <button class="btn-reject" onclick="rejectPost(3)">✗ Reject</button>
+        </div>
+      </div>
+
+      <div class="post-card" id="post-card-4">
+        <div class="post-card-header">
+          <span style="font-size:12px;color:var(--muted);">20 May 2025</span>
+          <span class="format-chip">LinkedIn Article</span>
+        </div>
+        <div class="form-group">
+          <label class="field-label" style="font-size:12px;">Caption</label>
+          <textarea rows="4">Pune's residential market has seen 3 consecutive quarters of price appreciation. For investors evaluating entry points, here's what the data shows — and what it means for 2025–26 returns.</textarea>
+        </div>
+        <div class="form-group">
+          <label class="field-label" style="font-size:12px;">Hashtags</label>
+          <input type="text" value="#PuneRealEstate #PropertyInvestment #RealEstateIndia #MehtaRealty #InvestInPune">
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-style:italic;">Image direction: Clean, data-driven graphic. Property price trend chart. Professional tone.</div>
+        <hr class="divider" style="margin:0 0 12px;">
+        <div class="post-actions">
+          <button class="btn-approve" onclick="approvePost(4)">✓ Approve</button>
+          <button class="btn-reject" onclick="rejectPost(4)">✗ Reject</button>
+        </div>
+      </div>
+
+      <div class="post-card" id="post-card-5">
+        <div class="post-card-header">
+          <span style="font-size:12px;color:var(--muted);">21 May 2025</span>
+          <span class="format-chip">Instagram Post</span>
+        </div>
+        <div class="form-group">
+          <label class="field-label" style="font-size:12px;">Caption</label>
+          <textarea rows="4">Quality isn't just a promise — it's a process. At Mehta Realty, every slab is inspected before it's poured, every finish is checked before handover. Here's a look inside our quality control system.</textarea>
+        </div>
+        <div class="form-group">
+          <label class="field-label" style="font-size:12px;">Hashtags</label>
+          <input type="text" value="#QualityConstruction #MehtaRealty #BuildingTrust #PuneHomes #RealEstate #Construction">
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-style:italic;">Image direction: Behind-the-scenes construction photo. Workers, materials, quality inspection.</div>
+        <hr class="divider" style="margin:0 0 12px;">
+        <div class="post-actions">
+          <button class="btn-approve" onclick="approvePost(5)">✓ Approve</button>
+          <button class="btn-reject" onclick="rejectPost(5)">✗ Reject</button>
+        </div>
+      </div>
+
+      <div class="post-card" id="post-card-6">
+        <div class="post-card-header">
+          <span style="font-size:12px;color:var(--muted);">22 May 2025</span>
+          <span class="format-chip">LinkedIn Post</span>
+        </div>
+        <div class="form-group">
+          <label class="field-label" style="font-size:12px;">Caption</label>
+          <textarea rows="4">RERA has changed the home-buying landscape in Maharashtra. If you're a first-time buyer in Pune, here are 5 rights you didn't know you had under RERA — and how to use them.</textarea>
+        </div>
+        <div class="form-group">
+          <label class="field-label" style="font-size:12px;">Hashtags</label>
+          <input type="text" value="#RERA #PuneRealEstate #HomeBuying #MaharashtraRERA #MehtaRealty #RealEstateLaw">
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-style:italic;">Image direction: Clean, text-forward LinkedIn graphic. Legal/regulatory theme.</div>
+        <hr class="divider" style="margin:0 0 12px;">
+        <div class="post-actions">
+          <button class="btn-approve" onclick="approvePost(6)">✓ Approve</button>
+          <button class="btn-reject" onclick="rejectPost(6)">✗ Reject</button>
+        </div>
+      </div>
+
+      <div class="post-card" id="post-card-7">
+        <div class="post-card-header">
+          <span style="font-size:12px;color:var(--muted);">22 May 2025</span>
+          <span class="format-chip">Instagram Post</span>
+        </div>
+        <div class="form-group">
+          <label class="field-label" style="font-size:12px;">Caption</label>
+          <textarea rows="5">Every Tuesday, we share stories from families who now call our projects home. This week: meet the Joshi family, who moved into Mehta Gardens last month after a 2-year search. 'We finally stopped compromising.' That means everything to us.</textarea>
+        </div>
+        <div class="form-group">
+          <label class="field-label" style="font-size:12px;">Hashtags</label>
+          <input type="text" value="#TestimonialTuesday #MehtaRealty #HappyHomeowners #PuneHomes #ClientLove #RealEstate">
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-style:italic;">Image direction: Warm family portrait. Home setting. Authentic, candid feel.</div>
+        <hr class="divider" style="margin:0 0 12px;">
+        <div class="post-actions">
+          <button class="btn-approve" onclick="approvePost(7)">✓ Approve</button>
+          <button class="btn-reject" onclick="rejectPost(7)">✗ Reject</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: SCHEDULE ─── -->
+  <div id="screen-schedule" class="screen">
+    <h2 class="screen-title">Your content calendar</h2>
+    <p class="screen-subtitle">Approved posts are scheduled at optimal times. Use the dropdown on any post to move it to a different day.</p>
+
+    <div id="cal-grid"></div>
+
+    <p class="helper-text" style="margin-top:16px;">Instagram posts: 10:00 AM · LinkedIn posts: 9:00 AM — optimised for Indian SMB audience engagement</p>
+  </div>
+
 </div><!-- end #main-content -->
 
 <!-- ═══════════════════════════════════════════ SCREEN: COMPLETE ═══ -->
@@ -1177,7 +1734,40 @@ textarea { resize: vertical; }
       <span class="next-card-link">Go to Integrations →</span>
     </div>
   </div>
-  <button class="btn-primary" style="width:240px;">Go to Dashboard →</button>
+  <button class="btn-primary" style="width:240px;" onclick="navigateTo('dashboard')">Go to Dashboard →</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN: CONTENT GENERATION ═══ -->
+<div id="screen-content-generation" class="screen">
+  <div class="spinner"></div>
+  <h1 style="font-size:22px;font-weight:600;margin-top:24px;">Generating your posts…</h1>
+  <p id="gen-loading-text" style="font-size:15px;color:var(--muted);margin-top:10px;">Applying Mehta Realty brand guidelines…</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN: PUBLISH CONFIRM ═══ -->
+<div id="screen-publish-confirm" class="screen">
+  <div class="checkmark"></div>
+  <h1 style="font-size:26px;font-weight:600;">Your posts are scheduled.</h1>
+  <p id="publish-subtitle" style="font-size:16px;color:var(--muted);margin-top:8px;margin-bottom:0;max-width:480px;">Posts will go live between 13–22 May 2025. You'll get a reminder before each one.</p>
+  <div class="summary-list" id="publish-summary-list"></div>
+  <div class="next-cards">
+    <div class="next-card">
+      <div class="next-card-title">Add more posts</div>
+      <div class="next-card-desc">Create another batch of content anytime.</div>
+      <span class="next-card-link">Create More →</span>
+    </div>
+    <div class="next-card">
+      <div class="next-card-title">Edit brand guidelines</div>
+      <div class="next-card-desc">Update your identity, messaging, or tone.</div>
+      <span class="next-card-link">Go to Brand Settings →</span>
+    </div>
+    <div class="next-card">
+      <div class="next-card-title">View analytics</div>
+      <div class="next-card-desc">Once posts go live, track performance here.</div>
+      <span class="next-card-link">View Analytics →</span>
+    </div>
+  </div>
+  <button class="btn-primary" style="width:240px;" onclick="navigateTo('dashboard')">Go to Dashboard →</button>
 </div>
 
 <script>
@@ -1198,6 +1788,13 @@ const SCREEN_META = {
   'competitor-setup':     { step: 3,  activeStep: 3, showTopBar: true, showBottomBar: true,  showBack: true, cta: 'Continue →',                    ctaAction: 'continue' },
   'team-setup':           { step: 4,  activeStep: 4, showTopBar: true, showBottomBar: true,  showBack: true, cta: 'Send Invites & Continue →',     ctaAction: 'continue' },
   'complete':             { step: 5,  showTopBar: true, showBottomBar: false },
+  'dashboard':            { step: null, section: 'Dashboard',     showTopBar: true, showBottomBar: true,  showBack: false, cta: 'Create Content Plan →',     ctaAction: 'goToContentPlan' },
+  'content-plan':         { step: null, section: 'Content Plan',  showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Choose Topics →',           ctaAction: 'goToTopicSelection' },
+  'topic-selection':      { step: null, section: 'Select Topics', showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Generate Posts →',          ctaAction: 'startContentGen' },
+  'content-generation':   { step: null, section: '',              showTopBar: false, showBottomBar: false, showBack: false, cta: '', ctaAction: '' },
+  'review-posts':         { step: null, section: 'Review Posts',  showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Schedule Approved Posts →', ctaAction: 'goToSchedule' },
+  'schedule':             { step: null, section: 'Schedule',      showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Confirm Schedule →',        ctaAction: 'goToPublishConfirm' },
+  'publish-confirm':      { step: null, section: '',              showTopBar: false, showBottomBar: false, showBack: false, cta: '', ctaAction: '' },
 };
 
 const SCREEN_NEXT = {
@@ -1226,6 +1823,11 @@ let screenHistory = [];
 let loadingTimer = null;
 let loadingTextInterval = null;
 let competitorCount = 3;
+
+const appState = {
+  selectedTopics: new Set([0,1,2,3,4,5,6,7]),
+  approvedPosts: new Set([0,1,2]),
+};
 
 // ══════════════════════════════════════════════════════════════
 // CORE: show screen without touching history
@@ -1272,6 +1874,12 @@ function showScreen(screenId) {
     ctaBtn.disabled = !hasSel;
   }
 
+  // Topic selection: update counter and CTA text
+  if (screenId === 'topic-selection') updateTopicCounter();
+
+  // Review posts: update counter and CTA text
+  if (screenId === 'review-posts') updateApproveCounter();
+
   // Progress
   renderProgress(meta);
 
@@ -1306,6 +1914,10 @@ function goBack() {
 // ══════════════════════════════════════════════════════════════
 function renderProgress(meta) {
   const container = document.getElementById('top-bar-progress');
+  if (meta.step === null) {
+    container.innerHTML = meta.section ? '<span style="font-size:14px;font-weight:600;">' + meta.section + '</span>' : '';
+    return;
+  }
   if (!meta.activeStep) { container.innerHTML = ''; return; }
 
   const activeStep = meta.activeStep;
@@ -1358,6 +1970,18 @@ function handleCTA() {
       confirm.style.display = 'none';
       navigateTo('competitor-setup');
     }, 1000);
+  } else if (action === 'goToContentPlan') {
+    navigateTo('content-plan');
+  } else if (action === 'goToTopicSelection') {
+    navigateTo('topic-selection');
+  } else if (action === 'startContentGen') {
+    startContentGeneration();
+  } else if (action === 'goToSchedule') {
+    buildScheduleScreen();
+    navigateTo('schedule');
+  } else if (action === 'goToPublishConfirm') {
+    buildPublishConfirm();
+    navigateTo('publish-confirm');
   } else {
     const next = SCREEN_NEXT[currentScreen];
     if (next) navigateTo(next);
@@ -1563,6 +2187,242 @@ function addTeamRow() {
 
 function removeTeamRow(btn) {
   btn.closest('.team-row').remove();
+}
+
+// ══════════════════════════════════════════════════════════════
+// TOPIC SELECTION
+// ══════════════════════════════════════════════════════════════
+function selectTopic(card, idx) {
+  if (appState.selectedTopics.has(idx)) {
+    appState.selectedTopics.delete(idx);
+    card.classList.remove('selected');
+  } else {
+    appState.selectedTopics.add(idx);
+    card.classList.add('selected');
+  }
+  updateTopicCounter();
+}
+
+function updateTopicCounter() {
+  const n = appState.selectedTopics.size;
+  const counter = document.getElementById('topic-counter');
+  if (counter) counter.textContent = n + ' of 8 topics selected';
+  const cta = document.getElementById('btn-cta');
+  if (cta) {
+    cta.disabled = n === 0;
+    cta.textContent = n === 0 ? 'Generate Posts →' : 'Generate ' + n + (n === 1 ? ' Post' : ' Posts') + ' →';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// CONTENT GENERATION LOADING
+// ══════════════════════════════════════════════════════════════
+function startContentGeneration() {
+  navigateTo('content-generation');
+  const msgs = [
+    'Applying Mehta Realty brand guidelines…',
+    'Matching tone: Professional, Warm, Trustworthy…',
+    'Writing captions for Instagram and LinkedIn…',
+    'Adding hashtags and image descriptions…',
+    'Almost ready…',
+  ];
+  let idx = 0;
+  const el = document.getElementById('gen-loading-text');
+
+  loadingTextInterval = setInterval(() => {
+    idx = (idx + 1) % msgs.length;
+    if (el) el.textContent = msgs[idx];
+  }, 900);
+
+  loadingTimer = setTimeout(() => {
+    clearInterval(loadingTextInterval);
+    loadingTextInterval = null;
+    // Reset post cards to initial approved state
+    appState.approvedPosts = new Set([0,1,2]);
+    for (let i = 0; i < 8; i++) {
+      const card = document.getElementById('post-card-' + i);
+      if (!card) continue;
+      const isApproved = i < 3;
+      card.classList.toggle('approved', isApproved);
+      card.classList.remove('rejected');
+      card.style.pointerEvents = '';
+      card.style.opacity = '';
+      const approveBtn = card.querySelector('.btn-approve');
+      const rejectBtn  = card.querySelector('.btn-reject');
+      if (approveBtn) { approveBtn.classList.toggle('active', isApproved); approveBtn.textContent = isApproved ? '✓ Approved' : '✓ Approve'; }
+      if (rejectBtn)  { rejectBtn.classList.remove('active'); rejectBtn.textContent = '✗ Reject'; }
+    }
+    const more    = document.getElementById('more-posts');
+    const moreBtn = document.querySelector('#more-posts-toggle button');
+    if (more)    more.style.display = 'none';
+    if (moreBtn) moreBtn.textContent = 'Show 5 more posts ▼';
+    navigateTo('review-posts');
+  }, 3500);
+}
+
+// ══════════════════════════════════════════════════════════════
+// POST APPROVE / REJECT
+// ══════════════════════════════════════════════════════════════
+function approvePost(idx) {
+  const card = document.getElementById('post-card-' + idx);
+  if (!card) return;
+  if (appState.approvedPosts.has(idx)) {
+    appState.approvedPosts.delete(idx);
+    card.classList.remove('approved');
+    const btn = card.querySelector('.btn-approve');
+    if (btn) { btn.classList.remove('active'); btn.textContent = '✓ Approve'; }
+  } else {
+    appState.approvedPosts.add(idx);
+    card.classList.add('approved');
+    card.classList.remove('rejected');
+    card.style.opacity = '';
+    card.style.pointerEvents = '';
+    const aBtn = card.querySelector('.btn-approve');
+    const rBtn = card.querySelector('.btn-reject');
+    if (aBtn) { aBtn.classList.add('active'); aBtn.textContent = '✓ Approved'; }
+    if (rBtn) { rBtn.classList.remove('active'); rBtn.textContent = '✗ Reject'; }
+  }
+  updateApproveCounter();
+}
+
+function rejectPost(idx) {
+  const card = document.getElementById('post-card-' + idx);
+  if (!card) return;
+  appState.approvedPosts.delete(idx);
+  card.classList.remove('approved');
+  card.classList.add('rejected');
+  const aBtn = card.querySelector('.btn-approve');
+  const rBtn = card.querySelector('.btn-reject');
+  if (aBtn) { aBtn.classList.remove('active'); aBtn.textContent = '✓ Approve'; }
+  if (rBtn) { rBtn.classList.add('active'); rBtn.textContent = '✗ Rejected'; }
+  updateApproveCounter();
+}
+
+function updateApproveCounter() {
+  const n = appState.approvedPosts.size;
+  const counter = document.getElementById('approve-counter');
+  if (counter) counter.textContent = n + ' of 8 approved';
+  const cta = document.getElementById('btn-cta');
+  if (cta) {
+    cta.disabled = n === 0;
+    cta.textContent = n === 0 ? 'Schedule Approved Posts →' : 'Schedule ' + n + (n === 1 ? ' Post' : ' Posts') + ' →';
+  }
+}
+
+function toggleMorePosts() {
+  const more    = document.getElementById('more-posts');
+  const btn     = document.querySelector('#more-posts-toggle button');
+  const visible = more.style.display !== 'none';
+  more.style.display = visible ? 'none' : 'block';
+  btn.textContent    = visible ? 'Show 5 more posts ▼' : 'Hide extra posts ▲';
+}
+
+// ══════════════════════════════════════════════════════════════
+// SCHEDULE
+// ══════════════════════════════════════════════════════════════
+const SCHED_POSTS = [
+  { idx: 0, platform: 'IG', platformClass: '',   label: "Why Pune's real estate…",           schedDate: '13-may' },
+  { idx: 1, platform: 'IG', platformClass: '',   label: '5 things to check before buying…',  schedDate: '15-may' },
+  { idx: 2, platform: 'IG', platformClass: '',   label: 'Client spotlight: The Sharmas…',    schedDate: '19-may' },
+  { idx: 3, platform: 'IG', platformClass: '',   label: 'Mehta Heights Phase 2 — 60% sold',  schedDate: '19-may' },
+  { idx: 4, platform: 'LI', platformClass: 'li', label: 'Is now a good time to invest…',     schedDate: '20-may' },
+  { idx: 5, platform: 'IG', platformClass: '',   label: 'How we ensure construction quality…', schedDate: '21-may' },
+  { idx: 6, platform: 'LI', platformClass: 'li', label: 'RERA compliance: what every buyer…', schedDate: '22-may' },
+  { idx: 7, platform: 'IG', platformClass: '',   label: 'Testimonial Tuesday',                schedDate: '22-may' },
+];
+
+const CAL_DATES = [
+  { key: '13-may', label: 'Tue 13 May', week: 1 },
+  { key: '14-may', label: 'Wed 14 May', week: 1 },
+  { key: '15-may', label: 'Thu 15 May', week: 1 },
+  { key: '16-may', label: 'Fri 16 May', week: 1 },
+  { key: '17-may', label: 'Sat 17 May', week: 1 },
+  { key: '19-may', label: 'Mon 19 May', week: 2 },
+  { key: '20-may', label: 'Tue 20 May', week: 2 },
+  { key: '21-may', label: 'Wed 21 May', week: 2 },
+  { key: '22-may', label: 'Thu 22 May', week: 2 },
+  { key: '23-may', label: 'Fri 23 May', week: 2 },
+];
+
+const postDates = {};
+SCHED_POSTS.forEach(p => { postDates[p.idx] = p.schedDate; });
+
+function buildScheduleScreen() {
+  const grid = document.getElementById('cal-grid');
+  if (!grid) return;
+
+  const dateMap = {};
+  CAL_DATES.forEach(d => { dateMap[d.key] = []; });
+  SCHED_POSTS.forEach(p => {
+    if (appState.approvedPosts.has(p.idx)) {
+      const d = postDates[p.idx] || p.schedDate;
+      if (dateMap[d]) dateMap[d].push(p);
+    }
+  });
+
+  const dateOptions = CAL_DATES.map(d => `<option value="${d.key}">${d.label}</option>`).join('');
+
+  function renderWeek(days) {
+    return days.map(d => {
+      const chips = (dateMap[d.key] || []).map(p => `
+        <div class="cal-post-chip" id="cal-chip-${p.idx}">
+          <span class="cal-chip-platform ${p.platformClass}">${p.platform}</span>
+          <span class="cal-chip-title">${p.label}</span>
+          <select class="cal-chip-move" onchange="movePost(${p.idx}, this.value, this)">
+            ${CAL_DATES.map(od => `<option value="${od.key}"${od.key === (postDates[p.idx] || p.schedDate) ? ' selected' : ''}>${od.label}</option>`).join('')}
+          </select>
+        </div>`).join('');
+      return `<div class="cal-day" id="cal-day-${d.key}">
+        <div class="cal-day-label">${d.label.split(' ').slice(0,2).join(' ')}</div>
+        ${chips}
+      </div>`;
+    }).join('');
+  }
+
+  const week1 = CAL_DATES.filter(d => d.week === 1);
+  const week2 = CAL_DATES.filter(d => d.week === 2);
+  grid.innerHTML =
+    '<div class="cal-week-label">Week of 13–17 May</div>' +
+    '<div class="cal-week">' + renderWeek(week1) + '</div>' +
+    '<div class="cal-week-label">Week of 19–23 May</div>' +
+    '<div class="cal-week">' + renderWeek(week2) + '</div>';
+}
+
+function movePost(postIdx, newDate, selectEl) {
+  postDates[postIdx] = newDate;
+  const chip    = document.getElementById('cal-chip-' + postIdx);
+  const newCell = document.getElementById('cal-day-' + newDate);
+  if (chip && newCell) {
+    newCell.appendChild(chip);
+    const sel = chip.querySelector('.cal-chip-move');
+    if (sel) sel.value = newDate;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// PUBLISH CONFIRM
+// ══════════════════════════════════════════════════════════════
+function buildPublishConfirm() {
+  const approved = SCHED_POSTS.filter(p => appState.approvedPosts.has(p.idx));
+  const n = approved.length;
+
+  const subtitle = document.getElementById('publish-subtitle');
+  if (subtitle) {
+    subtitle.textContent = n + ' post' + (n !== 1 ? 's' : '') + ' will go live between 13–22 May 2025. You\'ll get a reminder before each one.';
+  }
+
+  const list = document.getElementById('publish-summary-list');
+  if (!list) return;
+  list.innerHTML = approved.map(p => {
+    const platform  = p.platformClass === 'li' ? 'LinkedIn' : 'Instagram';
+    const dateEntry = CAL_DATES.find(d => d.key === (postDates[p.idx] || p.schedDate));
+    const dateStr   = dateEntry ? dateEntry.label : '';
+    return `<div class="summary-row">
+      <span class="summary-date">${dateStr}</span>
+      <span class="summary-platform">${platform}</span>
+      <span style="flex:1;color:var(--muted);font-size:12px;">${p.label}</span>
+    </div>`;
+  }).join('');
 }
 
 // ══════════════════════════════════════════════════════════════
