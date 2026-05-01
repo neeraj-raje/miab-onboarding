@@ -78,7 +78,9 @@ body {
 #screen-welcome,
 #screen-complete,
 #screen-content-generation,
-#screen-publish-confirm {
+#screen-publish-confirm,
+#screen-auth,
+#screen-campaign-submit {
   position: fixed;
   inset: 0;
   background: #fff;
@@ -93,7 +95,9 @@ body {
 #screen-welcome.active,
 #screen-complete.active,
 #screen-content-generation.active,
-#screen-publish-confirm.active { display: flex; }
+#screen-publish-confirm.active,
+#screen-auth.active,
+#screen-campaign-submit.active { display: flex; }
 
 /* ── Buttons ── */
 .btn-primary {
@@ -774,9 +778,173 @@ textarea { resize: vertical; }
 .summary-row:last-child { border-bottom: none; }
 .summary-date { color: var(--muted); width: 72px; flex-shrink: 0; font-size: 12px; }
 .summary-platform { width: 90px; flex-shrink: 0; font-size: 12px; font-weight: 600; }
+
+/* ── Sidebar nav ── */
+#side-nav {
+  position: fixed;
+  top: 56px; left: 0; bottom: 0;
+  width: 192px;
+  background: #fff;
+  border-right: 1px solid var(--border);
+  z-index: 90;
+  display: none;
+  padding: 12px 0;
+  overflow-y: auto;
+}
+#side-nav.visible { display: block; }
+.nav-item {
+  padding: 10px 20px;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  transition: background .1s;
+  user-select: none;
+}
+.nav-item:hover { background: var(--input-bg); }
+.nav-item.active { font-weight: 600; background: #eef4fc; color: var(--active); }
+.nav-item.nav-stub { color: var(--disabled); cursor: default; }
+.nav-item.nav-stub:hover { background: var(--input-bg); cursor: pointer; }
+.nav-divider { border-top: 1px solid var(--border); margin: 8px 0; }
+#main-content.has-sidebar { margin-left: 192px; }
+
+/* ── Campaign type chips ── */
+.type-chip {
+  display: inline-flex; align-items: center;
+  padding: 8px 16px; border-radius: 20px;
+  font-size: 13px; border: 1px solid var(--input-border);
+  cursor: pointer; background: #fff; color: var(--text);
+  font-family: inherit; transition: all .15s;
+}
+.type-chip:hover { border-color: var(--active); }
+.type-chip.selected { background: var(--active); border-color: var(--active); color: #fff; }
+
+/* ── Campaign plan cards ── */
+.campaign-card {
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 16px;
+  background: #fff; position: relative;
+}
+.campaign-card:hover { border-color: #c0c0c0; }
+.status-pill.not-created { background: var(--input-bg); color: var(--disabled); border-color: var(--border); }
+.status-pill.draft        { background: #fff8f0; color: #7a4f00; border-color: #fde5c0; }
+.status-pill.ready        { background: #f0f9f0; color: var(--success); border-color: #c3e6cb; }
+.status-pill.in-review    { background: #eef4fc; color: var(--active); border-color: #c5daf7; }
+.status-pill.approved     { background: #f0f9f0; color: var(--success); border-color: #c3e6cb; font-weight: 600; }
+
+/* ── Campaign review list ── */
+.review-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.review-row:last-child { border-bottom: none; }
+.review-row.disabled { opacity: 0.4; }
+.review-row input[type="checkbox"] { width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
+
+/* ── Page header row ── */
+.page-header {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 24px;
+}
+
+/* ── Campaign timeline ── */
+.timeline-header-card {
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 20px; margin-bottom: 20px; background: #fff;
+}
+.timeline-bar-wrap { margin: 16px 0 8px; }
+.timeline-bar {
+  height: 6px; border-radius: 3px;
+  background: #2471a3;
+}
+.timeline-dates-row {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--muted); margin-top: 4px;
+}
+.timeline-posts { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0; }
+.timeline-post-chip {
+  font-size: 11px; padding: 4px 10px;
+  border: 1px solid var(--border); border-radius: 4px;
+  background: var(--input-bg); display: flex; align-items: center; gap: 6px;
+}
+
+/* ── Brief sub-step tabs ── */
+.brief-steps {
+  display: flex; margin-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.brief-step {
+  padding: 8px 16px; font-size: 13px;
+  color: var(--muted); cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.brief-step.active { color: var(--text); font-weight: 600; border-bottom-color: var(--text); }
+.brief-step.done { color: var(--text); }
+
+/* ── Campaign flow progress dots ── */
+.flow-progress {
+  display: flex; gap: 0; margin-bottom: 24px;
+  font-size: 13px; color: var(--muted);
+}
+.flow-step { display: flex; align-items: center; gap: 6px; }
+.flow-step.active { color: var(--text); font-weight: 600; }
+.flow-step.done { color: var(--text); }
+.flow-connector { margin: 0 8px; color: var(--border); }
+
+/* ── Post-create context bar ── */
+.post-context-bar {
+  background: var(--input-bg); border-radius: 6px;
+  padding: 12px 16px; margin-bottom: 20px;
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  font-size: 13px; color: var(--muted);
+}
+
+/* ── Campaign progress bar ── */
+.campaign-progress { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+.campaign-progress-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+
+/* ── Campaigns list card ── */
+.campaign-list-card {
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 20px; background: #fff; margin-bottom: 12px;
+}
+.campaign-list-card-header {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 12px;
+}
+.campaign-list-meta {
+  display: flex; gap: 16px; font-size: 12px;
+  color: var(--muted); margin-bottom: 12px; flex-wrap: wrap;
+}
 </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════ SIDEBAR NAV ═══ -->
+<div id="side-nav">
+  <div class="nav-item" id="nav-home" onclick="navigateTo('dashboard')">Home</div>
+  <div class="nav-item nav-stub" onclick="showNavStub(this)">Content</div>
+  <div class="nav-item nav-stub" onclick="showNavStub(this)">Calendar</div>
+  <div class="nav-item" id="nav-campaigns" onclick="navigateTo('campaigns')">Campaigns</div>
+  <div class="nav-item nav-stub" onclick="showNavStub(this)">Brand</div>
+  <div class="nav-item nav-stub" onclick="showNavStub(this)">Intelligence</div>
+  <div class="nav-item nav-stub" onclick="showNavStub(this)">LinkedIn</div>
+  <div class="nav-item nav-stub" onclick="showNavStub(this)">Analytics</div>
+  <div class="nav-divider"></div>
+  <div class="nav-item nav-stub" onclick="showNavStub(this)">Settings</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN: AUTH ═══ -->
+<div id="screen-auth" class="screen">
+  <div style="font-size:32px;font-weight:700;letter-spacing:-1px;margin-bottom:8px;">MIAB</div>
+  <div style="font-size:16px;font-weight:500;color:var(--muted);margin-bottom:4px;">Marketing Agency in a Box</div>
+  <p style="font-size:14px;color:var(--disabled);margin-bottom:48px;max-width:360px;">India's first complete marketing system for growing businesses.</p>
+  <div style="display:flex;flex-direction:column;gap:12px;width:260px;">
+    <button class="btn-primary" onclick="navigateTo('dashboard')">Log in →</button>
+    <button class="btn-ghost" onclick="navigateTo('welcome')">Create account →</button>
+  </div>
+  <p style="font-size:12px;color:var(--disabled);margin-top:32px;">Prototype — all data is illustrative (Mehta Realty)</p>
+</div>
 
 <!-- ═══════════════════════════════════════════ TOP BAR ═══ -->
 <div id="top-bar">
@@ -1708,6 +1876,501 @@ Explore our projects → link in bio</textarea>
     <p class="helper-text" style="margin-top:16px;">Instagram posts: 10:00 AM · LinkedIn posts: 9:00 AM — optimised for Indian SMB audience engagement</p>
   </div>
 
+
+  <!-- ─── SCREEN: CAMPAIGNS ─── -->
+  <div id="screen-campaigns" class="screen">
+    <div class="page-header">
+      <h2 style="font-size:22px;font-weight:600;margin:0;">Campaigns</h2>
+      <button class="btn-primary" style="padding:10px 18px;font-size:14px;" onclick="navigateTo('campaign-setup')">+ New Campaign</button>
+    </div>
+
+    <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:#fff;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+        <div>
+          <div style="font-weight:600;font-size:15px;margin-bottom:4px;">Kharadi Heights Project Launch — May 2025</div>
+          <div style="font-size:12px;color:var(--muted);">Product Launch · 13 May – 31 May 2025 · IG + LI</div>
+        </div>
+        <span class="status-pill ready" style="font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid;">Active</span>
+      </div>
+      <div style="display:flex;gap:16px;font-size:12px;color:var(--muted);margin-bottom:14px;">
+        <span>8 posts total</span>
+        <span>·</span>
+        <span style="color:#7a4f00;">1 in review</span>
+        <span>·</span>
+        <span style="color:var(--muted);">1 draft</span>
+        <span>·</span>
+        <span>6 not created</span>
+      </div>
+      <div class="campaign-progress">
+        <div class="campaign-progress-label">2 of 8 posts created</div>
+        <div style="height:6px;border-radius:3px;background:var(--input-bg);overflow:hidden;">
+          <div style="width:25%;height:100%;background:var(--active);border-radius:3px;"></div>
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <button class="btn-primary" style="padding:8px 16px;font-size:13px;" onclick="navigateTo('campaign-plan')">View Campaign →</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:24px 0;">
+      <button class="btn-ghost" style="padding:10px 20px;font-size:14px;" onclick="navigateTo('campaign-setup')">+ New Campaign</button>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: CAMPAIGN SETUP (S14) ─── -->
+  <div id="screen-campaign-setup" class="screen">
+    <div class="brief-steps" style="margin-bottom:24px;">
+      <div class="brief-step active">1 · Setup</div>
+      <div class="brief-step">2 · Brief</div>
+      <div class="brief-step">3 · Plan</div>
+      <div class="brief-step">4 · Review</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Campaign Name</label>
+      <input class="form-input" type="text" value="Kharadi Heights Project Launch — May 2025">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Campaign Type</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Product Launch</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Brand Awareness</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Thought Leadership</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Seasonal</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Event</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Custom</button>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="form-group">
+        <label class="form-label">Start Date</label>
+        <input class="form-input" type="text" value="13 May 2025">
+      </div>
+      <div class="form-group">
+        <label class="form-label">End Date</label>
+        <input class="form-input" type="text" value="31 May 2025">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Assigned to</label>
+      <input class="form-input" type="text" value="Anita Desai (Creator)">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <textarea class="form-input" rows="3" style="resize:vertical;">Launch campaign for Kharadi Heights — premium 2 &amp; 3 BHK apartments in Pune's fastest-growing IT corridor. Limited inventory. Phase 1 closing end of May.</textarea>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: CAMPAIGN BRIEF-A — Audience (S15-A) ─── -->
+  <div id="screen-campaign-brief-a" class="screen">
+    <div class="brief-steps" style="margin-bottom:8px;">
+      <div class="brief-step done">1 · Setup</div>
+      <div class="brief-step active">2 · Brief</div>
+      <div class="brief-step">3 · Plan</div>
+      <div class="brief-step">4 · Review</div>
+    </div>
+    <div style="display:flex;gap:0;margin-bottom:24px;border-bottom:1px solid var(--border);">
+      <div style="padding:8px 16px;font-size:13px;color:var(--text);font-weight:600;border-bottom:2px solid var(--text);margin-bottom:-1px;">Audience</div>
+      <div style="padding:8px 16px;font-size:13px;color:var(--muted);">Objective</div>
+      <div style="padding:8px 16px;font-size:13px;color:var(--muted);">Platforms</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Target Persona</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">First-time home buyers</button>
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">IT Professionals</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Senior Executives</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Age Range</label>
+      <input class="form-input" type="text" value="28–44">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Geography</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Pune</button>
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Kharadi</button>
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Viman Nagar</button>
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Koregaon Park</button>
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Baner</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Interests</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Real estate</button>
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Home ownership</button>
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Pune property market</button>
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">IT corridor</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Occupation</label>
+      <input class="form-input" type="text" value="Software engineers, IT managers, senior executives">
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: CAMPAIGN BRIEF-B — Objective (S15-B) ─── -->
+  <div id="screen-campaign-brief-b" class="screen">
+    <div class="brief-steps" style="margin-bottom:8px;">
+      <div class="brief-step done">1 · Setup</div>
+      <div class="brief-step active">2 · Brief</div>
+      <div class="brief-step">3 · Plan</div>
+      <div class="brief-step">4 · Review</div>
+    </div>
+    <div style="display:flex;gap:0;margin-bottom:24px;border-bottom:1px solid var(--border);">
+      <div style="padding:8px 16px;font-size:13px;color:var(--muted);">Audience</div>
+      <div style="padding:8px 16px;font-size:13px;color:var(--text);font-weight:600;border-bottom:2px solid var(--text);margin-bottom:-1px;">Objective</div>
+      <div style="padding:8px 16px;font-size:13px;color:var(--muted);">Platforms</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Primary Goal</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Lead Generation</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Brand Awareness</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Sales</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Engagement</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Thought Leadership</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Retention</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Key Message</label>
+      <textarea class="form-input" rows="3" style="resize:vertical;">Kharadi Heights brings premium 2 &amp; 3 BHK living to Pune's fastest-growing IT corridor. Starting ₹85 lakhs. Limited inventory in Phase 1.</textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Desired Action</label>
+      <input class="form-input" type="text" value="Book a site visit">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Success Metric</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+        <button class="type-chip selected" onclick="toggleTypeChip(this)">Enquiries</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Impressions</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Leads</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Engagement</button>
+        <button class="type-chip" onclick="toggleTypeChip(this)">Shares</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: CAMPAIGN BRIEF-C — Platforms (S15-C) ─── -->
+  <div id="screen-campaign-brief-c" class="screen">
+    <div class="brief-steps" style="margin-bottom:8px;">
+      <div class="brief-step done">1 · Setup</div>
+      <div class="brief-step active">2 · Brief</div>
+      <div class="brief-step">3 · Plan</div>
+      <div class="brief-step">4 · Review</div>
+    </div>
+    <div style="display:flex;gap:0;margin-bottom:24px;border-bottom:1px solid var(--border);">
+      <div style="padding:8px 16px;font-size:13px;color:var(--muted);">Audience</div>
+      <div style="padding:8px 16px;font-size:13px;color:var(--muted);">Objective</div>
+      <div style="padding:8px 16px;font-size:13px;color:var(--text);font-weight:600;border-bottom:2px solid var(--text);margin-bottom:-1px;">Platforms</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Platforms</label>
+      <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
+        <div class="type-chip selected" onclick="toggleTypeChip(this)" style="display:flex;align-items:center;gap:6px;padding:10px 18px;">
+          <span style="font-size:16px;">📸</span> Instagram
+        </div>
+        <div class="type-chip selected" onclick="toggleTypeChip(this)" style="display:flex;align-items:center;gap:6px;padding:10px 18px;">
+          <span style="font-size:16px;">💼</span> LinkedIn
+        </div>
+        <div class="type-chip" onclick="toggleTypeChip(this)" style="display:flex;align-items:center;gap:6px;padding:10px 18px;">
+          <span style="font-size:16px;">👥</span> Facebook
+        </div>
+        <div class="type-chip" onclick="toggleTypeChip(this)" style="display:flex;align-items:center;gap:6px;padding:10px 18px;">
+          <span style="font-size:16px;">𝕏</span> X
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top:24px;">
+      <label class="form-label">Content Mix — Instagram</label>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-top:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;">
+          <span>Image Post</span><span style="color:var(--muted);">×3</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;">
+          <span>Carousel</span><span style="color:var(--muted);">×1</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-size:13px;">
+          <span>Story</span><span style="color:var(--muted);">×1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Content Mix — LinkedIn</label>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-top:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;">
+          <span>Article</span><span style="color:var(--muted);">×2</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-size:13px;">
+          <span>Text Update</span><span style="color:var(--muted);">×1</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--input-bg);border-radius:6px;padding:12px 16px;font-size:13px;color:var(--muted);margin-top:8px;">
+      8 posts across 2 platforms over 18 days · Organic only. Paid scheduling coming soon.
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: CAMPAIGN PLAN (S16) ─── -->
+  <div id="screen-campaign-plan" class="screen">
+    <div style="background:var(--input-bg);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--muted);margin-bottom:24px;display:flex;gap:16px;flex-wrap:wrap;">
+      <span>8 posts</span><span>·</span><span>Instagram + LinkedIn</span><span>·</span><span>13–26 May</span><span>·</span><span style="color:var(--active);font-weight:500;">2 of 8 created</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+
+      <div class="campaign-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:11px;color:var(--muted);">#1 · Tue 13 May</span>
+          <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span>
+        </div>
+        <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Launch Announcement</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">📸 Instagram Post</div>
+        <button class="btn-primary" style="font-size:12px;padding:6px 14px;" onclick="navigateTo('post-create')">Create →</button>
+      </div>
+
+      <div class="campaign-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:11px;color:var(--muted);">#2 · Thu 15 May</span>
+          <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span>
+        </div>
+        <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Product Showcase</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">📸 Instagram Carousel</div>
+        <button class="btn-primary" style="font-size:12px;padding:6px 14px;" onclick="navigateTo('post-create')">Create →</button>
+      </div>
+
+      <div class="campaign-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:11px;color:var(--muted);">#3 · Sat 17 May</span>
+          <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span>
+        </div>
+        <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Location Story</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">📸 Instagram Post</div>
+        <button class="btn-primary" style="font-size:12px;padding:6px 14px;" onclick="navigateTo('post-create')">Create →</button>
+      </div>
+
+      <div class="campaign-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:11px;color:var(--muted);">#4 · Mon 19 May</span>
+          <span class="status-pill draft" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Draft</span>
+        </div>
+        <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Investor Insight</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">💼 LinkedIn Article</div>
+        <button class="btn-ghost" style="font-size:12px;padding:6px 14px;" onclick="navigateTo('post-create')">Edit →</button>
+      </div>
+
+      <div class="campaign-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:11px;color:var(--muted);">#5 · Tue 20 May</span>
+          <span class="status-pill ready" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Ready</span>
+        </div>
+        <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Thought Leadership</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">💼 LinkedIn Article</div>
+        <button class="btn-ghost" style="font-size:12px;padding:6px 14px;" onclick="navigateTo('post-create')">Edit →</button>
+      </div>
+
+      <div class="campaign-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:11px;color:var(--muted);">#6 · Thu 22 May</span>
+          <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span>
+        </div>
+        <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Social Proof</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">📸 Instagram Story</div>
+        <button class="btn-primary" style="font-size:12px;padding:6px 14px;" onclick="navigateTo('post-create')">Create →</button>
+      </div>
+
+      <div class="campaign-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:11px;color:var(--muted);">#7 · Fri 23 May</span>
+          <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span>
+        </div>
+        <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Event Drive</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">💼 LinkedIn Text Update</div>
+        <button class="btn-primary" style="font-size:12px;padding:6px 14px;" onclick="navigateTo('post-create')">Create →</button>
+      </div>
+
+      <div class="campaign-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:11px;color:var(--muted);">#8 · Mon 26 May</span>
+          <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span>
+        </div>
+        <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Urgency CTA</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">📸 Instagram Post</div>
+        <button class="btn-primary" style="font-size:12px;padding:6px 14px;" onclick="navigateTo('post-create')">Create →</button>
+      </div>
+
+    </div>
+
+    <div class="campaign-progress" style="margin-top:24px;">
+      <div class="campaign-progress-label">2 of 8 posts created</div>
+      <div style="height:6px;border-radius:3px;background:var(--input-bg);overflow:hidden;">
+        <div style="width:25%;height:100%;background:var(--active);border-radius:3px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: POST CREATE (S9/S17) ─── -->
+  <div id="screen-post-create" class="screen">
+    <div class="post-context-bar">
+      <span style="background:var(--active);color:#fff;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:500;">Kharadi Heights Project Launch — May 2025</span>
+      <span class="status-pill in-review" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">💼 LinkedIn</span>
+      <span style="font-size:11px;color:var(--muted);">Article</span>
+      <span style="font-size:11px;color:var(--muted);">·</span>
+      <span style="font-size:11px;color:var(--muted);">Mon 19 May 2025</span>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:20px;font-style:italic;">Targeting: IT Professionals, Investors · Objective: Lead Generation</div>
+
+    <div class="form-group">
+      <label class="form-label">Caption</label>
+      <textarea class="form-input" rows="8" style="resize:vertical;line-height:1.6;">Kharadi has added 45,000 IT jobs in the last 4 years. Property prices have followed — but they haven't peaked.
+
+For investors evaluating Pune's residential market right now, here's what the data shows — and why Kharadi Heights may be the clearest opportunity in the city this year.
+
+We looked at 3 metrics: job density, infrastructure spend, and price-to-rent ratio. All three point to the same conclusion.
+
+Full analysis in the comments. Site visits open this weekend.</textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Hashtags</label>
+      <input class="form-input" type="text" value="#KharadiRealEstate #PuneProperty #MehtaRealty #InvestInPune #KharadiHeights">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" style="color:var(--muted);">Image Direction (read-only)</label>
+      <div style="font-size:13px;color:var(--muted);font-style:italic;background:var(--input-bg);border-radius:6px;padding:12px 14px;line-height:1.5;">Data-driven infographic. Kharadi IT job growth 2021–2025 + property price line chart. Clean, LinkedIn-native. No photos.</div>
+    </div>
+
+    <div style="margin-top:8px;padding-top:16px;border-top:1px solid var(--border);">
+      <button class="btn-ghost" style="padding:10px 18px;font-size:13px;" onclick="navigateTo('campaign-plan')">Mark as Ready →</button>
+    </div>
+  </div>
+
+  <!-- ─── SCREEN: CAMPAIGN REVIEW (S18) ─── -->
+  <div id="screen-campaign-review" class="screen">
+    <h2 style="font-size:18px;font-weight:600;margin-bottom:4px;">Review: Kharadi Heights Project Launch</h2>
+    <div style="display:flex;gap:16px;font-size:12px;color:var(--muted);margin-bottom:20px;">
+      <span style="color:var(--active);">1 Ready</span>
+      <span>·</span>
+      <span style="color:#7a4f00;">1 Draft</span>
+      <span>·</span>
+      <span>6 Not Created</span>
+    </div>
+
+    <div>
+      <div class="review-row disabled">
+        <input type="checkbox" disabled>
+        <span style="flex:1;min-width:0;">#1 · IG Post · 13 May · Launch Announcement</span>
+        <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;white-space:nowrap;">Not created</span>
+      </div>
+      <div class="review-row disabled">
+        <input type="checkbox" disabled>
+        <span style="flex:1;min-width:0;">#2 · IG Carousel · 15 May · Product Showcase</span>
+        <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;white-space:nowrap;">Not created</span>
+      </div>
+      <div class="review-row disabled">
+        <input type="checkbox" disabled>
+        <span style="flex:1;min-width:0;">#3 · IG Post · 17 May · Location Story</span>
+        <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;white-space:nowrap;">Not created</span>
+      </div>
+      <div class="review-row">
+        <input type="checkbox" id="review-check-3" onchange="toggleCampaignPostSelect(3)">
+        <span style="flex:1;min-width:0;">#4 · LI Article · 19 May · Investor Insight</span>
+        <span class="status-pill draft" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;white-space:nowrap;">Draft</span>
+      </div>
+      <div class="review-row">
+        <input type="checkbox" id="review-check-4" checked onchange="toggleCampaignPostSelect(4)">
+        <span style="flex:1;min-width:0;">#5 · LI Article · 20 May · Thought Leadership</span>
+        <span class="status-pill ready" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;white-space:nowrap;">Ready ✓</span>
+      </div>
+      <div class="review-row disabled">
+        <input type="checkbox" disabled>
+        <span style="flex:1;min-width:0;">#6 · IG Story · 22 May · Social Proof</span>
+        <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;white-space:nowrap;">Not created</span>
+      </div>
+      <div class="review-row disabled">
+        <input type="checkbox" disabled>
+        <span style="flex:1;min-width:0;">#7 · LI Text · 23 May · Event Drive</span>
+        <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;white-space:nowrap;">Not created</span>
+      </div>
+      <div class="review-row disabled">
+        <input type="checkbox" disabled>
+        <span style="flex:1;min-width:0;">#8 · IG Post · 26 May · Urgency CTA</span>
+        <span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;white-space:nowrap;">Not created</span>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:var(--muted);margin-top:16px;">Not Created posts cannot be submitted. Create them first from Campaign Plan.</p>
+  </div>
+
+  <!-- ─── SCREEN: CAMPAIGN LIVE (S20) ─── -->
+  <div id="screen-campaign-live" class="screen">
+    <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:#fff;margin-bottom:24px;">
+      <div style="font-weight:600;font-size:16px;margin-bottom:6px;">Kharadi Heights Project Launch — May 2025</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">13 May – 31 May 2025</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+        <span class="type-chip selected" style="font-size:11px;padding:3px 10px;border-radius:20px;cursor:default;">📸 Instagram</span>
+        <span class="type-chip selected" style="font-size:11px;padding:3px 10px;border-radius:20px;cursor:default;">💼 LinkedIn</span>
+      </div>
+      <div style="display:flex;gap:16px;font-size:12px;flex-wrap:wrap;">
+        <span style="color:var(--active);">1 In Review</span>
+        <span>·</span>
+        <span style="color:#7a4f00;">1 Draft</span>
+        <span>·</span>
+        <span style="color:var(--muted);">6 Not Created</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Timeline — May 2025</div>
+      <div class="timeline-bar"></div>
+      <div class="timeline-posts">
+        <span class="timeline-post-chip">📸 13 May · Launch</span>
+        <span class="timeline-post-chip">📸 15 May · Showcase</span>
+        <span class="timeline-post-chip">📸 17 May · Location</span>
+        <span class="timeline-post-chip" style="background:#fff8f0;border-color:#fde5c0;">💼 19 May · Draft</span>
+        <span class="timeline-post-chip" style="background:#eef4fc;border-color:#c5daf7;">💼 20 May · In Review</span>
+        <span class="timeline-post-chip">📸 22 May · Social</span>
+        <span class="timeline-post-chip">💼 23 May · Event</span>
+        <span class="timeline-post-chip">📸 26 May · Urgency</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="review-row disabled"><span style="flex:1;">#1 · IG Post · 13 May · Launch Announcement</span><span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span></div>
+      <div class="review-row disabled"><span style="flex:1;">#2 · IG Carousel · 15 May · Product Showcase</span><span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span></div>
+      <div class="review-row disabled"><span style="flex:1;">#3 · IG Post · 17 May · Location Story</span><span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span></div>
+      <div class="review-row"><span style="flex:1;">#4 · LI Article · 19 May · Investor Insight</span><span class="status-pill draft" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Draft</span></div>
+      <div class="review-row"><span style="flex:1;">#5 · LI Article · 20 May · Thought Leadership</span><span class="status-pill in-review" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">In Review</span></div>
+      <div class="review-row disabled"><span style="flex:1;">#6 · IG Story · 22 May · Social Proof</span><span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span></div>
+      <div class="review-row disabled"><span style="flex:1;">#7 · LI Text · 23 May · Event Drive</span><span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span></div>
+      <div class="review-row disabled"><span style="flex:1;">#8 · IG Post · 26 May · Urgency CTA</span><span class="status-pill not-created" style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid;">Not created</span></div>
+    </div>
+
+    <p style="font-size:12px;color:var(--muted);margin-top:16px;">Posts in review will appear here once approved. Performance data populates after publish.</p>
+  </div>
+
 </div><!-- end #main-content -->
 
 <!-- ═══════════════════════════════════════════ SCREEN: COMPLETE ═══ -->
@@ -1770,6 +2433,35 @@ Explore our projects → link in bio</textarea>
   <button class="btn-primary" style="width:240px;" onclick="navigateTo('dashboard')">Go to Dashboard →</button>
 </div>
 
+<!-- ═══════════════════════════════════════════ SCREEN: CAMPAIGN SUBMIT ═══ -->
+<div id="screen-campaign-submit" class="screen">
+  <div class="checkmark"></div>
+  <h1 style="font-size:26px;font-weight:600;">Submitted for approval.</h1>
+  <p style="font-size:16px;color:var(--muted);margin-top:8px;margin-bottom:32px;max-width:480px;">1 post sent to Anita Desai (Approver). You'll be notified when it's reviewed.</p>
+  <div class="summary-list" style="margin-bottom:32px;">
+    <div style="padding:14px 0;border-bottom:1px solid var(--border);font-size:14px;display:flex;gap:12px;align-items:center;">
+      <span style="color:var(--muted);">💼 LinkedIn Article</span>
+      <span>·</span>
+      <span style="color:var(--muted);">Tue 20 May</span>
+      <span>·</span>
+      <span style="font-weight:500;">Why IT Professionals Are Choosing Kharadi in 2025</span>
+    </div>
+  </div>
+  <div class="next-cards">
+    <div class="next-card" onclick="navigateTo('campaign-plan')" style="cursor:pointer;">
+      <div class="next-card-title">Create more posts</div>
+      <div class="next-card-desc">Continue building out the campaign.</div>
+      <span class="next-card-link">Continue in Campaign Plan →</span>
+    </div>
+    <div class="next-card" onclick="navigateTo('campaign-live')" style="cursor:pointer;">
+      <div class="next-card-title">View campaign</div>
+      <div class="next-card-desc">See all posts and statuses.</div>
+      <span class="next-card-link">View Campaign →</span>
+    </div>
+  </div>
+  <button class="btn-primary" style="width:240px;" onclick="navigateTo('campaign-live')">View Campaign →</button>
+</div>
+
 <script>
 // ══════════════════════════════════════════════════════════════
 // CONSTANTS
@@ -1795,6 +2487,17 @@ const SCREEN_META = {
   'review-posts':         { step: null, section: 'Review Posts',  showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Schedule Approved Posts →', ctaAction: 'goToSchedule' },
   'schedule':             { step: null, section: 'Schedule',      showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Confirm Schedule →',        ctaAction: 'goToPublishConfirm' },
   'publish-confirm':      { step: null, section: '',              showTopBar: false, showBottomBar: false, showBack: false, cta: '', ctaAction: '' },
+  'auth':                 { step: null, showTopBar: false, showBottomBar: false },
+  'campaigns':            { step: null, section: 'Campaigns',       showTopBar: true, showBottomBar: false, showBack: false },
+  'campaign-setup':       { step: null, section: 'New Campaign',    showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Set Up Campaign Brief →', ctaAction: 'goToBriefA' },
+  'campaign-brief-a':     { step: null, section: 'Campaign Brief',  showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Next: Objective →',       ctaAction: 'goToBriefB' },
+  'campaign-brief-b':     { step: null, section: 'Campaign Brief',  showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Next: Platforms →',       ctaAction: 'goToBriefC' },
+  'campaign-brief-c':     { step: null, section: 'Campaign Brief',  showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'See AI Campaign Plan →',  ctaAction: 'goToCampaignPlan' },
+  'campaign-plan':        { step: null, section: 'Campaign Plan',   showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Review All Posts →',      ctaAction: 'goToCampaignReview' },
+  'post-create':          { step: null, section: 'Create Post',     showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Save Draft →',            ctaAction: 'savePostDraft' },
+  'campaign-review':      { step: null, section: 'Campaign Review', showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Submit for Approval →',   ctaAction: 'goToCampaignSubmit' },
+  'campaign-submit':      { step: null, section: '',                showTopBar: false, showBottomBar: false, showBack: false },
+  'campaign-live':        { step: null, section: 'Campaign Live',   showTopBar: true, showBottomBar: false, showBack: false },
 };
 
 const SCREEN_NEXT = {
@@ -1883,9 +2586,24 @@ function showScreen(screenId) {
   // Progress
   renderProgress(meta);
 
+  // Sidebar visibility
+  const sideNav = document.getElementById('side-nav');
+  const isPostOnboarding = meta.step === null && meta.showTopBar !== false;
+  if (sideNav) sideNav.classList.toggle('visible', isPostOnboarding);
+  const mainContent = document.getElementById('main-content');
+  if (mainContent) mainContent.classList.toggle('has-sidebar', isPostOnboarding);
+
+  // Active nav highlight
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const campaignScreens = ['campaigns','campaign-setup','campaign-brief-a','campaign-brief-b','campaign-brief-c','campaign-plan','post-create','campaign-review','campaign-submit','campaign-live'];
+  const homeScreens = ['dashboard','content-plan','topic-selection','review-posts','schedule','publish-confirm'];
+  if (homeScreens.includes(screenId)) { const el = document.getElementById('nav-home'); if (el) el.classList.add('active'); }
+  else if (campaignScreens.includes(screenId)) { const el = document.getElementById('nav-campaigns'); if (el) el.classList.add('active'); }
+
   // Screen-specific setup
   if (screenId === 'loading-a') startLoadingAnimation();
   if (screenId === 'guidelines-visual') setupVisualScreen();
+  if (screenId === 'campaign-review') updateCampaignSubmitCTA();
 
   window.scrollTo(0, 0);
 }
@@ -1954,13 +2672,6 @@ function handleCTA() {
   if (action === 'template') {
     navigateTo('guidelines-visual');
   } else if (action === 'saveVisual') {
-    const primarySelected = document.querySelector('#primary-colour-grid .color-swatch.selected');
-    if (!primarySelected) {
-      const warning = document.getElementById('visual-colour-warning');
-      warning.style.display = 'block';
-      warning.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      return;
-    }
     navigateTo('guidelines-messaging');
   } else if (action === 'saveTone') {
     const confirm = document.getElementById('tone-save-confirm');
@@ -1982,6 +2693,13 @@ function handleCTA() {
   } else if (action === 'goToPublishConfirm') {
     buildPublishConfirm();
     navigateTo('publish-confirm');
+  } else if (action === 'goToBriefA')         { navigateTo('campaign-brief-a');
+  } else if (action === 'goToBriefB')         { navigateTo('campaign-brief-b');
+  } else if (action === 'goToBriefC')         { navigateTo('campaign-brief-c');
+  } else if (action === 'goToCampaignPlan')   { navigateTo('campaign-plan');
+  } else if (action === 'savePostDraft')      { navigateTo('campaign-plan');
+  } else if (action === 'goToCampaignReview') { navigateTo('campaign-review');
+  } else if (action === 'goToCampaignSubmit') { navigateTo('campaign-submit');
   } else {
     const next = SCREEN_NEXT[currentScreen];
     if (next) navigateTo(next);
@@ -1992,16 +2710,6 @@ function handleCTA() {
 // PATH SELECTION (Screen 2)
 // ══════════════════════════════════════════════════════════════
 function choosePath(path) {
-  const brandName = document.getElementById('bb-brand-name').value.trim();
-  const errorEl   = document.getElementById('bb-brand-name-error');
-
-  if (!brandName) {
-    errorEl.style.display = 'block';
-    document.getElementById('bb-brand-name').focus();
-    return;
-  }
-  errorEl.style.display = 'none';
-
   currentPath = path;
   if (path === 'A') navigateTo('loading-a');
   else if (path === 'C') navigateTo('loading-b');
@@ -2426,9 +3134,57 @@ function buildPublishConfirm() {
 }
 
 // ══════════════════════════════════════════════════════════════
+// CAMPAIGN STATE & FUNCTIONS
+// ══════════════════════════════════════════════════════════════
+const campaignState = {
+  selectedReviewPosts: new Set([4]), // post idx 4 = post #5 (Thought Leadership, Ready) pre-selected
+};
+
+function showNavStub(el) {
+  const existing = document.getElementById('nav-stub-tip');
+  if (existing) existing.remove();
+  const tip = document.createElement('div');
+  tip.id = 'nav-stub-tip';
+  tip.textContent = 'Coming soon';
+  tip.style.cssText = 'position:fixed;left:200px;background:var(--text);color:#fff;font-size:12px;padding:4px 10px;border-radius:4px;z-index:300;pointer-events:none;';
+  const rect = el.getBoundingClientRect();
+  tip.style.top = rect.top + 8 + 'px';
+  document.body.appendChild(tip);
+  setTimeout(() => tip.remove(), 1500);
+}
+
+function toggleTypeChip(chip) {
+  chip.classList.toggle('selected');
+}
+
+function toggleCampaignPostSelect(idx) {
+  const cb = document.getElementById('review-cb-' + idx);
+  if (!cb || cb.disabled) return;
+  if (campaignState.selectedReviewPosts.has(idx)) {
+    campaignState.selectedReviewPosts.delete(idx);
+    if (cb) cb.checked = false;
+  } else {
+    campaignState.selectedReviewPosts.add(idx);
+    if (cb) cb.checked = true;
+  }
+  updateCampaignSubmitCTA();
+}
+
+function updateCampaignSubmitCTA() {
+  const n = campaignState.selectedReviewPosts.size;
+  const cta = document.getElementById('btn-cta');
+  if (cta) {
+    cta.disabled = n === 0;
+    cta.textContent = n === 0
+      ? 'Submit for Approval →'
+      : 'Submit ' + n + (n === 1 ? ' Post' : ' Posts') + ' for Approval →';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════════
-navigateTo('welcome');
+navigateTo('auth');
 </script>
 </body>
 </html>
