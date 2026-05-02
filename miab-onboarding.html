@@ -1144,6 +1144,177 @@ textarea { resize: vertical; }
   display: none; z-index: 300; text-align: center; font-weight: 500;
 }
 .success-flash.visible { display: block; }
+
+/* ══ BRAND / CALENDAR / INTELLIGENCE / ANALYTICS ════════════════ */
+
+/* ── Shared: section page header ── */
+.section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+.section-title  { font-size:22px; font-weight:600; }
+.section-sub    { font-size:14px; color:var(--muted); margin-top:2px; }
+
+/* ── Brand tabs ── */
+.brand-tabs { display:flex; border-bottom:1px solid var(--border); margin-bottom:28px; }
+.brand-tab  {
+  padding:10px 20px; font-size:14px; color:var(--muted);
+  background:none; border:none; border-bottom:2px solid transparent;
+  cursor:pointer; font-family:inherit; margin-bottom:-1px;
+}
+.brand-tab:hover  { color:var(--text); }
+.brand-tab.active { color:var(--text); font-weight:600; border-bottom-color:var(--text); }
+
+.brand-completion {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--input-bg); border:1px solid var(--border);
+  border-radius:20px; padding:5px 14px; font-size:12px; color:var(--muted);
+}
+.brand-completion strong { color:var(--text); }
+
+.colour-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; }
+.colour-chip {
+  display:flex; align-items:center; gap:8px;
+  border:1px solid var(--border); border-radius:6px; padding:8px 12px;
+  font-size:13px; cursor:pointer;
+}
+.colour-chip:hover { border-color:var(--active); }
+.colour-dot { width:24px; height:24px; border-radius:4px; flex-shrink:0; }
+
+.font-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; }
+.font-chip {
+  border:1px solid var(--border); border-radius:6px; padding:8px 14px;
+  font-size:13px; cursor:pointer; background:#fff;
+}
+.font-chip:hover { border-color:var(--active); }
+
+.diff-row  { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:14px; }
+.diff-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+
+/* ── Calendar ── */
+.cal-toolbar {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:20px; flex-wrap:wrap; gap:12px;
+}
+.cal-view-toggle { display:flex; gap:0; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.cal-view-btn {
+  padding:7px 18px; font-size:13px; background:#fff;
+  border:none; cursor:pointer; font-family:inherit; color:var(--muted);
+}
+.cal-view-btn.active { background:var(--text); color:#fff; }
+.cal-filter { display:flex; gap:8px; flex-wrap:wrap; }
+.cal-filter-chip {
+  padding:5px 12px; border:1px solid var(--border); border-radius:20px;
+  font-size:12px; cursor:pointer; background:#fff; font-family:inherit; color:var(--muted);
+}
+.cal-filter-chip.active { background:var(--text); color:#fff; border-color:var(--text); }
+
+.cal-month-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+.cal-day-cell {
+  border:1px solid var(--border); border-radius:8px;
+  padding:10px; min-height:90px; background:#fff;
+}
+.cal-day-date  { font-size:11px; font-weight:600; color:var(--muted); margin-bottom:6px; }
+.cal-post-chip {
+  display:flex; align-items:center; gap:5px;
+  padding:4px 7px; border-radius:4px; font-size:11px;
+  margin-bottom:4px; border:1px solid var(--border); background:var(--input-bg);
+  cursor:pointer; line-height:1.3;
+}
+.cal-post-chip:hover { border-color:var(--active); }
+.cal-post-chip .plat  { font-size:10px; font-weight:700; flex-shrink:0; }
+.cal-post-chip .plat.ig { color:#c13584; }
+.cal-post-chip .plat.li { color:#0077b5; }
+.cal-chip-status { margin-left:auto; flex-shrink:0; width:7px; height:7px; border-radius:50%; }
+.chip-s-scheduled { background:#417505; }
+.chip-s-draft     { background:#F5A623; }
+.chip-s-review    { background:#4A90D9; }
+.chip-s-none      { background:#ccc; }
+.cal-legend { display:flex; gap:16px; margin-top:16px; flex-wrap:wrap; }
+.cal-legend-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); }
+.cal-legend-dot  { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+
+/* ── Intelligence ── */
+.intel-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:28px; }
+.intel-comp-card {
+  border:1px solid var(--border); border-radius:8px;
+  padding:16px; background:#fff;
+}
+.intel-comp-name { font-size:14px; font-weight:600; margin-bottom:2px; }
+.intel-comp-url  { font-size:11px; color:var(--muted); margin-bottom:10px; }
+.intel-comp-stat { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:6px; }
+.intel-comp-stat strong { color:var(--text); }
+.intel-comp-last { font-size:11px; color:var(--muted); font-style:italic; margin-top:8px; padding-top:8px; border-top:1px solid var(--border); line-height:1.4; }
+
+.alert-feed { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+.alert-card {
+  border:1px solid var(--border); border-radius:8px;
+  padding:14px 16px; background:#fff;
+  display:flex; align-items:flex-start; gap:12px;
+}
+.alert-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
+.alert-body { flex:1; min-width:0; }
+.alert-title { font-size:13px; font-weight:600; margin-bottom:2px; }
+.alert-desc  { font-size:12px; color:var(--muted); line-height:1.4; }
+.alert-time  { font-size:11px; color:var(--muted); flex-shrink:0; }
+
+.trend-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.trend-card {
+  border:1px solid var(--border); border-radius:8px;
+  padding:16px; background:#fff;
+}
+.trend-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); margin-bottom:8px; }
+.trend-stat  { font-size:24px; font-weight:700; color:var(--active); margin-bottom:4px; }
+.trend-desc  { font-size:13px; color:var(--muted); line-height:1.4; }
+
+/* ── Analytics ── */
+.analytics-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:28px; }
+.analytics-stat {
+  border:1px solid var(--border); border-radius:8px;
+  padding:16px; background:#fff; text-align:center;
+}
+.analytics-stat-num   { font-size:28px; font-weight:700; color:var(--text); }
+.analytics-stat-label { font-size:12px; color:var(--muted); margin-top:2px; }
+.analytics-stat-delta { font-size:11px; margin-top:4px; font-weight:500; }
+.delta-up   { color:var(--success); }
+.delta-down { color:var(--error); }
+
+.analytics-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+.analytics-card { border:1px solid var(--border); border-radius:8px; padding:20px; background:#fff; }
+.analytics-card-title { font-size:13px; font-weight:600; margin-bottom:16px; }
+
+/* CSS bar chart */
+.bar-chart { display:flex; flex-direction:column; gap:10px; }
+.bar-row   { display:flex; align-items:center; gap:10px; font-size:12px; }
+.bar-label { width:110px; flex-shrink:0; color:var(--muted); text-align:right; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bar-track { flex:1; height:20px; background:var(--input-bg); border-radius:4px; overflow:hidden; }
+.bar-fill  { height:100%; background:var(--active); border-radius:4px; transition:width .3s; }
+.bar-val   { width:36px; font-size:11px; color:var(--muted); text-align:right; flex-shrink:0; }
+
+.top-posts-list { display:flex; flex-direction:column; gap:0; }
+.top-post-row {
+  display:flex; align-items:center; gap:12px;
+  padding:10px 0; border-bottom:1px solid var(--border); font-size:12px;
+}
+.top-post-row:last-child { border-bottom:none; }
+.top-post-rank { width:18px; font-weight:700; color:var(--muted); flex-shrink:0; text-align:center; }
+.top-post-plat { flex-shrink:0; }
+.top-post-title { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.top-post-eng   { font-weight:600; color:var(--success); flex-shrink:0; }
+
+.platform-compare { display:flex; gap:16px; flex-wrap:wrap; margin-top:4px; }
+.plat-compare-item {
+  flex:1; min-width:120px;
+  border:1px solid var(--border); border-radius:8px; padding:14px;
+  text-align:center;
+}
+.plat-compare-name { font-size:12px; color:var(--muted); margin-bottom:6px; }
+.plat-compare-val  { font-size:22px; font-weight:700; }
+.plat-compare-sub  { font-size:11px; color:var(--muted); margin-top:2px; }
+
+.connect-banner {
+  background:#f5f9ff; border:1px solid #c5daf7;
+  border-radius:8px; padding:16px 20px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:13px; margin-top:8px;
+}
 </style>
 </head>
 <body>
@@ -1152,11 +1323,11 @@ textarea { resize: vertical; }
 <div id="side-nav">
   <div class="nav-item" id="nav-home" onclick="navigateTo('dashboard')">Home</div>
   <div class="nav-item" id="nav-content" onclick="navigateTo('uc2-dashboard')">Content</div>
-  <div class="nav-item nav-stub" onclick="showNavStub(this)">Calendar</div>
-  <div class="nav-item" id="nav-campaigns" onclick="navigateTo('campaigns')">Campaigns</div>
-  <div class="nav-item nav-stub" onclick="showNavStub(this)">Brand</div>
-  <div class="nav-item nav-stub" onclick="showNavStub(this)">Intelligence</div>
-<div class="nav-item nav-stub" onclick="showNavStub(this)">Analytics</div>
+  <div class="nav-item" id="nav-calendar"     onclick="navigateTo('cal')">Calendar</div>
+  <div class="nav-item" id="nav-campaigns"    onclick="navigateTo('campaigns')">Campaigns</div>
+  <div class="nav-item" id="nav-brand"        onclick="navigateTo('brand')">Brand</div>
+  <div class="nav-item" id="nav-intelligence" onclick="navigateTo('intelligence')">Intelligence</div>
+  <div class="nav-item" id="nav-analytics"    onclick="navigateTo('analytics')">Analytics</div>
   <div class="nav-divider"></div>
   <div class="nav-item nav-stub" onclick="showNavStub(this)">Settings</div>
 </div>
@@ -2599,6 +2770,539 @@ Full analysis in the comments. Site visits open this weekend.</textarea>
   </div>
 
 
+  <!-- ═══ BRAND ════════════════════════════════════════════════ -->
+  <div id="screen-brand" class="screen">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Brand</div>
+        <div class="section-sub">Mehta Realty — your brand foundation</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="brand-completion"><strong>9</strong> / 10 complete</span>
+        <button class="btn-primary" style="font-size:13px;padding:9px 18px;" onclick="saveBrand()">Save Changes →</button>
+      </div>
+    </div>
+
+    <div class="brand-tabs">
+      <button class="brand-tab active" id="btab-visual"    onclick="showBrandTab('visual')">Visual Identity</button>
+      <button class="brand-tab"        id="btab-messaging" onclick="showBrandTab('messaging')">Messaging</button>
+      <button class="brand-tab"        id="btab-tone"      onclick="showBrandTab('tone')">Tone &amp; Voice</button>
+    </div>
+
+    <!-- Visual Identity tab -->
+    <div id="brand-visual-content">
+      <div class="form-group">
+        <label class="form-label">Brand Name</label>
+        <input class="form-input" type="text" value="Mehta Realty">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Logo</label>
+        <div style="display:flex;align-items:center;gap:14px;margin-top:4px;">
+          <div style="width:72px;height:72px;border:1px solid var(--border);border-radius:8px;background:var(--input-bg);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);">Logo</div>
+          <div>
+            <button class="btn-ghost" style="font-size:13px;padding:7px 14px;">Replace Logo</button>
+            <div style="font-size:11px;color:var(--muted);margin-top:5px;">PNG, SVG · Max 5MB</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Colours</label>
+        <div class="colour-row">
+          <div class="colour-chip">
+            <div class="colour-dot" style="background:#1a3a5c;"></div>
+            <span>Primary — #1A3A5C</span>
+            <button class="btn-muted" style="font-size:11px;">Change</button>
+          </div>
+          <div class="colour-chip">
+            <div class="colour-dot" style="background:#d4ac0d;"></div>
+            <span>Secondary — #D4AC0D</span>
+            <button class="btn-muted" style="font-size:11px;">Change</button>
+          </div>
+          <div class="colour-chip">
+            <div class="colour-dot" style="background:#ffffff;border:1px solid var(--border);"></div>
+            <span>Background — #FFFFFF</span>
+            <button class="btn-muted" style="font-size:11px;">Change</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fonts</label>
+        <div class="font-row">
+          <div class="font-chip" style="font-family:Georgia,serif;font-size:15px;">DM Sans — Headings <button class="btn-muted" style="font-size:11px;margin-left:8px;">Change</button></div>
+          <div class="font-chip">Inter — Body <button class="btn-muted" style="font-size:11px;margin-left:8px;">Change</button></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Website</label>
+        <input class="form-input" type="url" value="https://mehtarealty.in">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Social Links</label>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+          <input class="form-input" type="url" placeholder="Instagram URL" value="https://instagram.com/mehtarealty">
+          <input class="form-input" type="url" placeholder="LinkedIn URL"  value="https://linkedin.com/company/mehta-realty">
+          <input class="form-input" type="url" placeholder="Facebook URL"  value="https://facebook.com/mehtarealty">
+        </div>
+      </div>
+    </div>
+
+    <!-- Messaging tab -->
+    <div id="brand-messaging-content" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">Brand Mission</label>
+        <textarea class="form-input" rows="2">Making quality real estate accessible to every Indian family.</textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tagline / Positioning</label>
+        <input class="form-input" type="text" value="Building trust, one home at a time.">
+      </div>
+      <div class="form-group">
+        <label class="form-label">What makes Mehta Realty different?</label>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
+          <div class="diff-row"><span class="diff-icon">✦</span><span>RERA compliant across all projects — full transparency on timelines and costs</span></div>
+          <div class="diff-row"><span class="diff-icon">✦</span><span>15+ years of delivering homes in Pune's fastest-growing corridors</span></div>
+          <div class="diff-row"><span class="diff-icon">✦</span><span>2,000+ families housed — verified testimonials available for every project</span></div>
+          <div class="diff-row"><span class="diff-icon">✦</span><span>In-house construction quality team with quarterly audits</span></div>
+          <button class="btn-text" style="font-size:13px;align-self:flex-start;margin-top:4px;">+ Add differentiator</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Who are your customers?</label>
+        <textarea class="form-input" rows="2">Indian families and IT professionals aged 28–55, looking for first homes or investment properties in Pune. Both resident buyers and NRI investors.</textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Key call-to-action phrases</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
+          <span class="hashtag-chip">Book a site visit <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+          <span class="hashtag-chip">Talk to our team <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+          <span class="hashtag-chip">Download brochure <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+          <span class="hashtag-chip">Check availability <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <input class="form-input" style="flex:1;" type="text" placeholder="+ Add phrase">
+          <button class="btn-ghost" style="padding:8px 14px;font-size:13px;">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tone & Voice tab -->
+    <div id="brand-tone-content" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">Tone of Voice</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
+          <button class="type-chip selected" onclick="toggleTypeChip(this)">Professional</button>
+          <button class="type-chip selected" onclick="toggleTypeChip(this)">Trustworthy</button>
+          <button class="type-chip selected" onclick="toggleTypeChip(this)">Warm</button>
+          <button class="type-chip selected" onclick="toggleTypeChip(this)">Aspirational</button>
+          <button class="type-chip" onclick="toggleTypeChip(this)">Bold</button>
+          <button class="type-chip" onclick="toggleTypeChip(this)">Playful</button>
+          <button class="type-chip" onclick="toggleTypeChip(this)">Authoritative</button>
+          <button class="type-chip" onclick="toggleTypeChip(this)">Minimal</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Words we always use</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
+          <span class="hashtag-chip">home <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+          <span class="hashtag-chip">trust <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+          <span class="hashtag-chip">quality <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+          <span class="hashtag-chip">RERA-compliant <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+          <span class="hashtag-chip">family <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <input class="form-input" style="flex:1;" type="text" placeholder="+ Add word">
+          <button class="btn-ghost" style="padding:8px 14px;font-size:13px;">Add</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Words we never use</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
+          <span class="hashtag-chip">cheap <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+          <span class="hashtag-chip">scheme <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+          <span class="hashtag-chip">deal <button class="hashtag-chip-remove" onclick="this.closest('.hashtag-chip').remove()">×</button></span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <input class="form-input" style="flex:1;" type="text" placeholder="+ Add word">
+          <button class="btn-ghost" style="padding:8px 14px;font-size:13px;">Add</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">A good example of our copy</label>
+        <textarea class="form-input" rows="2">Your family deserves more than four walls. Kharadi Heights is where modern living meets trusted craftsmanship — and every detail has been thought through for you.</textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">A bad example (what to avoid)</label>
+        <textarea class="form-input" rows="2">CHEAPEST flats in Pune!! LIMITED DEAL — buy now before prices go up!! Call us today!!</textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Emoji usage in content</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:6px;">
+          <button class="type-chip selected" onclick="toggleTypeChip(this)">Minimal — 1–2 per post</button>
+          <button class="type-chip" onclick="toggleTypeChip(this)">None</button>
+          <button class="type-chip" onclick="toggleTypeChip(this)">Free use</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="brand-save-confirm" style="display:none;" class="banner banner-green" style="margin-top:16px;">✓ Brand guidelines saved.</div>
+  </div>
+
+  <!-- ═══ CALENDAR ══════════════════════════════════════════════ -->
+  <div id="screen-cal" class="screen">
+    <div class="cal-toolbar">
+      <div>
+        <div class="section-title">Calendar</div>
+        <div class="section-sub">13 May – 26 May 2025</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div class="cal-filter">
+          <button class="cal-filter-chip active" onclick="toggleCalFilter(this)">All</button>
+          <button class="cal-filter-chip" onclick="toggleCalFilter(this)">Instagram</button>
+          <button class="cal-filter-chip" onclick="toggleCalFilter(this)">LinkedIn</button>
+        </div>
+        <div class="cal-view-toggle">
+          <button class="cal-view-btn active">Week</button>
+          <button class="cal-view-btn">Month</button>
+        </div>
+        <button class="btn-primary" style="font-size:13px;padding:9px 16px;" onclick="navigateTo('uc2-post')">+ Add Post</button>
+      </div>
+    </div>
+
+    <!-- Week 1 -->
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:8px;">Week of 13–17 May</div>
+    <div class="cal-month-grid" style="margin-bottom:16px;">
+      <div class="cal-day-cell">
+        <div class="cal-day-date">Tue 13 May</div>
+        <div class="cal-post-chip" onclick="navigateTo('campaign-plan')">
+          <span class="plat ig">IG</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Why Pune's real estate…</span><span class="cal-chip-status chip-s-scheduled"></span>
+        </div>
+        <div class="cal-post-chip" onclick="navigateTo('post-create')">
+          <span class="plat ig">IG</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Launch Announcement</span><span class="cal-chip-status chip-s-none"></span>
+        </div>
+      </div>
+      <div class="cal-day-cell">
+        <div class="cal-day-date">Wed 14 May</div>
+      </div>
+      <div class="cal-day-cell">
+        <div class="cal-day-date">Thu 15 May</div>
+        <div class="cal-post-chip" onclick="navigateTo('campaign-plan')">
+          <span class="plat ig">IG</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">5 things to check…</span><span class="cal-chip-status chip-s-scheduled"></span>
+        </div>
+        <div class="cal-post-chip" onclick="navigateTo('post-create')">
+          <span class="plat ig">IG</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Product Showcase</span><span class="cal-chip-status chip-s-none"></span>
+        </div>
+      </div>
+      <div class="cal-day-cell">
+        <div class="cal-day-date">Fri 16 May</div>
+      </div>
+      <div class="cal-day-cell">
+        <div class="cal-day-date">Sat 17 May</div>
+        <div class="cal-post-chip" onclick="navigateTo('post-create')">
+          <span class="plat ig">IG</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Location Story</span><span class="cal-chip-status chip-s-none"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Week 2 -->
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:8px;">Week of 19–26 May</div>
+    <div class="cal-month-grid" style="margin-bottom:16px;">
+      <div class="cal-day-cell">
+        <div class="cal-day-date">Mon 19 May</div>
+        <div class="cal-post-chip" onclick="navigateTo('campaign-plan')">
+          <span class="plat ig">IG</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Client spotlight…</span><span class="cal-chip-status chip-s-scheduled"></span>
+        </div>
+        <div class="cal-post-chip" onclick="navigateTo('post-create')">
+          <span class="plat li">LI</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Investor Insight</span><span class="cal-chip-status chip-s-draft"></span>
+        </div>
+      </div>
+      <div class="cal-day-cell">
+        <div class="cal-day-date">Tue 20 May</div>
+        <div class="cal-post-chip" onclick="navigateTo('campaign-plan')">
+          <span class="plat ig">IG</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Mehta Heights Phase 2</span><span class="cal-chip-status chip-s-scheduled"></span>
+        </div>
+        <div class="cal-post-chip" onclick="navigateTo('post-create')">
+          <span class="plat li">LI</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Thought Leadership</span><span class="cal-chip-status chip-s-review"></span>
+        </div>
+      </div>
+      <div class="cal-day-cell">
+        <div class="cal-day-date">Wed 21 May</div>
+        <div class="cal-post-chip" onclick="navigateTo('campaign-plan')">
+          <span class="plat li">LI</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Good time to invest?</span><span class="cal-chip-status chip-s-scheduled"></span>
+        </div>
+        <div class="cal-post-chip" onclick="navigateTo('campaign-plan')">
+          <span class="plat ig">IG</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Construction quality</span><span class="cal-chip-status chip-s-scheduled"></span>
+        </div>
+      </div>
+      <div class="cal-day-cell">
+        <div class="cal-day-date">Thu 22 May</div>
+        <div class="cal-post-chip" onclick="navigateTo('campaign-plan')">
+          <span class="plat li">LI</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">RERA compliance…</span><span class="cal-chip-status chip-s-scheduled"></span>
+        </div>
+        <div class="cal-post-chip" onclick="navigateTo('campaign-plan')">
+          <span class="plat ig">IG</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Testimonial Tuesday</span><span class="cal-chip-status chip-s-scheduled"></span>
+        </div>
+        <div class="cal-post-chip" onclick="navigateTo('post-create')">
+          <span class="plat ig">IG</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Social Proof</span><span class="cal-chip-status chip-s-none"></span>
+        </div>
+      </div>
+      <div class="cal-day-cell">
+        <div class="cal-day-date">Fri 23 – Mon 26 May</div>
+        <div class="cal-post-chip" onclick="navigateTo('post-create')">
+          <span class="plat li">LI</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Event Drive</span><span class="cal-chip-status chip-s-none"></span>
+        </div>
+        <div class="cal-post-chip" onclick="navigateTo('post-create')">
+          <span class="plat ig">IG</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Urgency CTA</span><span class="cal-chip-status chip-s-none"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cal-legend">
+      <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#417505;"></span>Scheduled</span>
+      <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#F5A623;"></span>Draft</span>
+      <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#4A90D9;"></span>In Review</span>
+      <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#ccc;"></span>Not Created</span>
+    </div>
+  </div>
+
+  <!-- ═══ INTELLIGENCE ═══════════════════════════════════════════ -->
+  <div id="screen-intelligence" class="screen">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Intelligence</div>
+        <div class="section-sub">Competitor monitoring and market signals for Mehta Realty</div>
+      </div>
+      <button class="btn-ghost" style="font-size:13px;padding:9px 16px;">Manage Competitors</button>
+    </div>
+
+    <!-- Competitor cards -->
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:12px;">Competitors</div>
+    <div class="intel-grid">
+      <div class="intel-comp-card">
+        <div class="intel-comp-name">Lodha Group</div>
+        <div class="intel-comp-url">lodhagroup.com</div>
+        <div class="intel-comp-stat"><span>Posts (last 30 days)</span><strong>24</strong></div>
+        <div class="intel-comp-stat"><span>Avg. engagement</span><strong>2.8%</strong></div>
+        <div class="intel-comp-stat"><span>Top platform</span><strong>Instagram</strong></div>
+        <div class="intel-comp-last">"Launching Lodha Bellevue in Pune" — 2 days ago · 847 engagements</div>
+      </div>
+      <div class="intel-comp-card">
+        <div class="intel-comp-name">Godrej Properties</div>
+        <div class="intel-comp-url">godrejproperties.com</div>
+        <div class="intel-comp-stat"><span>Posts (last 30 days)</span><strong>19</strong></div>
+        <div class="intel-comp-stat"><span>Avg. engagement</span><strong>3.1%</strong></div>
+        <div class="intel-comp-stat"><span>Top platform</span><strong>LinkedIn</strong></div>
+        <div class="intel-comp-last">"Godrej Park World Phase 3 Open for Booking" — 5 days ago · 1,203 engagements</div>
+      </div>
+      <div class="intel-comp-card">
+        <div class="intel-comp-name">NoBroker</div>
+        <div class="intel-comp-url">nobroker.in</div>
+        <div class="intel-comp-stat"><span>Posts (last 30 days)</span><strong>41</strong></div>
+        <div class="intel-comp-stat"><span>Avg. engagement</span><strong>1.9%</strong></div>
+        <div class="intel-comp-stat"><span>Top platform</span><strong>Instagram</strong></div>
+        <div class="intel-comp-last">"Pune IT corridor property prices up 12% YoY" — 1 day ago · 312 engagements</div>
+      </div>
+    </div>
+
+    <!-- Alerts -->
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:12px;">Recent Alerts</div>
+    <div class="alert-feed">
+      <div class="alert-card">
+        <div class="alert-icon">⚡</div>
+        <div class="alert-body">
+          <div class="alert-title">Lodha Group launched a campaign in Pune — 3 new posts in 2 days</div>
+          <div class="alert-desc">Targeting Kharadi and Viman Nagar audiences. Messaging focused on "ready-to-move" inventory. Engagement 2.4× above their monthly average.</div>
+        </div>
+        <div class="alert-time">2 days ago</div>
+      </div>
+      <div class="alert-card">
+        <div class="alert-icon">📈</div>
+        <div class="alert-body">
+          <div class="alert-title">Godrej Properties LinkedIn post outperformed — 1,200+ engagements</div>
+          <div class="alert-desc">Format: investor-focused thought leadership. Topic: why Pune's residential market is outperforming Mumbai in 2025. Your last similar post got 340 engagements.</div>
+        </div>
+        <div class="alert-time">5 days ago</div>
+      </div>
+      <div class="alert-card">
+        <div class="alert-icon">📊</div>
+        <div class="alert-body">
+          <div class="alert-title">NoBroker published a data piece on IT corridor pricing</div>
+          <div class="alert-desc">900+ shares across platforms. No comparable content from Mehta Realty in the last 30 days. Opportunity: publish a Kharadi-specific price analysis.</div>
+        </div>
+        <div class="alert-time">1 day ago</div>
+      </div>
+    </div>
+
+    <!-- Trends -->
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:12px;">What's Working in Real Estate Content</div>
+    <div class="trend-grid">
+      <div class="trend-card">
+        <div class="trend-label">Educational content</div>
+        <div class="trend-stat">2.4×</div>
+        <div class="trend-desc">More saves than promotional posts for Pune real estate accounts this month</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-label">RERA + compliance posts</div>
+        <div class="trend-stat">+38%</div>
+        <div class="trend-desc">Engagement increase for RERA-focused content since March 2025</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-label">Best performing format</div>
+        <div class="trend-stat">Carousel</div>
+        <div class="trend-desc">Carousel posts averaging 3.8% engagement vs 2.1% for single images in your category</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-label">Emerging topic</div>
+        <div class="trend-stat">NRI buyers</div>
+        <div class="trend-desc">NRI-targeted content getting 1.9× more DMs and enquiries from Indian diaspora audiences</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ANALYTICS ══════════════════════════════════════════════ -->
+  <div id="screen-analytics" class="screen">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Analytics</div>
+        <div class="section-sub">Mehta Realty · Last 30 days</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="cal-view-btn active" style="border:1px solid var(--border);border-radius:6px;padding:7px 14px;font-size:13px;cursor:pointer;">Last 30 days</button>
+        <button class="cal-view-btn" style="border:1px solid var(--border);border-radius:6px;padding:7px 14px;font-size:13px;cursor:pointer;color:var(--muted);">Last 7 days</button>
+      </div>
+    </div>
+
+    <!-- Top stats -->
+    <div class="analytics-stats">
+      <div class="analytics-stat">
+        <div class="analytics-stat-num">5,620</div>
+        <div class="analytics-stat-label">Total Followers</div>
+        <div class="analytics-stat-delta delta-up">▲ +180 this month</div>
+      </div>
+      <div class="analytics-stat">
+        <div class="analytics-stat-num">12</div>
+        <div class="analytics-stat-label">Posts Published</div>
+        <div class="analytics-stat-delta delta-up">▲ +4 vs last month</div>
+      </div>
+      <div class="analytics-stat">
+        <div class="analytics-stat-num">3.8%</div>
+        <div class="analytics-stat-label">Avg. Engagement</div>
+        <div class="analytics-stat-delta delta-up">▲ +0.6% vs last month</div>
+      </div>
+      <div class="analytics-stat">
+        <div class="analytics-stat-num">48K</div>
+        <div class="analytics-stat-label">Total Impressions</div>
+        <div class="analytics-stat-delta delta-up">▲ +12% vs last month</div>
+      </div>
+    </div>
+
+    <div class="analytics-grid">
+      <!-- Engagement by content type -->
+      <div class="analytics-card">
+        <div class="analytics-card-title">Engagement by Content Type</div>
+        <div class="bar-chart">
+          <div class="bar-row">
+            <span class="bar-label">Educational</span>
+            <div class="bar-track"><div class="bar-fill" style="width:88%;"></div></div>
+            <span class="bar-val">5.2%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Carousel</span>
+            <div class="bar-track"><div class="bar-fill" style="width:75%;"></div></div>
+            <span class="bar-val">4.4%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Testimonial</span>
+            <div class="bar-track"><div class="bar-fill" style="width:64%;"></div></div>
+            <span class="bar-val">3.8%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Product / Promo</span>
+            <div class="bar-track"><div class="bar-fill" style="width:42%;"></div></div>
+            <span class="bar-val">2.5%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Text only</span>
+            <div class="bar-track"><div class="bar-fill" style="width:28%;"></div></div>
+            <span class="bar-val">1.6%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top posts -->
+      <div class="analytics-card">
+        <div class="analytics-card-title">Top Posts This Month</div>
+        <div class="top-posts-list">
+          <div class="top-post-row">
+            <span class="top-post-rank">1</span>
+            <span class="top-post-plat">📸</span>
+            <span class="top-post-title">5 signs your home is RERA-ready</span>
+            <span class="top-post-eng">6.2%</span>
+          </div>
+          <div class="top-post-row">
+            <span class="top-post-rank">2</span>
+            <span class="top-post-plat">💼</span>
+            <span class="top-post-title">Why Pune's IT corridor is outperforming Mumbai</span>
+            <span class="top-post-eng">5.8%</span>
+          </div>
+          <div class="top-post-row">
+            <span class="top-post-rank">3</span>
+            <span class="top-post-plat">📸</span>
+            <span class="top-post-title">Client spotlight: The Sharmas — first home</span>
+            <span class="top-post-eng">5.1%</span>
+          </div>
+          <div class="top-post-row">
+            <span class="top-post-rank">4</span>
+            <span class="top-post-plat">📸</span>
+            <span class="top-post-title">Mehta Heights Phase 2 — 60% sold in 3 weeks</span>
+            <span class="top-post-eng">4.6%</span>
+          </div>
+          <div class="top-post-row">
+            <span class="top-post-rank">5</span>
+            <span class="top-post-plat">💼</span>
+            <span class="top-post-title">RERA compliance: what every buyer must know</span>
+            <span class="top-post-eng">4.3%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Platform comparison -->
+      <div class="analytics-card">
+        <div class="analytics-card-title">Platform Comparison</div>
+        <div class="platform-compare">
+          <div class="plat-compare-item">
+            <div class="plat-compare-name">📸 Instagram</div>
+            <div class="plat-compare-val" style="color:#c13584;">4.1%</div>
+            <div class="plat-compare-sub">4,280 followers · 9 posts</div>
+          </div>
+          <div class="plat-compare-item">
+            <div class="plat-compare-name">💼 LinkedIn</div>
+            <div class="plat-compare-val" style="color:#0077b5;">2.9%</div>
+            <div class="plat-compare-sub">1,340 followers · 3 posts</div>
+          </div>
+        </div>
+        <div class="connect-banner" style="margin-top:16px;">
+          <span style="color:var(--active);">+ Connect Facebook</span>
+          <span style="color:var(--muted);font-size:12px;">to see full cross-platform view</span>
+        </div>
+      </div>
+
+      <!-- AI recommendation -->
+      <div class="analytics-card" style="background:#f5f9ff;border-color:#c5daf7;">
+        <div class="analytics-card-title" style="color:var(--active);">💡 MIAB Recommendation</div>
+        <div style="font-size:13px;line-height:1.6;color:var(--text);margin-bottom:12px;">Your educational posts get <strong>2.4× more saves</strong> than any other format — but you've only published 2 this month.<br><br>You have <strong>0 educational posts</strong> scheduled next week. Based on your audience's peak activity (Tuesday 10AM, Thursday 6PM), adding 2 would lift your monthly engagement by an estimated 0.4–0.8%.</div>
+        <button class="btn-primary" style="font-size:13px;padding:8px 16px;" onclick="navigateTo('uc2-planner')">Create Educational Post →</button>
+      </div>
+    </div>
+
+    <div class="connect-banner">
+      <div>
+        <div style="font-weight:600;font-size:14px;">Connect your platforms to unlock full analytics</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">Currently showing estimated data. Connect Instagram and LinkedIn for live metrics.</div>
+      </div>
+      <button class="btn-primary" style="font-size:13px;padding:9px 16px;">Connect Platforms</button>
+    </div>
+  </div>
+
   <!-- ═══ UC2 SCREENS ══════════════════════════════════════════ -->
 
   <!-- ─── S_UC2_01 — Dashboard ─── -->
@@ -3401,6 +4105,11 @@ const SCREEN_META = {
   'campaign-review':      { step: null, section: 'Campaign Review', showTopBar: true, showBottomBar: true,  showBack: true,  cta: 'Submit for Approval →',   ctaAction: 'goToCampaignSubmit' },
   'campaign-submit':      { step: null, section: '',                showTopBar: false, showBottomBar: false, showBack: false },
   'campaign-live':        { step: null, section: 'Campaign Live',   showTopBar: true, showBottomBar: false, showBack: false },
+  // ── Brand / Calendar / Intelligence / Analytics ──
+  'brand':        { step: null, section: 'Brand',        showTopBar: true, showBottomBar: false, showBack: false },
+  'cal':          { step: null, section: 'Calendar',     showTopBar: true, showBottomBar: false, showBack: false },
+  'intelligence': { step: null, section: 'Intelligence', showTopBar: true, showBottomBar: false, showBack: false },
+  'analytics':    { step: null, section: 'Analytics',    showTopBar: true, showBottomBar: false, showBack: false },
   // ── UC2 ──
   'uc2-dashboard':  { step: null, section: 'Content',          showTopBar: true, showBottomBar: false, showBack: false },
   'uc2-planner':    { step: null, section: 'Weekly Planner',   showTopBar: true, showBottomBar: false, showBack: true },
@@ -3510,9 +4219,13 @@ function showScreen(screenId) {
   const campaignScreens = ['campaigns','campaign-setup','campaign-brief-a','campaign-brief-b','campaign-brief-c','campaign-plan','post-create','campaign-review','campaign-submit','campaign-live'];
   const homeScreens = ['dashboard','content-plan','topic-selection','review-posts','schedule','publish-confirm'];
   const contentScreens = ['uc2-dashboard','uc2-planner','uc2-post','uc2-submit','ce-inputs','ce-loading','ce-output'];
-  if (homeScreens.includes(screenId)) { const el = document.getElementById('nav-home'); if (el) el.classList.add('active'); }
-  else if (campaignScreens.includes(screenId)) { const el = document.getElementById('nav-campaigns'); if (el) el.classList.add('active'); }
-  else if (contentScreens.includes(screenId)) { const el = document.getElementById('nav-content'); if (el) el.classList.add('active'); }
+  if (homeScreens.includes(screenId))     { const el = document.getElementById('nav-home');        if (el) el.classList.add('active'); }
+  else if (campaignScreens.includes(screenId)) { const el = document.getElementById('nav-campaigns');  if (el) el.classList.add('active'); }
+  else if (contentScreens.includes(screenId))  { const el = document.getElementById('nav-content');    if (el) el.classList.add('active'); }
+  else if (screenId === 'brand')               { const el = document.getElementById('nav-brand');       if (el) el.classList.add('active'); }
+  else if (screenId === 'cal')                 { const el = document.getElementById('nav-calendar');    if (el) el.classList.add('active'); }
+  else if (screenId === 'intelligence')        { const el = document.getElementById('nav-intelligence');if (el) el.classList.add('active'); }
+  else if (screenId === 'analytics')           { const el = document.getElementById('nav-analytics');   if (el) el.classList.add('active'); }
 
   // Screen-specific setup
   if (screenId === 'loading-a') startLoadingAnimation();
@@ -4324,6 +5037,36 @@ function useAdOutput() {
     navigateTo('uc2-post');
     showPostTab('preview');
   }, 1500);
+}
+
+// ══════════════════════════════════════════════════════════════
+// BRAND TABS
+// ══════════════════════════════════════════════════════════════
+const BRAND_TABS = ['visual', 'messaging', 'tone'];
+
+function showBrandTab(tab) {
+  BRAND_TABS.forEach(t => {
+    const btn     = document.getElementById('btab-' + t);
+    const content = document.getElementById('brand-' + t + '-content');
+    if (btn)     btn.classList.toggle('active', t === tab);
+    if (content) content.style.display = t === tab ? 'block' : 'none';
+  });
+}
+
+function saveBrand() {
+  const confirm = document.getElementById('brand-save-confirm');
+  if (!confirm) return;
+  confirm.style.display = 'block';
+  confirm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  setTimeout(() => { confirm.style.display = 'none'; }, 2000);
+}
+
+// ══════════════════════════════════════════════════════════════
+// CALENDAR FILTER
+// ══════════════════════════════════════════════════════════════
+function toggleCalFilter(btn) {
+  document.querySelectorAll('.cal-filter-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
 }
 
 // ══════════════════════════════════════════════════════════════
